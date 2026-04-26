@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, neovim-config, monkeyterm, viaterm, ... }:
 {
   home.username = "andrewkim";
   home.homeDirectory = if pkgs.stdenv.isDarwin
@@ -16,6 +16,9 @@
     htop
     curl
     wget
+    neovim-config.packages.${pkgs.system}.default
+    monkeyterm.packages.${pkgs.system}.default
+    viaterm.packages.${pkgs.system}.default
   ];
 
   programs.git = {
