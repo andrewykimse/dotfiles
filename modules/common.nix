@@ -16,6 +16,7 @@
     htop
     curl
     wget
+    tmux
     neovim-config.packages.${pkgs.system}.default
     monkeyterm.packages.${pkgs.system}.default
     viaterm.packages.${pkgs.system}.default
