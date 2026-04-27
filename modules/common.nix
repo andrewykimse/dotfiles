@@ -22,7 +22,7 @@
     viaterm.packages.${pkgs.system}.default
   ];
 
-  xdg.configFile."nvim".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/sources/neovim-config/nvim";
+  xdg.configFile."nvim".source = "${neovim-config}/nvim";
 
   programs.git = {
     enable = true;
