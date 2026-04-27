@@ -1,9 +1,6 @@
 { config, pkgs, neovim-config, monkeyterm, viaterm, ... }:
 {
-  home.username = "andrewkim";
-  home.homeDirectory = if pkgs.stdenv.isDarwin
-    then "/Users/andrewkim"
-    else "/home/andrewkim";
+  # home.username and home.homeDirectory are set per-host
 
   home.stateVersion = "24.11";
 
@@ -19,7 +16,9 @@
     tmux
     btop
     neovim-config.packages.${pkgs.system}.default
+  ] ++ pkgs.lib.optionals (monkeyterm != null) [
     monkeyterm.packages.${pkgs.system}.default
+  ] ++ pkgs.lib.optionals (viaterm != null) [
     viaterm.packages.${pkgs.system}.default
   ];
 

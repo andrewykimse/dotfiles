@@ -1,5 +1,8 @@
 { pkgs, ... }:
 {
+  home.username = "andrewkim";
+  home.homeDirectory = "/Users/andrewkim";
+
   home.packages = with pkgs; [
     # mac-only tools
   ];
