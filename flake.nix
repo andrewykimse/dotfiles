@@ -32,7 +32,7 @@
 
         "akim7@work" = mkHome "x86_64-linux" [
           ./hosts/work/home.nix
-        ] { monkeyterm = null; viaterm = null; };
+        ] { inherit monkeyterm viaterm; };
       };
     };
 }
