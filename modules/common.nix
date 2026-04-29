@@ -15,6 +15,7 @@
     wget
     tmux
     btop
+    nix-search-cli
     neovim-config.packages.${pkgs.system}.default
   ] ++ pkgs.lib.optionals (monkeyterm != null) [
     monkeyterm.packages.${pkgs.system}.default
