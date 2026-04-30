@@ -130,6 +130,9 @@
   # Install firefox.
   programs.firefox.enable = true;
 
+  # Hyprland (Wayland compositor). GDM exposes it as a session option at login.
+  programs.hyprland.enable = true;
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 

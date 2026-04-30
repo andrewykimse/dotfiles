@@ -34,6 +34,13 @@
   # Allow unfree for flake commands (nix run/shell) — still needs --impure
   home.sessionVariables.NIXPKGS_ALLOW_UNFREE = "1";
 
+  programs.ghostty = {
+    enable = true;
+    settings = {
+      theme = "Dracula";
+    };
+  };
+
   programs.tmux = {
     enable = true;
     shell = "${pkgs.zsh}/bin/zsh";
