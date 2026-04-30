@@ -17,7 +17,7 @@
     let
       mkHome = system: modules: extraArgs:
         home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${system};
+          pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
           modules = [ ./modules/common.nix ] ++ modules;
           extraSpecialArgs = { inherit neovim-config; } // extraArgs;
         };

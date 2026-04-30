@@ -16,6 +16,7 @@
     btop
     brave
     nix-search-cli
+    claude-code
     neovim-config.packages.${pkgs.system}.default
   ] ++ pkgs.lib.optionals (monkeyterm != null) [
     monkeyterm.packages.${pkgs.system}.default
@@ -24,6 +25,14 @@
   ];
 
   xdg.configFile."nvim".source = "${neovim-config}/nvim";
+
+  # Allow unfree for nix-shell / nix-env (channel commands)
+  xdg.configFile."nixpkgs/config.nix".text = ''
+    { allowUnfree = true; }
+  '';
+
+  # Allow unfree for flake commands (nix run/shell) — still needs --impure
+  home.sessionVariables.NIXPKGS_ALLOW_UNFREE = "1";
 
   programs.tmux = {
     enable = true;
@@ -45,6 +54,11 @@
     enable = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
+
+    shellAliases = {
+      nrun = "nix --impure run";
+      nshell = "nix --impure shell";
+    };
 
     history = {
       size = 10000;
