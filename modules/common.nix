@@ -13,8 +13,8 @@
     htop
     curl
     wget
-    tmux
     btop
+    brave
     nix-search-cli
     neovim-config.packages.${pkgs.system}.default
   ] ++ pkgs.lib.optionals (monkeyterm != null) [
@@ -24,6 +24,12 @@
   ];
 
   xdg.configFile."nvim".source = "${neovim-config}/nvim";
+
+  programs.tmux = {
+    enable = true;
+    shell = "${pkgs.zsh}/bin/zsh";
+    extraConfig = builtins.readFile ./tmux.conf;
+  };
 
   programs.git = {
     enable = true;
