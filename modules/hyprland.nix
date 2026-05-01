@@ -17,7 +17,7 @@
       "$terminal" = "ghostty";
       "$menu" = "wofi --show drun";
 
-      monitor = [ ",preferred,auto,1" ];
+      monitor = [ ",preferred,auto,2" ];
 
       exec-once = [
         "waybar"
