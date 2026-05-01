@@ -17,6 +17,7 @@
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelParams = ["pcie_aspm=off"];
+  boot.kernelModules = [ "snd_usb_audio" ];
 
   hardware.mediatek-mt7927 = {
     enable = true;
@@ -108,6 +109,7 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
+  services.hardware.bolt.enable = true;
 
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;

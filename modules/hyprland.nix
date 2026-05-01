@@ -8,6 +8,7 @@
     wl-clipboard
     brightnessctl
     playerctl
+    pavucontrol
   ];
 
   wayland.windowManager.hyprland = {
@@ -49,14 +50,14 @@
         "$mod, Return, exec, $terminal"
         "$mod, Q, killactive,"
         "$mod SHIFT, E, exit,"
-        "$mod, R, exec, $menu"
+        "$mod, Space, exec, $menu"
         "$mod, V, togglefloating,"
         "$mod, F, fullscreen,"
 
-        "$mod, left,  movefocus, l"
-        "$mod, right, movefocus, r"
-        "$mod, up,    movefocus, u"
-        "$mod, down,  movefocus, d"
+        "$mod, h, movefocus, l"
+        "$mod, l, movefocus, r"
+        "$mod, k, movefocus, u"
+        "$mod, j, movefocus, d"
 
         "$mod, 1, workspace, 1"
         "$mod, 2, workspace, 2"
