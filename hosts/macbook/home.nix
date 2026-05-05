@@ -1,5 +1,9 @@
 { pkgs, ... }:
 {
+  xdg.configFile."btop/btop.conf" = {
+    source = ../../config/btop/btop.conf;
+    force = true;
+  };
   home.username = "andrewkim";
   home.homeDirectory = "/Users/andrewkim";
 
