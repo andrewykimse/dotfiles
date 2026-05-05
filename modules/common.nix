@@ -38,7 +38,8 @@
   home.sessionVariables.NIXPKGS_ALLOW_UNFREE = "1";
 
   programs.ghostty = {
-    enable = true;
+    enable = pkgs.stdenv.isLinux;
+    installBatSyntax = false;
     settings = {
       theme = "Dracula";
     };
