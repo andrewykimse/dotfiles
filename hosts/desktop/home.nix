@@ -10,4 +10,17 @@
     # add linux-only tools here
     steam
   ];
+
+  programs.ghostty = {
+    enable = true;
+    settings = {
+      font-size = 13;
+      window-padding-x = 8;
+      window-padding-y = 8;
+      window-decoration = false;
+      copy-on-select = true;
+      scrollback-limit = 10000;
+      theme = "dracula";
+    };
+  };
 }

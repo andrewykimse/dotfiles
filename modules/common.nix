@@ -17,6 +17,9 @@
     brave
     nix-search-cli
     claude-code
+    bottom
+    nix-tree
+    comma
     neovim-config.packages.${pkgs.system}.default
   ] ++ pkgs.lib.optionals (monkeyterm != null) [
     monkeyterm.packages.${pkgs.system}.default
@@ -49,12 +52,61 @@
 
   programs.git = {
     enable = true;
+    delta = {
+      enable = true;
+      options = {
+        navigate = true;
+        side-by-side = true;
+        line-numbers = true;
+      };
+    };
     settings = {
       user.name = "andrewkim";
       user.email = "andrewykimse@gmail.com";
       init.defaultBranch = "main";
       pull.rebase = true;
     };
+  };
+
+  programs.bat = {
+    enable = true;
+    config.theme = "Dracula";
+  };
+
+  programs.eza = {
+    enable = true;
+    enableZshIntegration = true;
+    git = true;
+    icons = "auto";
+  };
+
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
+  programs.zoxide = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
+  programs.starship = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
+  programs.direnv = {
+    enable = true;
+    enableZshIntegration = true;
+    nix-direnv.enable = true;
+  };
+
+  programs.gh = {
+    enable = true;
+  };
+
+  programs.ssh = {
+    enable = true;
   };
 
   programs.zsh = {
@@ -76,8 +128,8 @@
 
     oh-my-zsh = {
       enable = true;
-      theme = "robbyrussell";
       plugins = [ "git" ];
+      # theme omitted — starship handles the prompt
     };
 
     initContent = ''
