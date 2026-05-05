@@ -11,15 +11,17 @@
     monkeyterm.url = "github:andrewykimse/monkeyterm";
     viaterm.url = "github:andrewykimse/viaterm";
     mt7927-driver.url = "github:cmspam/mt7927-nixos";
+    btop-src.url = "github:andrewykimse/btop";
+    btop-src.flake = false;
   };
 
-  outputs = { nixpkgs, home-manager, neovim-config, monkeyterm, viaterm, mt7927-driver, ... }:
+  outputs = { nixpkgs, home-manager, neovim-config, monkeyterm, viaterm, mt7927-driver, btop-src, ... }:
     let
       mkHome = system: modules: extraArgs:
         home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
           modules = [ ./modules/common.nix ] ++ modules;
-          extraSpecialArgs = { inherit neovim-config; } // extraArgs;
+          extraSpecialArgs = { inherit neovim-config btop-src; } // extraArgs;
         };
     in {
       nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {

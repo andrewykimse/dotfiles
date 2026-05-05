@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "btop-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1777825584,
+        "narHash": "sha256-NhyrWqqr1mdbNztLv73IhuGzEYhUZUdYlvirvwVDpno=",
+        "owner": "andrewykimse",
+        "repo": "btop",
+        "rev": "36f970985c08d8f85faacc66703aef496f6e7fd7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "andrewykimse",
+        "repo": "btop",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -229,6 +245,7 @@
     },
     "root": {
       "inputs": {
+        "btop-src": "btop-src",
         "home-manager": "home-manager",
         "monkeyterm": "monkeyterm",
         "mt7927-driver": "mt7927-driver",

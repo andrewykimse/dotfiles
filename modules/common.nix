@@ -1,4 +1,24 @@
-{ config, pkgs, neovim-config, monkeyterm, viaterm, ... }:
+{ config, pkgs, neovim-config, monkeyterm, viaterm, btop-src, ... }:
+let
+  btopPkg = if pkgs.stdenv.isDarwin
+    then pkgs.btop.overrideAttrs (old: {
+      src = btop-src;
+      cmakeFlags = (old.cmakeFlags or []) ++ [ "-DBTOP_GPU=ON" ];
+      postInstall = (old.postInstall or "") + ''
+        /usr/bin/codesign -s - --entitlements ${pkgs.writeText "btop-entitlements.xml" ''
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+              <key>com.apple.iokit.IOReportUserClient</key>
+              <true/>
+          </dict>
+          </plist>
+        ''} --force $out/bin/btop
+      '';
+    })
+    else pkgs.btop;
+in
 {
   # home.username and home.homeDirectory are set per-host
 
@@ -13,7 +33,7 @@
     htop
     curl
     wget
-    btop
+    btopPkg
     brave
     nix-search-cli
     claude-code
