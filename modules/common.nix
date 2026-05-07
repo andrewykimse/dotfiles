@@ -41,6 +41,8 @@ in
   home.packages = with pkgs; [
     ripgrep
     fd
+    gnumake
+    gcc
     jq
     htop
     curl
@@ -53,6 +55,16 @@ in
     nix-tree
     comma
     neovim-config.packages.${pkgs.system}.default
+
+    # LSP servers
+    clang-tools   # clangd for C/C++
+    rust-analyzer
+    gopls
+    zls           # Zig
+    nixd          # Nix
+    lua-language-server
+    pyright
+    typescript-language-server
   ] ++ pkgs.lib.optionals (monkeyterm != null) [
     monkeyterm.packages.${pkgs.system}.default
   ] ++ pkgs.lib.optionals (viaterm != null) [
