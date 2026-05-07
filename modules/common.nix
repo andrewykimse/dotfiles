@@ -94,19 +94,21 @@ in
 
   programs.git = {
     enable = true;
-    delta = {
-      enable = true;
-      options = {
-        navigate = true;
-        side-by-side = true;
-        line-numbers = true;
-      };
-    };
     settings = {
       user.name = "andrewkim";
       user.email = "andrewykimse@gmail.com";
       init.defaultBranch = "main";
       pull.rebase = true;
+    };
+  };
+
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+    options = {
+      navigate = true;
+      side-by-side = true;
+      line-numbers = true;
     };
   };
 
@@ -152,6 +154,7 @@ in
 
   programs.ssh = {
     enable = true;
+    enableDefaultConfig = false;
   };
 
   programs.zsh = {
