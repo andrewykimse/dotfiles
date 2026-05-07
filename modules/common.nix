@@ -17,7 +17,19 @@ let
         ''} --force $out/bin/btop
       '';
     })
-    else pkgs.btop;
+    else let
+      nvml-lib = pkgs.runCommand "nvml-lib" {} ''
+        mkdir -p $out/lib
+        ln -s /usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1 $out/lib/libnvidia-ml.so.1
+        ln -s libnvidia-ml.so.1 $out/lib/libnvidia-ml.so
+      '';
+    in pkgs.btop.overrideAttrs (old: {
+      nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ pkgs.makeWrapper ];
+      postInstall = (old.postInstall or "") + ''
+        wrapProgram $out/bin/btop \
+          --prefix LD_LIBRARY_PATH : "${nvml-lib}/lib"
+      '';
+    });
 in
 {
   # home.username and home.homeDirectory are set per-host

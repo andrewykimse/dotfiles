@@ -5,6 +5,10 @@
   home.username = "andrewkim";
   home.homeDirectory = "/home/andrewkim";
 
+  xdg.configFile."btop/btop.conf" = {
+    source = ../../config/btop/btop.conf;
+  };
+
   # NixOS desktop-specific packages
   home.packages = with pkgs; [
     # add linux-only tools here
