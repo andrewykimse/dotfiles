@@ -19,10 +19,13 @@ let
     })
     else if nvidiaLibDir != null
     then pkgs.btop.overrideAttrs (old: {
-      nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ pkgs.makeWrapper ];
-      postInstall = (old.postInstall or "") + ''
-        wrapProgram $out/bin/btop \
-          --prefix LD_LIBRARY_PATH : "${nvidiaLibDir}"
+      doInstallCheck = false;
+      postFixup = (old.postFixup or "") + ''
+        if [ -f "$out/bin/.btop-wrapped" ]; then
+          patchelf --add-rpath "${nvidiaLibDir}" "$out/bin/.btop-wrapped"
+        else
+          patchelf --add-rpath "${nvidiaLibDir}" "$out/bin/btop"
+        fi
       '';
     })
     else pkgs.btop;
