@@ -42,7 +42,7 @@
           let pkgs = import nixpkgs { system = "x86_64-linux"; config.allowUnfree = true; };
           in mkHome "x86_64-linux" [
             ./hosts/desktop/home.nix
-          ] { inherit monkeyterm viaterm; nvidiaLibDir = "${pkgs.linuxPackages.nvidia_x11}/lib"; };
+          ] { inherit monkeyterm viaterm; nvidiaLibDir = "${pkgs.linuxPackages.nvidiaPackages.production}/lib"; };
 
         "akim7@work" = mkHome "x86_64-linux" [
           ./hosts/work/home.nix
