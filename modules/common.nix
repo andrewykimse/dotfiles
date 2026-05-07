@@ -40,6 +40,7 @@ in
 
   home.packages = with pkgs; [
     ripgrep
+    fzf
     fd
     gnumake
     gcc
