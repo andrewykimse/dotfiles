@@ -1,4 +1,4 @@
-{ config, pkgs, neovim-config, monkeyterm, viaterm, btop-src, ... }:
+{ config, pkgs, neovim-config, monkeyterm, viaterm, btop-src, nvidiaLibDir ? null, ... }:
 let
   btopPkg = if pkgs.stdenv.isDarwin
     then pkgs.btop.overrideAttrs (old: {
@@ -17,19 +17,15 @@ let
         ''} --force $out/bin/btop
       '';
     })
-    else let
-      nvml-lib = pkgs.runCommand "nvml-lib" {} ''
-        mkdir -p $out/lib
-        ln -s /usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1 $out/lib/libnvidia-ml.so.1
-        ln -s libnvidia-ml.so.1 $out/lib/libnvidia-ml.so
-      '';
-    in pkgs.btop.overrideAttrs (old: {
+    else if nvidiaLibDir != null
+    then pkgs.btop.overrideAttrs (old: {
       nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ pkgs.makeWrapper ];
       postInstall = (old.postInstall or "") + ''
         wrapProgram $out/bin/btop \
-          --prefix LD_LIBRARY_PATH : "${nvml-lib}/lib"
+          --prefix LD_LIBRARY_PATH : "${nvidiaLibDir}"
       '';
-    });
+    })
+    else pkgs.btop;
 in
 {
   # home.username and home.homeDirectory are set per-host

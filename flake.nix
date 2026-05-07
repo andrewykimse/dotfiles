@@ -38,13 +38,15 @@
           ./hosts/macbook/home.nix
         ] { inherit monkeyterm viaterm; };
 
-        "andrewkim@desktop" = mkHome "x86_64-linux" [
-          ./hosts/desktop/home.nix
-        ] { inherit monkeyterm viaterm; };
+        "andrewkim@desktop" =
+          let pkgs = import nixpkgs { system = "x86_64-linux"; config.allowUnfree = true; };
+          in mkHome "x86_64-linux" [
+            ./hosts/desktop/home.nix
+          ] { inherit monkeyterm viaterm; nvidiaLibDir = "${pkgs.linuxPackages.nvidia_x11}/lib"; };
 
         "akim7@work" = mkHome "x86_64-linux" [
           ./hosts/work/home.nix
-        ] { inherit monkeyterm viaterm; };
+        ] { inherit monkeyterm viaterm; nvidiaLibDir = "/usr/lib/x86_64-linux-gnu"; };
       };
     };
 }
