@@ -2,10 +2,14 @@
 {
   home.packages = with pkgs; [
     hyprpaper
-    hyprlock
+    hypridle
+    hyprpolkitagent
+    xdg-desktop-portal-gtk
     grim
     slurp
     wl-clipboard
+    cliphist
+    fuzzel
     brightnessctl
     playerctl
     pavucontrol
@@ -18,6 +22,7 @@
       "$mod" = "SUPER";
       "$terminal" = "ghostty";
       "$menu" = "anyrun";
+      "$lock" = "hyprlock";
 
       monitor = [ ",preferred,auto,2" ];
 
@@ -25,6 +30,9 @@
         "waybar"
         "mako"
         "hyprpaper"
+        "hypridle"
+        "wl-paste --watch cliphist store"
+        "systemctl --user start hyprpolkitagent"
       ];
 
       general = {
@@ -60,6 +68,14 @@
         "$mod, k, movefocus, u"
         "$mod, j, movefocus, d"
 
+        "$mod CTRL, h, movewindow, l"
+        "$mod CTRL, l, movewindow, r"
+        "$mod CTRL, k, movewindow, u"
+        "$mod CTRL, j, movewindow, d"
+
+        "$mod, Escape, exec, $lock"
+        "$mod SHIFT, V, exec, cliphist list | fuzzel --dmenu | cliphist decode | wl-copy"
+
         "$mod, 1, workspace, 1"
         "$mod, 2, workspace, 2"
         "$mod, 3, workspace, 3"
@@ -88,9 +104,17 @@
         "$mod, mouse:273, resizewindow"
       ];
 
+      binde = [
+        "$mod SHIFT, h, resizeactive, -30 0"
+        "$mod SHIFT, l, resizeactive, 30 0"
+        "$mod SHIFT, k, resizeactive, 0 -30"
+        "$mod SHIFT, j, resizeactive, 0 30"
+      ];
+
       bindel = [
         ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
         ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
         ", XF86MonBrightnessUp,  exec, brightnessctl s 5%+"
         ", XF86MonBrightnessDown,exec, brightnessctl s 5%-"
       ];
@@ -135,6 +159,7 @@
       max_entries: Some(8),
       plugins: [
         "${pkgs.anyrun}/lib/libapplications.so",
+        "${pkgs.anyrun}/lib/libshell.so",
       ],
     )
   '';
@@ -209,4 +234,42 @@
       default-timeout = 5000;
     };
   };
+
+  xdg.configFile."hypr/hyprlock.conf".text = ''
+    background {
+      monitor =
+      color = rgba(40, 42, 54, 1.0)
+    }
+
+    input-field {
+      monitor =
+      size = 300, 50
+      outline_thickness = 2
+      outer_color = rgb(bd93f9)
+      inner_color = rgb(68, 71, 90)
+      font_color = rgb(f8f8f2)
+      fade_on_empty = true
+      placeholder_text = <i>Password...</i>
+      halign = center
+      valign = center
+    }
+  '';
+
+  xdg.configFile."hypr/hypridle.conf".text = ''
+    general {
+      lock_cmd = hyprlock
+      before_sleep_cmd = loginctl lock-session
+    }
+
+    listener {
+      timeout = 300
+      on-timeout = hyprlock
+    }
+
+    listener {
+      timeout = 600
+      on-timeout = hyprctl dispatch dpms off
+      on-resume = hyprctl dispatch dpms on
+    }
+  '';
 }

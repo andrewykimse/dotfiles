@@ -23,8 +23,57 @@ in
 
   wayland.windowManager.hyprland.settings.monitor = pkgs.lib.mkForce [ ",preferred,auto,1" ];
 
+  wayland.windowManager.hyprland.settings."$lock" = pkgs.lib.mkForce "${pkgs.hyprlock}/bin/hyprlock";
+
+  xdg.configFile."hypr/hypridle.conf" = pkgs.lib.mkForce {
+    text = ''
+      general {
+        lock_cmd = ${pkgs.hyprlock}/bin/hyprlock
+        before_sleep_cmd = loginctl lock-session
+      }
+
+      listener {
+        timeout = 300
+        on-timeout = ${pkgs.hyprlock}/bin/hyprlock
+      }
+
+      listener {
+        timeout = 600
+        on-timeout = hyprctl dispatch dpms off
+        on-resume = hyprctl dispatch dpms on
+      }
+    '';
+  };
+
   home.username = "akim7";
   home.homeDirectory = "/home/akim7";
+
+  xdg.configFile."btop/btop.conf" = {
+    source = ../../config/btop/btop.conf;
+    force = true;
+  };
+
+  xdg.configFile."btop/themes" = {
+    source = ../../config/btop/themes;
+    recursive = true;
+  };
+
+  home.file.".local/bin/hyprlock-auth" = {
+    executable = true;
+    text = ''
+      #!/usr/bin/python3
+      import subprocess, sys, os
+      password = sys.stdin.read().split("\0")[0].strip()
+      if not password:
+          sys.exit(1)
+      user = os.environ.get("PAM_USER", "")
+      result = subprocess.run(
+          ["/usr/bin/pamtester", "login", user, "authenticate"],
+          input=password + "\n", capture_output=True, text=True
+      )
+      sys.exit(result.returncode)
+    '';
+  };
 
   programs.ghostty.enable = pkgs.lib.mkForce false;
 
@@ -47,6 +96,7 @@ DesktopNames=Hyprland
   '';
 
   home.packages = [
+    pkgs.hyprlock
     (pkgs.runCommand "ghostty-nixgl" { nativeBuildInputs = [ pkgs.makeWrapper ]; } ''
       mkdir -p $out/bin $out/share/applications $out/share/icons $out/share/dbus-1/services
       cp -rs ${pkgs.ghostty}/share/ghostty $out/share/ 2>/dev/null || true
@@ -61,5 +111,6 @@ DesktopNames=Hyprland
         $out/share/dbus-1/services/com.mitchellh.ghostty.service \
         --replace-fail "${pkgs.ghostty}/bin/ghostty" "$out/bin/ghostty"
     '')
+    pkgs.awscli2
   ];
 }

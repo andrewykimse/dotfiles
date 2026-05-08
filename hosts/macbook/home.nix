@@ -4,6 +4,11 @@
     source = ../../config/btop/btop.conf;
     force = true;
   };
+
+  xdg.configFile."btop/themes" = {
+    source = ../../config/btop/themes;
+    recursive = true;
+  };
   home.username = "andrewkim";
   home.homeDirectory = "/Users/andrewkim";
 

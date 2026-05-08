@@ -10,7 +10,7 @@ Nix home-manager configuration for macOS and NixOS.
 ├── flake.lock             # pinned input versions
 ├── modules/
 │   ├── common.nix         # shared config across all machines
-│   └── hyprland.nix       # Hyprland + waybar + wofi + mako
+│   └── hyprland.nix       # Hyprland + waybar + anyrun + mako
 └── hosts/
     ├── macbook/
     │   └── home.nix       # macOS-specific config
@@ -77,6 +77,13 @@ sudo ln -sf /home/akim7/.local/share/wayland-sessions/hyprland.desktop /usr/shar
 ```
 
 This only needs to be run once — the desktop file uses `~/.nix-profile/bin/Hyprland` which stays valid across rebuilds.
+
+Hyprlock requires a PAM entry to authenticate. Nix's hyprlock links against Nix's libpam which can't load system PAM/NSS modules (pam_sss, libnss_sss), so we use `pam_exec` to delegate auth to the system via `pamtester`:
+
+```sh
+sudo apt install pamtester
+printf '#%%PAM-1.0\nauth required pam_exec.so expose_authtok /home/akim7/.local/bin/hyprlock-auth\naccount required pam_permit.so\n' | sudo tee /etc/pam.d/hyprlock
+```
 
 ### Rolling back
 

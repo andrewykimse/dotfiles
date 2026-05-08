@@ -9,9 +9,13 @@
     source = ../../config/btop/btop.conf;
   };
 
-  # NixOS desktop-specific packages
+  xdg.configFile."btop/themes" = {
+    source = ../../config/btop/themes;
+    recursive = true;
+  };
+
   home.packages = with pkgs; [
-    # add linux-only tools here
+    hyprlock
     steam
   ];
 
