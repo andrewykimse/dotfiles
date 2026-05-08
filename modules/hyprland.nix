@@ -9,6 +9,7 @@
     brightnessctl
     playerctl
     pavucontrol
+    anyrun
   ];
 
   wayland.windowManager.hyprland = {
@@ -16,7 +17,7 @@
     settings = {
       "$mod" = "SUPER";
       "$terminal" = "ghostty";
-      "$menu" = "wofi --show drun";
+      "$menu" = "anyrun";
 
       monitor = [ ",preferred,auto,2" ];
 
@@ -119,7 +120,84 @@
     '';
   };
 
-  programs.wofi.enable = true;
+  xdg.configFile."anyrun/config.ron".text = ''
+    Config(
+      x: Fraction(0.5),
+      y: Absolute(0),
+      width: Absolute(800),
+      height: Absolute(1),
+      hide_icons: false,
+      ignore_exclusive_zones: false,
+      layer: Overlay,
+      hide_plugin_info: true,
+      close_on_click: true,
+      show_results_immediately: true,
+      max_entries: Some(8),
+      plugins: [
+        "${pkgs.anyrun}/lib/libapplications.so",
+      ],
+    )
+  '';
+
+  xdg.configFile."anyrun/style.css".text = ''
+    @define-color accent #bd93f9;
+    @define-color bg-color rgba(40, 42, 54, 0.92);
+    @define-color fg-color #f8f8f2;
+    @define-color desc-color #6272a4;
+
+    window {
+      background: transparent;
+    }
+
+    box.main {
+      padding: 12px;
+      margin: 10px;
+      border-radius: 8px;
+      border: 2px solid @accent;
+      background-color: @bg-color;
+    }
+
+    text {
+      min-height: 30px;
+      padding: 5px;
+      border-radius: 5px;
+      color: @fg-color;
+    }
+
+    .matches {
+      background-color: transparent;
+      border-radius: 8px;
+    }
+
+    box.plugin:first-child {
+      margin-top: 5px;
+    }
+
+    list.plugin {
+      background-color: transparent;
+    }
+
+    label.match {
+      color: @fg-color;
+      font-size: 14px;
+    }
+
+    label.match.description {
+      font-size: 10px;
+      color: @desc-color;
+    }
+
+    .match {
+      background: transparent;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+
+    .match:selected {
+      background: alpha(@accent, 0.3);
+      border-left: 3px solid @accent;
+    }
+  '';
 
   services.mako = {
     enable = true;
