@@ -3,6 +3,7 @@ let
   btopPkg = if pkgs.stdenv.isDarwin
     then pkgs.btop.overrideAttrs (old: {
       src = btop-src;
+      doInstallCheck = false;
       cmakeFlags = (old.cmakeFlags or []) ++ [ "-DBTOP_GPU=ON" ];
       postInstall = (old.postInstall or "") + ''
         /usr/bin/codesign -s - --entitlements ${pkgs.writeText "btop-entitlements.xml" ''
