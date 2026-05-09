@@ -112,5 +112,6 @@ DesktopNames=Hyprland
         --replace-fail "${pkgs.ghostty}/bin/ghostty" "$out/bin/ghostty"
     '')
     pkgs.awscli2
+    pkgs.cachix
   ];
 }
