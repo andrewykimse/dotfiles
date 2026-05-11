@@ -95,11 +95,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1778110974,
-        "narHash": "sha256-7V7bW5uZSdKPRmemMQUulXRffnlnjRj5N/HGHOsOda8=",
+        "lastModified": 1778503501,
+        "narHash": "sha256-08L/X4/do7nET4rzidJ76eV/1r+mB7DchVpdPypsghc=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "75fac363324f18d2b83a30fd916e509d2a02fb0e",
+        "rev": "85ba629c79449badf4338117c27f0ee92b4b9f1a",
         "type": "github"
       },
       "original": {
@@ -111,11 +111,11 @@
     "mediatek-mt7927-dkms": {
       "flake": false,
       "locked": {
-        "lastModified": 1778105816,
-        "narHash": "sha256-mGO6jQ6LH0VGCzpnXbAGiVuP3nDd1FCDXFlMrBiZ48c=",
+        "lastModified": 1778171467,
+        "narHash": "sha256-jokMx9fzIs8ZQPrudp0NWeKXiGwiiCvC6ZCO1zBGf6Q=",
         "owner": "jetm",
         "repo": "mediatek-mt7927-dkms",
-        "rev": "5222b93b5c5f4f1eb102d054b519308bc0e81ebf",
+        "rev": "944dd50d890a91e1ae671bb978984d81acb3d438",
         "type": "github"
       },
       "original": {
@@ -149,11 +149,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1778108539,
-        "narHash": "sha256-nyNB+UwOwJxdtLrOe7b0dycqGYUNKNvMjVpHXc/1JrU=",
+        "lastModified": 1778172899,
+        "narHash": "sha256-GrAWrHLubQtGfUn+Ywt/dxjxudhUOsRI27/3HbHWUjU=",
         "owner": "cmspam",
         "repo": "mt7927-nixos",
-        "rev": "d6148c4cdd1be5b620135dd130df76d33172b3fb",
+        "rev": "dc6f25aad52d4a818c28a340d57b804a23d12af9",
         "type": "github"
       },
       "original": {
