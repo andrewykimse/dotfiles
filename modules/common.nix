@@ -42,6 +42,7 @@ in
     ripgrep
     fzf
     fd
+    fastfetch
     gnumake
     gcc
     jq
