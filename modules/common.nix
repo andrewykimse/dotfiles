@@ -1,4 +1,4 @@
-{ config, pkgs, neovim-config, monkeyterm, viaterm, btop-src, nvidiaLibDir ? null, ... }:
+{ config, pkgs, neovim-config, monkeyterm, viaterm, btop-src, zen-browser ? null, nvidiaLibDir ? null, ... }:
 let
   btopPkg = if pkgs.stdenv.isDarwin
     then pkgs.btop.overrideAttrs (old: {
@@ -71,6 +71,8 @@ in
     monkeyterm.packages.${pkgs.system}.default
   ] ++ pkgs.lib.optionals (viaterm != null) [
     viaterm.packages.${pkgs.system}.default
+  ] ++ pkgs.lib.optionals (pkgs.stdenv.isLinux && zen-browser != null) [
+    zen-browser.packages.${pkgs.system}.beta
   ];
 
   xdg.configFile."nvim".source = "${neovim-config}/nvim";

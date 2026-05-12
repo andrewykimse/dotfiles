@@ -17,15 +17,22 @@
     mt7927-driver.url = "github:cmspam/mt7927-nixos";
     btop-src.url = "github:andrewykimse/btop";
     btop-src.flake = false;
+    zen-browser = {
+      url = "github:0xc000022070/zen-browser-flake";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        home-manager.follows = "home-manager";
+      };
+    };
   };
 
-  outputs = { nixpkgs, home-manager, nixgl, neovim-config, monkeyterm, viaterm, mt7927-driver, btop-src, ... }:
+  outputs = { nixpkgs, home-manager, nixgl, neovim-config, monkeyterm, viaterm, mt7927-driver, btop-src, zen-browser, ... }:
     let
       mkHome = system: modules: extraArgs:
         home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
           modules = [ ./modules/common.nix ] ++ modules;
-          extraSpecialArgs = { inherit neovim-config btop-src; } // extraArgs;
+          extraSpecialArgs = { inherit neovim-config btop-src zen-browser; } // extraArgs;
         };
     in {
       nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
