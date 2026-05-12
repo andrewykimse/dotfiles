@@ -32,7 +32,7 @@ let
     else pkgs.btop;
 in
 {
-  imports = lib.optionals (pkgs.stdenv.isLinux && zen-browser != null) [
+  imports = lib.optionals (zen-browser != null) [
     zen-browser.homeModules.beta
   ];
 
