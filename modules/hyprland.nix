@@ -14,6 +14,7 @@
     playerctl
     pavucontrol
     anyrun
+    socat
   ];
 
   wayland.windowManager.hyprland = {
@@ -35,12 +36,15 @@
       ];
 
       exec-once = [
+        "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_DATA_DIRS"
+        "systemctl --user restart xdg-desktop-portal"
         "waybar"
         "mako"
         "hyprpaper"
         "hypridle"
         "wl-paste --watch cliphist store"
         "systemctl --user start hyprpolkitagent"
+        ''socat -U - UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock | while read -r line; do case "$line" in monitoradded*|monitorremoved*) sleep 1 && pkill waybar; waybar & ;; esac; done''
       ];
 
       general = {
