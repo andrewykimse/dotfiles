@@ -188,6 +188,7 @@ in
     shellAliases = {
       nrun = "nix --impure run";
       nshell = "nix --impure shell";
+      ff = "fastfetch";
     };
 
     history = {
