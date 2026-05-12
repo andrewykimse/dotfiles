@@ -1,4 +1,4 @@
-{ config, pkgs, neovim-config, monkeyterm, viaterm, btop-src, zen-browser ? null, nvidiaLibDir ? null, ... }:
+{ config, lib, pkgs, neovim-config, monkeyterm, viaterm, btop-src, zen-browser ? null, nvidiaLibDir ? null, ... }:
 let
   btopPkg = if pkgs.stdenv.isDarwin
     then pkgs.btop.overrideAttrs (old: {
@@ -32,6 +32,10 @@ let
     else pkgs.btop;
 in
 {
+  imports = lib.optionals (pkgs.stdenv.isLinux && zen-browser != null) [
+    zen-browser.homeModules.beta
+  ];
+
   # home.username and home.homeDirectory are set per-host
 
   home.stateVersion = "24.11";
@@ -71,8 +75,6 @@ in
     monkeyterm.packages.${pkgs.system}.default
   ] ++ pkgs.lib.optionals (viaterm != null) [
     viaterm.packages.${pkgs.system}.default
-  ] ++ pkgs.lib.optionals (pkgs.stdenv.isLinux && zen-browser != null) [
-    zen-browser.packages.${pkgs.system}.beta
   ];
 
   xdg.configFile."nvim".source = "${neovim-config}/nvim";
@@ -162,6 +164,20 @@ in
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
+  };
+
+  programs.zen-browser = lib.mkIf (pkgs.stdenv.isLinux && zen-browser != null) {
+    enable = true;
+    policies.ExtensionSettings = let
+      mkExt = id: slug: {
+        "${id}" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/${slug}/latest.xpi";
+          installation_mode = "force_installed";
+        };
+      };
+    in
+      mkExt "uBlock0@raymondhill.net" "ublock-origin" //
+      mkExt "vimium-c@gdh1995.cn" "vimium-c";
   };
 
   programs.zsh = {
