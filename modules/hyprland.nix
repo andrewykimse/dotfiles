@@ -144,9 +144,21 @@
       modules-center = [ "clock" ];
       modules-right = [ "pulseaudio" "network" "battery" "tray" ];
       clock.format = "{:%a %b %d  %H:%M}";
+      pulseaudio = {
+        format = "{icon} {volume}%";
+        format-muted = "󰝟 muted";
+        format-icons.default = [ "󰕿" "󰖀" "󰕾" ];
+      };
+      network = {
+        format-wifi = "󰤨 {signalStrength}%";
+        format-ethernet = "󰈀 {ipaddr}";
+        format-disconnected = "󰤭 ";
+        tooltip-format = "{ifname}: {ipaddr}";
+      };
       battery = {
-        format = "{capacity}% {icon}";
-        format-icons = [ "" "" "" "" "" ];
+        format = "{icon} {capacity}%";
+        format-charging = "󰂄 {capacity}%";
+        format-icons = [ "󰂎" "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹" ];
       };
     };
     style = ''
