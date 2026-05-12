@@ -291,7 +291,8 @@
         "neovim-config": "neovim-config",
         "nixgl": "nixgl",
         "nixpkgs": "nixpkgs_4",
-        "viaterm": "viaterm"
+        "viaterm": "viaterm",
+        "zen-browser": "zen-browser"
       }
     },
     "systems": {
@@ -370,6 +371,29 @@
       "original": {
         "owner": "andrewykimse",
         "repo": "viaterm",
+        "type": "github"
+      }
+    },
+    "zen-browser": {
+      "inputs": {
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1778554891,
+        "narHash": "sha256-v525DBLiHVkmdAJklOX7QRk8fvyRJ9CSZEJXX0HgqgI=",
+        "owner": "0xc000022070",
+        "repo": "zen-browser-flake",
+        "rev": "d00c640d4b15bf88528a3127a4905efe3dd7c9e8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "0xc000022070",
+        "repo": "zen-browser-flake",
         "type": "github"
       }
     }
