@@ -32,7 +32,7 @@
         home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
           modules = [ ./modules/common.nix ] ++ modules;
-          extraSpecialArgs = { inherit neovim-config btop-src zen-browser; } // extraArgs;
+          extraSpecialArgs = { inherit neovim-config btop-src zen-browser; nvidiaLibDir = null; } // extraArgs;
         };
     in {
       nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
@@ -58,6 +58,10 @@
         "akim7@work" = mkHome "x86_64-linux" [
           ./hosts/work/home.nix
         ] { inherit nixgl monkeyterm viaterm; nvidiaLibDir = "/usr/lib/x86_64-linux-gnu"; };
+
+        "akim7@work-desktop" = mkHome "x86_64-linux" [
+          ./hosts/work-desktop/home.nix
+        ] { inherit monkeyterm viaterm; };
       };
     };
 }
