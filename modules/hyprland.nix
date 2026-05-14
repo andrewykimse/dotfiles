@@ -1,4 +1,12 @@
 { pkgs, ... }:
+let
+  screenshot-area = pkgs.writeShellScript "screenshot-area" ''
+    grim -g "$(slurp)" - | wl-copy
+  '';
+  screenshot-full = pkgs.writeShellScript "screenshot-full" ''
+    grim - | wl-copy
+  '';
+in
 {
   home.packages = with pkgs; [
     hyprpaper
@@ -86,7 +94,7 @@
         "$mod CTRL, j, movewindow, d"
 
         "$mod, Escape, exec, $lock"
-        "$mod SHIFT, V, exec, cliphist list | fuzzel --dmenu | cliphist decode | wl-copy"
+        "$mod SHIFT, V, exec, cliphist list | anyrun --plugins ${pkgs.anyrun}/lib/libstdin.so | cliphist decode | wl-copy"
 
         "$mod, 1, workspace, 1"
         "$mod, 2, workspace, 2"
@@ -177,14 +185,47 @@
       hide_icons: false,
       ignore_exclusive_zones: false,
       layer: Overlay,
-      hide_plugin_info: true,
+      hide_plugin_info: false,
       close_on_click: true,
       show_results_immediately: true,
-      max_entries: Some(8),
+      max_entries: Some(12),
       plugins: [
+        // type to search apps
         "${pkgs.anyrun}/lib/libapplications.so",
+        // prefix `:` to run shell commands (e.g. `:systemctl restart NetworkManager`)
         "${pkgs.anyrun}/lib/libshell.so",
+        // prefix `?` to web search
+        "${pkgs.anyrun}/lib/libwebsearch.so",
+        // prefix `:dp` to change display resolution/refresh rate
+        "${pkgs.anyrun}/lib/librandr.so",
+        // prefix `:nix` to run nix packages without installing
+        "${pkgs.anyrun}/lib/libnix_run.so",
+        // used by Super+Shift+V for clipboard history
+        "${pkgs.anyrun}/lib/libstdin.so",
       ],
+    )
+  '';
+
+  xdg.configFile."anyrun/shell.ron".text = ''
+    Config(
+      prefix: ":",
+      shell: None,
+    )
+  '';
+
+  xdg.configFile."anyrun/nix-run.ron".text = ''
+    Config(
+      prefix: ":nix",
+      channel: "nixpkgs-unstable",
+      max_entries: Some(10),
+      allow_unfree: true,
+    )
+  '';
+
+  xdg.configFile."anyrun/randr.ron".text = ''
+    Config(
+      prefix: ":dp",
+      max_entries: Some(10),
     )
   '';
 
@@ -278,6 +319,30 @@
       exec = "hyprctl dispatch exit";
       icon = "system-log-out";
       categories = [ "System" ];
+    };
+    restart-wifi = {
+      name = "Restart WiFi";
+      exec = "systemctl restart NetworkManager";
+      icon = "network-wireless";
+      categories = [ "System" ];
+    };
+    toggle-bluetooth = {
+      name = "Toggle Bluetooth";
+      exec = "rfkill toggle bluetooth";
+      icon = "bluetooth";
+      categories = [ "System" ];
+    };
+    screenshot-area = {
+      name = "Screenshot (Area)";
+      exec = "${screenshot-area}";
+      icon = "accessories-screenshot";
+      categories = [ "Utility" ];
+    };
+    screenshot-full = {
+      name = "Screenshot (Full)";
+      exec = "${screenshot-full}";
+      icon = "accessories-screenshot";
+      categories = [ "Utility" ];
     };
   };
 
