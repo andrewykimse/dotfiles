@@ -49,6 +49,7 @@ in
         "waybar"
         "mako"
         "hyprpaper"
+        "sleep 1 && hyprctl hyprpaper wallpaper \"eDP-1,~/.config/hypr/wallpaper.png\""
         "hypridle"
         "wl-paste --watch cliphist store"
         "systemctl --user start hyprpolkitagent"
@@ -356,11 +357,6 @@ in
       default-timeout = 5000;
     };
   };
-
-  xdg.configFile."hypr/hyprpaper.conf".text = ''
-    preload = ~/.config/hypr/wallpaper.png
-    wallpaper = ,~/.config/hypr/wallpaper.png
-  '';
 
   xdg.configFile."hypr/wallpaper.png" = {
     source = ../wallpapers/dracula.png;
