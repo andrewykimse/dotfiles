@@ -1,6 +1,10 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
   imports = [ ../../modules/hyprland.nix ];
+
+  wayland.windowManager.hyprland.settings.env = [
+    "XDG_DATA_DIRS,${config.home.homeDirectory}/.nix-profile/share:/usr/local/share:/usr/share"
+  ];
 
   home.username = "andrewkim";
   home.homeDirectory = "/home/andrewkim";

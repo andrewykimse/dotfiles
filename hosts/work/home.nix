@@ -19,6 +19,7 @@ in
 
   wayland.windowManager.hyprland.settings.env = [
     "PATH,${config.home.homeDirectory}/.nix-profile/bin:/usr/local/bin:/usr/bin:/bin"
+    "XDG_DATA_DIRS,${config.home.homeDirectory}/.nix-profile/share:/usr/local/share:/usr/share"
   ];
 
   wayland.windowManager.hyprland.settings.monitor = pkgs.lib.mkForce [ ",preferred,auto,1" ];
