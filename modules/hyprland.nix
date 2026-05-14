@@ -71,7 +71,7 @@
         "$mod, Return, exec, $terminal"
         "$mod, Q, killactive,"
         "$mod SHIFT, E, exit,"
-        "$mod, Space, exec, $menu"
+        "$mod, Space, exec, pkill anyrun || $menu"
         "$mod, V, togglefloating,"
         "$mod, F, fullscreen,"
 
@@ -247,6 +247,39 @@
       border-left: 3px solid @accent;
     }
   '';
+
+  xdg.desktopEntries = {
+    shutdown = {
+      name = "Shutdown";
+      exec = "systemctl poweroff";
+      icon = "system-shutdown";
+      categories = [ "System" ];
+    };
+    reboot = {
+      name = "Reboot";
+      exec = "systemctl reboot";
+      icon = "system-reboot";
+      categories = [ "System" ];
+    };
+    suspend = {
+      name = "Suspend";
+      exec = "systemctl suspend";
+      icon = "system-suspend";
+      categories = [ "System" ];
+    };
+    lock = {
+      name = "Lock Screen";
+      exec = "hyprlock";
+      icon = "system-lock-screen";
+      categories = [ "System" ];
+    };
+    logout = {
+      name = "Logout";
+      exec = "hyprctl dispatch exit";
+      icon = "system-log-out";
+      categories = [ "System" ];
+    };
+  };
 
   services.mako = {
     enable = true;
