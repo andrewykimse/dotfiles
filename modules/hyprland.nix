@@ -357,6 +357,15 @@ in
     };
   };
 
+  xdg.configFile."hypr/hyprpaper.conf".text = ''
+    preload = ~/.config/hypr/wallpaper.png
+    wallpaper = ,~/.config/hypr/wallpaper.png
+  '';
+
+  xdg.configFile."hypr/wallpaper.png" = {
+    source = ../wallpapers/dracula.png;
+  };
+
   xdg.configFile."hypr/hyprlock.conf".text = ''
     background {
       monitor =
