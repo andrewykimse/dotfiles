@@ -1,10 +1,17 @@
-{ pkgs, ... }:
+{ pkgs, dracula-wallpaper, ... }:
 let
   screenshot-area = pkgs.writeShellScript "screenshot-area" ''
     grim -g "$(slurp)" - | wl-copy
   '';
   screenshot-full = pkgs.writeShellScript "screenshot-full" ''
     grim - | wl-copy
+  '';
+  wallpaper-dir = "${dracula-wallpaper}";
+  random-wallpaper = pkgs.writeShellScript "random-wallpaper" ''
+    export PATH="${pkgs.lib.makeBinPath [ pkgs.findutils pkgs.coreutils pkgs.hyprland ]}:$PATH"
+    wallpaper=$(find ${wallpaper-dir} -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.webp" \) | shuf -n 1)
+    hyprctl hyprpaper preload "$wallpaper"
+    hyprctl hyprpaper wallpaper ", $wallpaper"
   '';
 in
 {
@@ -49,7 +56,7 @@ in
         "waybar"
         "mako"
         "hyprpaper"
-        "sleep 1 && hyprctl hyprpaper wallpaper \"eDP-1,~/.config/hypr/wallpaper.png\""
+        "sleep 1 && ${random-wallpaper}"
         "hypridle"
         "wl-paste --watch cliphist store"
         "systemctl --user start hyprpolkitagent"
@@ -358,9 +365,9 @@ in
     };
   };
 
-  xdg.configFile."hypr/wallpaper.png" = {
-    source = ../wallpapers/dracula.png;
-  };
+  xdg.configFile."hypr/hyprpaper.conf".text = ''
+    splash = false
+  '';
 
   xdg.configFile."hypr/hyprlock.conf".text = ''
     background {

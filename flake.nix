@@ -17,6 +17,8 @@
     mt7927-driver.url = "github:cmspam/mt7927-nixos";
     btop-src.url = "github:andrewykimse/btop";
     btop-src.flake = false;
+    dracula-wallpaper.url = "github:dracula/wallpaper";
+    dracula-wallpaper.flake = false;
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs = {
@@ -26,13 +28,13 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, nixgl, neovim-config, monkeyterm, viaterm, mt7927-driver, btop-src, zen-browser, ... }:
+  outputs = { nixpkgs, home-manager, nixgl, neovim-config, monkeyterm, viaterm, mt7927-driver, btop-src, zen-browser, dracula-wallpaper, ... }:
     let
       mkHome = system: modules: extraArgs:
         home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
           modules = [ ./modules/common.nix ] ++ modules;
-          extraSpecialArgs = { inherit neovim-config btop-src zen-browser; nvidiaLibDir = null; } // extraArgs;
+          extraSpecialArgs = { inherit neovim-config btop-src zen-browser dracula-wallpaper; nvidiaLibDir = null; } // extraArgs;
         };
     in {
       nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {

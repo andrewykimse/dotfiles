@@ -16,6 +16,22 @@
         "type": "github"
       }
     },
+    "dracula-wallpaper": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1699895880,
+        "narHash": "sha256-P0MfGkVap8wDd6eSMwmLhvQ4/7Z+pNmgY7O+qt9C1bg=",
+        "owner": "dracula",
+        "repo": "wallpaper",
+        "rev": "f2b8cc4223bcc2dfd5f165ab80f701bbb84e3303",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dracula",
+        "repo": "wallpaper",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -285,6 +301,7 @@
     "root": {
       "inputs": {
         "btop-src": "btop-src",
+        "dracula-wallpaper": "dracula-wallpaper",
         "home-manager": "home-manager",
         "monkeyterm": "monkeyterm",
         "mt7927-driver": "mt7927-driver",
