@@ -52,6 +52,7 @@ in
     gcc
     jq
     htop
+    mpv
     curl
     wget
     btopPkg
