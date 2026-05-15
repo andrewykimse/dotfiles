@@ -63,7 +63,7 @@
 
         "akim7@work-desktop" = mkHome "x86_64-linux" [
           ./hosts/work-desktop/home.nix
-        ] { inherit monkeyterm viaterm; };
+        ] { inherit monkeyterm viaterm; nvidiaLibDir = "/usr/lib/x86_64-linux-gnu"; };
       };
     };
 }
