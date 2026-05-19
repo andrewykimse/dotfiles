@@ -234,7 +234,7 @@ in
             echo "Not in a git repo and no session name provided"
             return 1
           fi
-          name="''${repo}/''${branch}"
+          name="''${repo}@''${branch}"
         fi
         name=$(echo "$name" | tr '.' '-')
         if [ -n "$TMUX" ]; then
