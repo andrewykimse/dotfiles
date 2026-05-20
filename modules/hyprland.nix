@@ -42,6 +42,7 @@ in
 
       monitor = [
         "eDP-1, preferred, auto, 2"
+        ", 5120x2880, auto, 2"
         ", preferred, auto, 1"
       ];
 
