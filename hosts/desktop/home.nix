@@ -6,6 +6,11 @@
     "XDG_DATA_DIRS,${config.home.homeDirectory}/.nix-profile/share:/usr/local/share:/usr/share"
   ];
 
+  wayland.windowManager.hyprland.settings.monitor = pkgs.lib.mkForce [
+    "desc:Apple Computer Inc StudioDisplay, 5120x2880@60, auto, 2"
+    ", preferred, auto, 1"
+  ];
+
   home.username = "andrewkim";
   home.homeDirectory = "/home/andrewkim";
 
