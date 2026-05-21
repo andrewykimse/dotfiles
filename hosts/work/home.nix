@@ -52,10 +52,6 @@ in
   home.username = "akim7";
   home.homeDirectory = "/home/akim7";
 
-  xdg.configFile."btop/themes" = {
-    source = ../../config/btop/themes;
-    recursive = true;
-  };
 
   home.file.".local/bin/hyprlock-auth" = {
     executable = true;

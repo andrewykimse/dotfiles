@@ -10,10 +10,6 @@
     command = ${pkgs.zsh}/bin/zsh
   '';
 
-  xdg.configFile."btop/themes" = {
-    source = ../../config/btop/themes;
-    recursive = true;
-  };
 
   home.packages = [
     pkgs.awscli2
