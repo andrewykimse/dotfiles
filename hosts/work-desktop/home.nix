@@ -10,11 +10,6 @@
     command = ${pkgs.zsh}/bin/zsh
   '';
 
-  xdg.configFile."btop/btop.conf" = {
-    source = ../../config/btop/btop.conf;
-    force = true;
-  };
-
   xdg.configFile."btop/themes" = {
     source = ../../config/btop/themes;
     recursive = true;

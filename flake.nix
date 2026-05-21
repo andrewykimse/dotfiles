@@ -15,7 +15,7 @@
     monkeyterm.url = "github:andrewykimse/monkeyterm";
     viaterm.url = "github:andrewykimse/viaterm";
     mt7927-driver.url = "github:cmspam/mt7927-nixos";
-    btop-src.url = "github:andrewykimse/btop";
+    btop-src.url = "github:andrewykimse/btop/feat/gpu-process-viewer";
     btop-src.flake = false;
     dracula-wallpaper.url = "github:dracula/wallpaper";
     dracula-wallpaper.flake = false;

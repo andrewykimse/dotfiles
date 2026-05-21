@@ -3,15 +3,16 @@
     "btop-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1777825584,
-        "narHash": "sha256-NhyrWqqr1mdbNztLv73IhuGzEYhUZUdYlvirvwVDpno=",
+        "lastModified": 1779222861,
+        "narHash": "sha256-3OF8+1XWtU6f/FcOE0F/cGOxbGk32NRkvv7Hs7nAM9c=",
         "owner": "andrewykimse",
         "repo": "btop",
-        "rev": "36f970985c08d8f85faacc66703aef496f6e7fd7",
+        "rev": "df0da559ca4896c2337eb90da05ef5bdad1a3b03",
         "type": "github"
       },
       "original": {
         "owner": "andrewykimse",
+        "ref": "feat/gpu-process-viewer",
         "repo": "btop",
         "type": "github"
       }

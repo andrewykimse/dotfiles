@@ -20,6 +20,7 @@ let
     })
     else if nvidiaLibDir != null
     then pkgs.btop.overrideAttrs (old: {
+      src = btop-src;
       doInstallCheck = false;
       postFixup = (old.postFixup or "") + ''
         if [ -f "$out/bin/.btop-wrapped" ]; then
@@ -55,7 +56,6 @@ in
     mpv
     curl
     wget
-    btopPkg
     brave
     nix-search-cli
     claude-code
@@ -88,6 +88,42 @@ in
 
   # Allow unfree for flake commands (nix run/shell) — still needs --impure
   home.sessionVariables.NIXPKGS_ALLOW_UNFREE = "1";
+
+  programs.btop = {
+    enable = true;
+    package = btopPkg;
+    settings = {
+      color_theme = "dracula";
+      theme_background = false;
+      truecolor = true;
+      presets = "cpu:1:default,proc:0:default cpu:0:default,mem:0:default,net:0:default cpu:0:block,net:0:tty gpu0:0:default cpu:0:default,gpu0:0:default";
+      shown_boxes = "cpu mem net proc gpu0";
+      update_ms = 100;
+      proc_sorting = "cpu lazy";
+      proc_mem_bytes = true;
+      proc_cpu_graphs = true;
+      proc_follow_detailed = true;
+      show_gpu_info = "On";
+      cpu_invert_lower = true;
+      cpu_graph_lower = "total";
+      vim_keys = true;
+      show_uptime = true;
+      show_cpu_watts = true;
+      check_temp = true;
+      show_coretemp = true;
+      show_cpu_freq = true;
+      show_disks = false;
+      io_mode = true;
+      io_graph_combined = false;
+      net_auto = true;
+      net_sync = true;
+      show_battery = true;
+      show_battery_watts = true;
+      nvml_measure_pcie_speeds = true;
+      rsmi_measure_pcie_speeds = true;
+      gpu_mirror_graph = true;
+    };
+  };
 
   programs.ghostty = {
     enable = pkgs.stdenv.isLinux;

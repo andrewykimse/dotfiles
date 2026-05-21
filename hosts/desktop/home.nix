@@ -9,10 +9,6 @@
   home.username = "andrewkim";
   home.homeDirectory = "/home/andrewkim";
 
-  xdg.configFile."btop/btop.conf" = {
-    source = ../../config/btop/btop.conf;
-  };
-
   xdg.configFile."btop/themes" = {
     source = ../../config/btop/themes;
     recursive = true;
