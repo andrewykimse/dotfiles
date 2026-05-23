@@ -73,6 +73,8 @@ in
     lua-language-server
     pyright
     typescript-language-server
+  ] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
+    usbutils
   ] ++ pkgs.lib.optionals (monkeyterm != null) [
     monkeyterm.packages.${pkgs.system}.default
   ] ++ pkgs.lib.optionals (viaterm != null) [

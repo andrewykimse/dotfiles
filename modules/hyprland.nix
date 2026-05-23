@@ -63,6 +63,19 @@ in
         ''socat -U - UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock | while read -r line; do case "$line" in monitoradded*|monitorremoved*) sleep 1 && pkill waybar; waybar & ;; esac; done''
       ];
 
+      animations = {
+        enabled = true;
+        bezier = "snap, 0.05, 0.9, 0.1, 1.0";
+        animation = [
+          "windows, 1, 2, snap"
+          "windowsOut, 1, 2, snap, popin 80%"
+          "windowsMove, 1, 2, snap"
+          "workspaces, 1, 2, snap"
+          "fade, 1, 2, default"
+          "border, 1, 8, default"
+        ];
+      };
+
       general = {
         gaps_in = 4;
         gaps_out = 8;
