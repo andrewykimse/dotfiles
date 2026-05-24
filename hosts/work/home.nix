@@ -13,7 +13,10 @@ let
   '').overrideAttrs (_: { passthru.override = _: hyprlandWrapped; });
 in
 {
-  imports = [ ../../modules/hyprland.nix ];
+  imports = [
+    ../../modules/hyprland.nix
+    ../../modules/work.nix
+  ];
 
   wayland.windowManager.hyprland.package = hyprlandWrapped;
 
@@ -70,13 +73,6 @@ in
     '';
   };
 
-  programs.ghostty.enable = pkgs.lib.mkForce false;
-
-  xdg.configFile."ghostty/config".text = ''
-    theme = Dracula
-    command = ${pkgs.zsh}/bin/zsh
-  '';
-
   home.activation.hyprlandSession = let
     desktopFile = pkgs.writeText "hyprland.desktop" ''
 [Desktop Entry]
@@ -106,7 +102,5 @@ DesktopNames=Hyprland
         $out/share/dbus-1/services/com.mitchellh.ghostty.service \
         --replace-fail "${pkgs.ghostty}/bin/ghostty" "$out/bin/ghostty"
     '')
-    pkgs.awscli2
-    pkgs.cachix
   ];
 }
