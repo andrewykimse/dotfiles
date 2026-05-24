@@ -34,6 +34,7 @@ in
 
   wayland.windowManager.hyprland = {
     enable = true;
+    configType = "hyprlang";
     settings = {
       "$mod" = "SUPER";
       "$terminal" = "ghostty";
@@ -89,6 +90,7 @@ in
         rounding = 6;
         blur.enabled = true;
       };
+
 
       input = {
         kb_layout = "us";
