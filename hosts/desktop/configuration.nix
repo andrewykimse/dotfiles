@@ -38,6 +38,11 @@
     enable = true;
   };
 
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+  };
+
   systemd.services.load-mt7927 = {                                                                                                        
       description = "Load patched MediaTek MT7927 modules";
       wantedBy = [ "multi-user.target" ];                                                                                                   
