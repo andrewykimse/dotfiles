@@ -55,6 +55,18 @@
         ];
       };
 
+      # Build with: nix build .#packages.aarch64-linux.roundtable-sd-image
+      # Requires aarch64 build support — see hosts/desktop/configuration.nix.
+      packages.aarch64-linux.roundtable-sd-image =
+        (nixpkgs.lib.nixosSystem {
+          system = "aarch64-linux";
+          modules = [
+            "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-aarch64.nix"
+            nixos-hardware.nixosModules.raspberry-pi-5
+            ./hosts/roundtable/configuration.nix
+          ];
+        }).config.system.build.sdImage;
+
       homeConfigurations = {
         "andrewkim@macbook" = mkHome "aarch64-darwin" [
           ./hosts/macbook/home.nix

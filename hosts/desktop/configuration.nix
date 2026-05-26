@@ -17,7 +17,7 @@
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelParams = ["pcie_aspm=off"];
-  boot.kernelModules = [ "snd_usb_audio" ];
+  boot.kernelModules = [ "snd_usb_audio" "k10temp" ];
 
   hardware.mediatek-mt7927 = {
     enable = true;
@@ -164,6 +164,7 @@
       wget
       pciutils
       lshw
+      lm_sensors
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -191,6 +192,10 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+  # Allow this machine to build aarch64 packages via QEMU emulation.
+  # Required for `nix build .#packages.aarch64-linux.roundtable-sd-image`.
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+
   system.stateVersion = "25.11"; # Did you read the comment?
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 

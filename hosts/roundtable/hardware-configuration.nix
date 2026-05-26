@@ -15,25 +15,22 @@
   # commands below). NixOS will not create the pool; it only imports it.
   boot.zfs.extraPools = [ "tank" ];
 
-  # Cap ZFS ARC at 2 GiB on the 8 GB Pi 5, leaving headroom for Samba/MinIO.
+  # Cap ZFS ARC at 2 GiB on the 8 GB Pi 5, leaving headroom for Samba/Garage.
   boot.extraModprobeConfig = ''
     options zfs zfs_arc_max=2147483648
   '';
 
   # Root filesystem lives on the SD card / USB boot device.
-  # Run `lsblk -o NAME,LABEL,FSTYPE` after first boot to confirm labels;
-  # the NixOS aarch64 SD image typically uses NIXOS_SD and BOOT.
+  # The NixOS aarch64 SD image labels the root partition NIXOS_SD.
+  # Run `lsblk -o NAME,LABEL,FSTYPE` after first boot to verify.
   fileSystems."/" = {
     device = "/dev/disk/by-label/NIXOS_SD";
     fsType = "ext4";
     options = [ "defaults" "noatime" ];
   };
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-label/BOOT";
-    fsType = "vfat";
-    options = [ "fmask=0022" "dmask=0022" ];
-  };
+  # The firmware/boot partition (FAT32, labeled FIRMWARE) is handled by the
+  # nixos-hardware raspberry-pi-5 module — no entry needed here.
 
   swapDevices = [ ];
 
@@ -61,15 +58,15 @@
   # 3. Create datasets with per-dataset tuning:
   #      zfs create -o mountpoint=/storage/shares tank/shares
   #      zfs create -o mountpoint=/storage/backups -o recordsize=1M -o compression=zstd tank/backups
-  #      zfs create -o mountpoint=/storage/minio   -o recordsize=1M tank/minio
+  #      zfs create -o mountpoint=/storage/garage -o recordsize=128K tank/garage
   #
-  # 4. Set snapshot flags (MinIO manages its own data integrity, skip it there):
+  # 4. Set snapshot flags (Garage manages object integrity itself, skip it there):
   #      zfs set com.sun:auto-snapshot=true  tank/shares
   #      zfs set com.sun:auto-snapshot=true  tank/backups
-  #      zfs set com.sun:auto-snapshot=false tank/minio
+  #      zfs set com.sun:auto-snapshot=false tank/garage
   #
   # 5. Fix ownership so services can write:
   #      chown -R andrewkim:storage /storage/shares /storage/backups
-  #      chown -R minio:minio /storage/minio
+  #      chown -R garage:garage /storage/garage
   # ---------------------------------------------------------------------------
 }
