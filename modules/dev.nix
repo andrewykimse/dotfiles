@@ -21,7 +21,6 @@
     # yazi plugin dependencies
     miller
     glow
-    lazygit
     neovim-config.packages.${pkgs.system}.default
 
     # LSP servers

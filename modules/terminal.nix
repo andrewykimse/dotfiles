@@ -102,7 +102,7 @@ in
 
     plugins = with pkgs.yaziPlugins; {
       inherit git jump-to-char smart-filter chmod diff
-              relative-motions glow miller lazygit;
+              relative-motions glow miller;
     };
 
     initLua = ''
@@ -119,8 +119,7 @@ in
         { on = ["F"];      run = "plugin smart-filter";              desc = "Smart filter"; }
         { on = ["="];      run = "plugin chmod";                     desc = "Chmod"; }
         { on = ["<C-d>"];  run = "plugin diff";                      desc = "Diff vs yanked"; }
-        { on = ["<C-g>"];  run = "plugin lazygit";                   desc = "Open lazygit"; }
-        { on = ["1"];      run = "plugin relative-motions --args=1"; desc = "Relative motion 1"; }
+{ on = ["1"];      run = "plugin relative-motions --args=1"; desc = "Relative motion 1"; }
         { on = ["2"];      run = "plugin relative-motions --args=2"; desc = "Relative motion 2"; }
         { on = ["3"];      run = "plugin relative-motions --args=3"; desc = "Relative motion 3"; }
         { on = ["4"];      run = "plugin relative-motions --args=4"; desc = "Relative motion 4"; }
