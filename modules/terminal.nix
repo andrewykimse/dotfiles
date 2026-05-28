@@ -144,8 +144,12 @@ in
         max_height = 900;
       };
       plugin = {
+        prepend_fetchers = [
+          { id = "git"; url = "*";  run = "git"; }
+          { id = "git"; url = "*/"; run = "git"; }
+        ];
         prepend_previewers = [
-          { name = "*.md";   run = "glow"; }
+          { name = "*.md";     run = "glow"; }
           { mime = "text/csv"; run = "miller"; }
           { mime = "text/tsv"; run = "miller"; }
         ];
