@@ -94,4 +94,62 @@ in
     git = true;
     icons = "auto";
   };
+
+  programs.yazi = {
+    enable = true;
+    enableZshIntegration = true;
+    shellWrapperName = "y";
+
+    plugins = with pkgs.yaziPlugins; {
+      inherit git jump-to-char smart-filter chmod diff
+              relative-motions glow miller lazygit;
+    };
+
+    initLua = ''
+      require("git"):setup()
+      require("relative-motions"):setup({
+        show_numbers = "relative_then_absolute",
+        show_motion  = true,
+      })
+    '';
+
+    keymap = {
+      mgr.prepend_keymap = [
+        { on = ["f"];      run = "plugin jump-to-char";              desc = "Jump to char"; }
+        { on = ["F"];      run = "plugin smart-filter";              desc = "Smart filter"; }
+        { on = ["="];      run = "plugin chmod";                     desc = "Chmod"; }
+        { on = ["<C-d>"];  run = "plugin diff";                      desc = "Diff vs yanked"; }
+        { on = ["<C-g>"];  run = "plugin lazygit";                   desc = "Open lazygit"; }
+        { on = ["1"];      run = "plugin relative-motions --args=1"; desc = "Relative motion 1"; }
+        { on = ["2"];      run = "plugin relative-motions --args=2"; desc = "Relative motion 2"; }
+        { on = ["3"];      run = "plugin relative-motions --args=3"; desc = "Relative motion 3"; }
+        { on = ["4"];      run = "plugin relative-motions --args=4"; desc = "Relative motion 4"; }
+        { on = ["5"];      run = "plugin relative-motions --args=5"; desc = "Relative motion 5"; }
+        { on = ["6"];      run = "plugin relative-motions --args=6"; desc = "Relative motion 6"; }
+        { on = ["7"];      run = "plugin relative-motions --args=7"; desc = "Relative motion 7"; }
+        { on = ["8"];      run = "plugin relative-motions --args=8"; desc = "Relative motion 8"; }
+        { on = ["9"];      run = "plugin relative-motions --args=9"; desc = "Relative motion 9"; }
+      ];
+    };
+
+    settings = {
+      mgr = {
+        show_hidden = false;
+        sort_by = "natural";
+        sort_dir_first = true;
+      };
+      preview = {
+        tab_size = 2;
+        max_width = 600;
+        max_height = 900;
+      };
+      plugin = {
+        prepend_previewers = [
+          { name = "*.md";   run = "glow"; }
+          { mime = "text/csv"; run = "miller"; }
+          { mime = "text/tsv"; run = "miller"; }
+        ];
+      };
+    };
+  };
 }

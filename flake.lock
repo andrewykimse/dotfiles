@@ -185,11 +185,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1779338410,
-        "narHash": "sha256-onV8sGCbBOiKoVblQatSxvhUIt6OFDi+zau0AartISE=",
+        "lastModified": 1779947987,
+        "narHash": "sha256-XCH57mkAjZO1s8rRi+rfHW/dbzFHYJmWkrvbSWb4NCs=",
         "owner": "andrewykimse",
         "repo": "neovim-config",
-        "rev": "d60df4af1d30b1ad1536baf812322c6f9a9d7d56",
+        "rev": "eaa90d761d17ab6d2f12f7aae3e5021d4de4d29c",
         "type": "github"
       },
       "original": {

@@ -18,6 +18,10 @@
     bottom
     nix-tree
     comma
+    # yazi plugin dependencies
+    miller
+    glow
+    lazygit
     neovim-config.packages.${pkgs.system}.default
 
     # LSP servers
