@@ -102,7 +102,8 @@ in
 
     plugins = with pkgs.yaziPlugins; {
       inherit git jump-to-char smart-filter chmod diff
-              relative-motions glow miller;
+              relative-motions piper miller smart-enter compress restore rsync
+              drag vcs-files;
     };
 
     initLua = ''
@@ -115,6 +116,15 @@ in
 
     keymap = {
       mgr.prepend_keymap = [
+        { on = ["l"];       run = "plugin smart-enter";                desc = "Enter dir or open file"; }
+        { on = ["<Enter>"]; run = "plugin smart-enter";                desc = "Enter dir or open file"; }
+        { on = ["R"];          run = "plugin rsync -- --remember";   desc = "Rsync to destination"; }
+        { on = ["<A-d>"];      run = "plugin drag";                  desc = "Drag files"; }
+        { on = ["g" "c"];      run = "plugin vcs-files";             desc = "Show VCS changes"; }
+        { on = ["u"];          run = "plugin restore";                desc = "Restore last deleted"; }
+        { on = ["c" "a" "a"]; run = "plugin compress";        desc = "Compress"; }
+        { on = ["c" "a" "p"]; run = "plugin compress -p";    desc = "Compress (password)"; }
+        { on = ["c" "a" "l"]; run = "plugin compress -l";    desc = "Compress (level)"; }
         { on = ["f"];      run = "plugin jump-to-char";              desc = "Jump to char"; }
         { on = ["F"];      run = "plugin smart-filter";              desc = "Smart filter"; }
         { on = ["="];      run = "plugin chmod";                     desc = "Chmod"; }
@@ -148,7 +158,7 @@ in
           { id = "git"; url = "*/"; run = "git"; }
         ];
         prepend_previewers = [
-          { name = "*.md";     run = "glow"; }
+          { url = "*.md";      run = "piper -- CLICOLOR_FORCE=1 glow -w=$w -s=dark \"$1\""; }
           { mime = "text/csv"; run = "miller"; }
           { mime = "text/tsv"; run = "miller"; }
         ];

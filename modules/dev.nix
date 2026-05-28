@@ -21,6 +21,7 @@
     # yazi plugin dependencies
     miller
     glow
+    trash-cli
     neovim-config.packages.${pkgs.system}.default
 
     # LSP servers
@@ -34,6 +35,7 @@
     typescript-language-server
   ] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
     usbutils
+    ripdrag
   ] ++ pkgs.lib.optionals (monkeyterm != null) [
     monkeyterm.packages.${pkgs.system}.default
   ] ++ pkgs.lib.optionals (viaterm != null) [
