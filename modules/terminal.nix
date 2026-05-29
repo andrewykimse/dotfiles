@@ -74,6 +74,7 @@ in
     installBatSyntax = false;
     settings = {
       theme = "Dracula";
+      copy-on-select = true;
     };
   };
 
