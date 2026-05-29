@@ -163,8 +163,8 @@ in
       };
       plugin = {
         prepend_fetchers = [
-          { id = "git"; url = "*";  run = "git"; }
-          { id = "git"; url = "*/"; run = "git"; }
+          { id = "git"; group = "git"; url = "*";  run = "git"; }
+          { id = "git"; group = "git"; url = "*/"; run = "git"; }
         ];
         prepend_previewers = [
           { url = "*.md";      run = "piper -- CLICOLOR_FORCE=1 glow -w=$w -s=dark \"$1\""; }
