@@ -18,6 +18,7 @@
     bottom
     nix-tree
     comma
+    tree-sitter
     # yazi plugin dependencies
     miller
     glow
