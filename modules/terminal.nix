@@ -129,6 +129,7 @@ in
         { on = ["F"];      run = "plugin smart-filter";              desc = "Smart filter"; }
         { on = ["="];      run = "plugin chmod";                     desc = "Chmod"; }
         { on = ["<C-d>"];  run = "plugin diff";                      desc = "Diff vs yanked"; }
+        { on = ["S"];       run = "shell 'ya emit grep-in-directory --args \"$PWD\"' --block"; desc = "Grep in directory"; }
 { on = ["1"];      run = "plugin relative-motions --args=1"; desc = "Relative motion 1"; }
         { on = ["2"];      run = "plugin relative-motions --args=2"; desc = "Relative motion 2"; }
         { on = ["3"];      run = "plugin relative-motions --args=3"; desc = "Relative motion 3"; }
