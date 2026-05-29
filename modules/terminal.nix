@@ -74,14 +74,14 @@ in
     installBatSyntax = false;
     settings = {
       theme = "Dracula";
-      copy-on-select = true;
+      copy-on-select = "clipboard";
     };
   };
 
   xdg.configFile."ghostty/config" = lib.mkIf pkgs.stdenv.isDarwin {
     text = ''
       theme = Dracula
-      copy-on-select = true
+      copy-on-select = clipboard
     '';
   };
 
