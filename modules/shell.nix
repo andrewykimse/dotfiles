@@ -22,16 +22,7 @@
       share = true;
     };
 
-    oh-my-zsh = {
-      enable = true;
-      plugins = [ "git" ];
-      # theme omitted — starship handles the prompt
-    };
-
     initContent = ''
-      # Override oh-my-zsh git plugin's gcm alias (git checkout main)
-      alias gcm='git commit -m'
-
       set -o vi
 
       autoload -Uz compinit && compinit
