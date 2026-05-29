@@ -29,6 +29,9 @@
     };
 
     initContent = ''
+      # Override oh-my-zsh git plugin's gcm alias (git checkout main)
+      alias gcm='git commit -m'
+
       set -o vi
 
       autoload -Uz compinit && compinit
