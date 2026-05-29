@@ -69,13 +69,20 @@ in
     };
   };
 
-  programs.ghostty = {
-    enable = pkgs.stdenv.isLinux;
+  programs.ghostty = lib.mkIf pkgs.stdenv.isLinux {
+    enable = true;
     installBatSyntax = false;
     settings = {
       theme = "Dracula";
       copy-on-select = true;
     };
+  };
+
+  xdg.configFile."ghostty/config" = lib.mkIf pkgs.stdenv.isDarwin {
+    text = ''
+      theme = Dracula
+      copy-on-select = true
+    '';
   };
 
   programs.tmux = {
