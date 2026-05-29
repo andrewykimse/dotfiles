@@ -9,6 +9,10 @@
       nrun = "nix --impure run";
       nshell = "nix --impure shell";
       ff = "fastfetch";
+      ga = "git add";
+      gcm = "git commit -m";
+      gp = "git pull";
+      gP = "git push";
     };
 
     history = {
