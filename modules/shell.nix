@@ -11,6 +11,7 @@
       ff = "fastfetch";
       ga = "git add";
       gcm = "git commit -m";
+      gg = "git status";
       gp = "git pull";
       gP = "git push";
     };
