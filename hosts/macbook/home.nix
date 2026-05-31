@@ -67,6 +67,9 @@
     alt-shift-8 = 'move-node-to-workspace 8'
     alt-shift-9 = 'move-node-to-workspace 9'
 
+    alt-enter = 'exec-and-forget open -na Ghostty'
+    alt-q = 'close'
+
     alt-shift-semicolon = 'mode service'
 
     [mode.service.binding]
