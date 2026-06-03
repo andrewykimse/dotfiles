@@ -27,7 +27,6 @@ in
     brightnessctl
     playerctl
     pavucontrol
-    anyrun
   ];
 
   wayland.windowManager.hyprland = {
@@ -36,7 +35,6 @@ in
     settings = {
       "$mod" = "SUPER";
       "$terminal" = "ghostty";
-      "$menu" = "anyrun";
       "$lock" = "hyprlock";
 
       monitor = [
@@ -97,7 +95,7 @@ in
         "$mod, Return, exec, $terminal"
         "$mod, Q, killactive,"
         "$mod SHIFT, E, exit,"
-        "$mod, Space, exec, pkill anyrun || $menu"
+        "$mod, Space, exec, noctalia-shell ipc call launcher toggle"
         "$mod, V, togglefloating,"
         "$mod, F, fullscreen,"
 
@@ -112,7 +110,7 @@ in
         "$mod CTRL, j, movewindow, d"
 
         "$mod, Escape, exec, $lock"
-        "$mod SHIFT, V, exec, cliphist list | anyrun --plugins ${pkgs.anyrun}/lib/libstdin.so | cliphist decode | wl-copy"
+        "$mod SHIFT, V, exec, noctalia-shell ipc call launcher clipboard"
 
         "$mod, 1, workspace, 1"
         "$mod, 2, workspace, 2"
@@ -158,119 +156,6 @@ in
       ];
     };
   };
-
-xdg.configFile."anyrun/config.ron".text = ''
-    Config(
-      x: Fraction(0.5),
-      y: Absolute(0),
-      width: Absolute(800),
-      height: Absolute(1),
-      hide_icons: false,
-      ignore_exclusive_zones: false,
-      layer: Overlay,
-      hide_plugin_info: false,
-      close_on_click: true,
-      show_results_immediately: true,
-      max_entries: Some(12),
-      plugins: [
-        // type to search apps
-        "${pkgs.anyrun}/lib/libapplications.so",
-        // prefix `:` to run shell commands (e.g. `:systemctl restart NetworkManager`)
-        "${pkgs.anyrun}/lib/libshell.so",
-        // prefix `?` to web search
-        "${pkgs.anyrun}/lib/libwebsearch.so",
-        // prefix `:dp` to change display resolution/refresh rate
-        "${pkgs.anyrun}/lib/librandr.so",
-        // prefix `:nix` to run nix packages without installing
-        "${pkgs.anyrun}/lib/libnix_run.so",
-        // used by Super+Shift+V for clipboard history
-        "${pkgs.anyrun}/lib/libstdin.so",
-      ],
-    )
-  '';
-
-  xdg.configFile."anyrun/shell.ron".text = ''
-    Config(
-      prefix: ":",
-      shell: None,
-    )
-  '';
-
-  xdg.configFile."anyrun/nix-run.ron".text = ''
-    Config(
-      prefix: ":nix",
-      channel: "nixpkgs-unstable",
-      max_entries: Some(10),
-      allow_unfree: true,
-    )
-  '';
-
-  xdg.configFile."anyrun/randr.ron".text = ''
-    Config(
-      prefix: ":dp",
-      max_entries: Some(10),
-    )
-  '';
-
-  xdg.configFile."anyrun/style.css".text = ''
-    @define-color accent #bd93f9;
-    @define-color bg-color rgba(40, 42, 54, 0.92);
-    @define-color fg-color #f8f8f2;
-    @define-color desc-color #6272a4;
-
-    window {
-      background: transparent;
-    }
-
-    box.main {
-      padding: 12px;
-      margin: 10px;
-      border-radius: 8px;
-      border: 2px solid @accent;
-      background-color: @bg-color;
-    }
-
-    text {
-      min-height: 30px;
-      padding: 5px;
-      border-radius: 5px;
-      color: @fg-color;
-    }
-
-    .matches {
-      background-color: transparent;
-      border-radius: 8px;
-    }
-
-    box.plugin:first-child {
-      margin-top: 5px;
-    }
-
-    list.plugin {
-      background-color: transparent;
-    }
-
-    label.match {
-      color: @fg-color;
-      font-size: 14px;
-    }
-
-    label.match.description {
-      font-size: 10px;
-      color: @desc-color;
-    }
-
-    .match {
-      background: transparent;
-      padding: 4px 8px;
-      border-radius: 4px;
-    }
-
-    .match:selected {
-      background: alpha(@accent, 0.3);
-      border-left: 3px solid @accent;
-    }
-  '';
 
   xdg.desktopEntries = {
     shutdown = {
