@@ -1,6 +1,9 @@
 { config, pkgs, ... }:
 {
-  imports = [ ../../modules/hyprland.nix ];
+  imports = [
+    ../../modules/hyprland.nix
+    ../../modules/noctalia.nix
+  ];
 
   wayland.windowManager.hyprland.settings.env = [
     "XDG_DATA_DIRS,${config.home.homeDirectory}/.nix-profile/share:/usr/local/share:/usr/share"

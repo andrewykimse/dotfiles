@@ -15,6 +15,7 @@ in
 {
   imports = [
     ../../modules/hyprland.nix
+    ../../modules/noctalia.nix
     ../../modules/work.nix
   ];
 
