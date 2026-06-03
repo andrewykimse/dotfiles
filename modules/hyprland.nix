@@ -24,12 +24,10 @@ in
     slurp
     wl-clipboard
     cliphist
-    fuzzel
     brightnessctl
     playerctl
     pavucontrol
     anyrun
-    socat
   ];
 
   wayland.windowManager.hyprland = {
@@ -54,14 +52,11 @@ in
       exec-once = [
         "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_DATA_DIRS"
         "systemctl --user restart xdg-desktop-portal"
-        "waybar"
-        "mako"
         "hyprpaper"
         "sleep 1 && ${random-wallpaper}"
         "hypridle"
         "wl-paste --watch cliphist store"
         "systemctl --user start hyprpolkitagent"
-        ''socat -U - UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock | while read -r line; do case "$line" in monitoradded*|monitorremoved*) sleep 1 && pkill waybar; waybar & ;; esac; done''
       ];
 
       animations = {
@@ -164,42 +159,7 @@ in
     };
   };
 
-  programs.waybar = {
-    enable = true;
-    systemd.enable = false;
-    settings.mainBar = {
-      layer = "top";
-      position = "top";
-      height = 28;
-      modules-left = [ "hyprland/workspaces" ];
-      modules-center = [ "clock" ];
-      modules-right = [ "pulseaudio" "network" "battery" "tray" ];
-      clock.format = "{:%a %b %d  %H:%M}";
-      pulseaudio = {
-        format = "{icon} {volume}%";
-        format-muted = "󰝟 muted";
-        format-icons.default = [ "󰕿" "󰖀" "󰕾" ];
-      };
-      network = {
-        format-wifi = "󰤨 {signalStrength}%";
-        format-ethernet = "󰈀 {ipaddr}";
-        format-disconnected = "󰤭 ";
-        tooltip-format = "{ifname}: {ipaddr}";
-      };
-      battery = {
-        format = "{icon} {capacity}%";
-        format-charging = "󰂄 {capacity}%";
-        format-icons = [ "󰂎" "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹" ];
-      };
-    };
-    style = ''
-      * { font-family: "JetBrainsMono Nerd Font", monospace; font-size: 12px; }
-      window#waybar { background: rgba(40, 42, 54, 0.85); color: #f8f8f2; }
-      #workspaces button.active { background: #bd93f9; color: #282a36; }
-    '';
-  };
-
-  xdg.configFile."anyrun/config.ron".text = ''
+xdg.configFile."anyrun/config.ron".text = ''
     Config(
       x: Fraction(0.5),
       y: Absolute(0),
@@ -366,17 +326,6 @@ in
       exec = "${screenshot-full}";
       icon = "accessories-screenshot";
       categories = [ "Utility" ];
-    };
-  };
-
-  services.mako = {
-    enable = true;
-    settings = {
-      background-color = "#282a36";
-      text-color = "#f8f8f2";
-      border-color = "#bd93f9";
-      border-radius = 6;
-      default-timeout = 5000;
     };
   };
 
