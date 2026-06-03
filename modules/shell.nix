@@ -14,6 +14,7 @@
       gg = "git status";
       gp = "git pull";
       gP = "git push";
+      mail = "aerc";
     };
 
     history = {

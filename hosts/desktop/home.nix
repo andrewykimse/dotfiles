@@ -3,6 +3,7 @@
   imports = [
     ../../modules/hyprland.nix
     ../../modules/noctalia.nix
+    ../../modules/mail.nix
   ];
 
   nixpkgs.overlays = [ nixos-millennium.overlays.default ];
