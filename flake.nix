@@ -31,9 +31,13 @@
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-millennium = {
+      url = "github:re1n0/nixos-millennium";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { nixpkgs, home-manager, nixgl, neovim-config, monkeyterm, viaterm, mt7927-driver, btop-src, zen-browser, dracula-wallpaper, nixos-hardware, noctalia, ... }:
+  outputs = { nixpkgs, home-manager, nixgl, neovim-config, monkeyterm, viaterm, mt7927-driver, btop-src, zen-browser, dracula-wallpaper, nixos-hardware, noctalia, nixos-millennium, ... }:
     let
       mkHome = system: modules: extraArgs:
         home-manager.lib.homeManagerConfiguration {
@@ -48,6 +52,7 @@
         modules = [
           ./hosts/desktop/configuration.nix
           mt7927-driver.nixosModules.default
+          nixos-millennium.nixosModules.default
         ];
       };
 
@@ -80,7 +85,8 @@
           let pkgs = import nixpkgs { system = "x86_64-linux"; config.allowUnfree = true; };
           in mkHome "x86_64-linux" [
             ./hosts/desktop/home.nix
-          ] { inherit monkeyterm viaterm noctalia; nvidiaLibDir = "${pkgs.linuxPackages.nvidiaPackages.production}/lib"; };
+            nixos-millennium.homeManagerModules.default
+          ] { inherit monkeyterm viaterm noctalia nixos-millennium; nvidiaLibDir = "${pkgs.linuxPackages.nvidiaPackages.production}/lib"; };
 
         "akim7@work" = mkHome "x86_64-linux" [
           ./hosts/work/home.nix

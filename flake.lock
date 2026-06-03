@@ -32,6 +32,24 @@
         "type": "github"
       }
     },
+    "flake-parts": {
+      "inputs": {
+        "nixpkgs-lib": "nixpkgs-lib"
+      },
+      "locked": {
+        "lastModified": 1778716662,
+        "narHash": "sha256-m1Yf0wZ8j1OHjTc2UwHwyQRSnNeSgLJOd7q5Y45hzi4=",
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "rev": "f7c1a2d347e4c52d5fb8d10cb4d94b5884e546fb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -124,6 +142,23 @@
         "type": "github"
       }
     },
+    "luajit-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1763177035,
+        "narHash": "sha256-oYD86MqmlJpiCuEs4LwVtxvarPtz1RPWm8nJqNE0sBs=",
+        "owner": "SteamClientHomebrew",
+        "repo": "LuaJIT",
+        "rev": "89550023569c3e195e75e12951c067fe5591e0d2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "SteamClientHomebrew",
+        "ref": "v2.1",
+        "repo": "LuaJIT",
+        "type": "github"
+      }
+    },
     "mediatek-mt7927-dkms": {
       "flake": false,
       "locked": {
@@ -137,6 +172,49 @@
       "original": {
         "owner": "jetm",
         "repo": "mediatek-mt7927-dkms",
+        "type": "github"
+      }
+    },
+    "millennium": {
+      "inputs": {
+        "luajit-src": "luajit-src",
+        "millennium-src": "millennium-src",
+        "nixpkgs": [
+          "nixos-millennium",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "dir": "packages/nix",
+        "lastModified": 1780283376,
+        "narHash": "sha256-v0MQvXrkilwe2yn9lMdROF/oRwSCmsBXvybsg9ogtJs=",
+        "owner": "SteamClientHomebrew",
+        "repo": "Millennium",
+        "rev": "c40954af7c2b2f9fcbf39e53586f784735013bcf",
+        "type": "github"
+      },
+      "original": {
+        "dir": "packages/nix",
+        "owner": "SteamClientHomebrew",
+        "ref": "next",
+        "repo": "Millennium",
+        "type": "github"
+      }
+    },
+    "millennium-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1780199538,
+        "narHash": "sha256-ocI23Pl2OpezwafivNC0/f2vlQg1XOc+BmGQWTCqwBg=",
+        "owner": "SteamClientHomebrew",
+        "repo": "Millennium",
+        "rev": "76f9012b6ac14c454cfe3d4ad726ebddccff16e7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "SteamClientHomebrew",
+        "repo": "Millennium",
+        "rev": "76f9012b6ac14c454cfe3d4ad726ebddccff16e7",
         "type": "github"
       }
     },
@@ -234,6 +312,28 @@
         "type": "github"
       }
     },
+    "nixos-millennium": {
+      "inputs": {
+        "flake-parts": "flake-parts",
+        "millennium": "millennium",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1780374029,
+        "narHash": "sha256-x1MxTZF0RQP53NN58sh5foCfwhIEDQadrpi9T0m/LzA=",
+        "owner": "re1n0",
+        "repo": "nixos-millennium",
+        "rev": "cd8c11f51842cff206f1b6476ab8ba1666be0cfe",
+        "type": "github"
+      },
+      "original": {
+        "owner": "re1n0",
+        "repo": "nixos-millennium",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1776255774,
@@ -247,6 +347,21 @@
         "owner": "NixOS",
         "ref": "nixpkgs-unstable",
         "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-lib": {
+      "locked": {
+        "lastModified": 1777168982,
+        "narHash": "sha256-GOkGPcboWE9BmGCRMLX3worL4EMnsnG8MyKmXNeYuhQ=",
+        "owner": "nix-community",
+        "repo": "nixpkgs.lib",
+        "rev": "f5901329dade4a6ea039af1433fb087bd9c1fe14",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nixpkgs.lib",
         "type": "github"
       }
     },
@@ -368,6 +483,7 @@
         "neovim-config": "neovim-config",
         "nixgl": "nixgl",
         "nixos-hardware": "nixos-hardware",
+        "nixos-millennium": "nixos-millennium",
         "nixpkgs": "nixpkgs_4",
         "noctalia": "noctalia",
         "viaterm": "viaterm",
