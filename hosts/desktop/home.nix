@@ -46,7 +46,7 @@
       window-decoration = false;
       copy-on-select = true;
       scrollback-limit = 10000;
-      theme = "dracula";
+      theme = "Dracula";
     };
   };
 }
