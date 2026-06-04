@@ -11,10 +11,18 @@ let
       --add-flags "${pkgs.hyprland}/bin/hyprctl" \
       --prefix LD_LIBRARY_PATH : "${pkgs.wayland}/lib"
   '').overrideAttrs (_: { passthru.override = _: hyprlandWrapped; });
+  niriWrapped = pkgs.runCommand "niri-nixgl" { nativeBuildInputs = [ pkgs.makeWrapper ]; } ''
+    mkdir -p $out/bin $out/share
+    cp -rs ${pkgs.niri}/share/* $out/share/ 2>/dev/null || true
+    makeWrapper ${nixGLPkg}/bin/nixGL $out/bin/niri \
+      --add-flags "${pkgs.niri}/bin/niri" \
+      --prefix LD_LIBRARY_PATH : "${pkgs.wayland}/lib"
+  '';
 in
 {
   imports = [
     ../../modules/hyprland.nix
+    ../../modules/niri.nix
     ../../modules/noctalia.nix
     ../../modules/work.nix
   ];
@@ -87,8 +95,26 @@ DesktopNames=Hyprland
     /usr/bin/sudo -n ln -sf ${desktopFile} /usr/share/wayland-sessions/hyprland.desktop 2>/dev/null || echo "NOTE: run 'sudo ln -sf ${desktopFile} /usr/share/wayland-sessions/hyprland.desktop' to update the Hyprland session entry"
   '';
 
+  home.activation.niriSession = let
+    desktopFile = pkgs.writeText "niri.desktop" ''
+[Desktop Entry]
+Name=Niri
+Comment=A scrollable-tiling Wayland compositor
+Exec=${config.home.homeDirectory}/.nix-profile/bin/niri-session
+Type=Application
+DesktopNames=niri
+'';
+  in config.lib.dag.entryAfter [ "writeBoundary" ] ''
+    /usr/bin/sudo -n ln -sf ${desktopFile} /usr/share/wayland-sessions/niri.desktop 2>/dev/null || echo "NOTE: run 'sudo ln -sf ${desktopFile} /usr/share/wayland-sessions/niri.desktop' to update the Niri session entry"
+  '';
+
   home.packages = [
     pkgs.hyprlock
+    niriWrapped
+    (pkgs.runCommand "niri-session-wrapper" { nativeBuildInputs = [ pkgs.makeWrapper ]; } ''
+      mkdir -p $out/bin
+      makeWrapper ${niriWrapped}/bin/niri $out/bin/niri-session
+    '')
     (pkgs.runCommand "ghostty-nixgl" { nativeBuildInputs = [ pkgs.makeWrapper ]; } ''
       mkdir -p $out/bin $out/share/applications $out/share/icons $out/share/dbus-1/services
       cp -rs ${pkgs.ghostty}/share/ghostty $out/share/ 2>/dev/null || true
