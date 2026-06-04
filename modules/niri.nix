@@ -173,8 +173,6 @@ in
         XF86MonBrightnessUp { spawn "brightnessctl" "s" "5%+"; }
         XF86MonBrightnessDown { spawn "brightnessctl" "s" "5%-"; }
 
-        Mod+Mouse-Left { move-window; }
-        Mod+Mouse-Right { resize-window; }
 
         Mod+R { switch-preset-column-width; }
         Mod+Shift+R { reset-window-height; }

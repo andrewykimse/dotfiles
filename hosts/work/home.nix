@@ -16,7 +16,14 @@ let
     cp -rs ${pkgs.niri}/share/* $out/share/ 2>/dev/null || true
     makeWrapper ${nixGLPkg}/bin/nixGL $out/bin/niri \
       --add-flags "${pkgs.niri}/bin/niri" \
-      --prefix LD_LIBRARY_PATH : "${pkgs.wayland}/lib"
+      --prefix LD_LIBRARY_PATH : "${pkgs.lib.makeLibraryPath [
+        pkgs.wayland
+        pkgs.xorg.libXcursor
+        pkgs.xorg.libXi
+        pkgs.xorg.libXrandr
+        pkgs.xorg.libX11
+        pkgs.xorg.libXext
+      ]}"
   '';
 in
 {
