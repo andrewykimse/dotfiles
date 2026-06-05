@@ -18,11 +18,11 @@ let
       --add-flags "${pkgs.niri}/bin/niri" \
       --prefix LD_LIBRARY_PATH : "${pkgs.lib.makeLibraryPath [
         pkgs.wayland
-        pkgs.xorg.libXcursor
-        pkgs.xorg.libXi
-        pkgs.xorg.libXrandr
-        pkgs.xorg.libX11
-        pkgs.xorg.libXext
+        pkgs.libxcursor
+        pkgs.libxi
+        pkgs.libxrandr
+        pkgs.libx11
+        pkgs.libxext
       ]}"
   '';
 in
@@ -43,6 +43,7 @@ in
 
   wayland.windowManager.hyprland.settings.monitor = pkgs.lib.mkForce [
     "desc:Apple Computer Inc StudioDisplay, 5120x2880@60, auto, 2"
+    "desc:Dell Inc. DELL U3425WE, 3440x1440@60, auto, 1"
     ", preferred, auto, 1"
   ];
 
@@ -118,9 +119,18 @@ DesktopNames=niri
   home.packages = [
     pkgs.hyprlock
     niriWrapped
-    (pkgs.runCommand "niri-session-wrapper" { nativeBuildInputs = [ pkgs.makeWrapper ]; } ''
-      mkdir -p $out/bin
-      makeWrapper ${niriWrapped}/bin/niri $out/bin/niri-session
+    (pkgs.writeShellScriptBin "niri-session" ''
+      export PATH="$HOME/.nix-profile/bin:/usr/local/bin:/usr/bin:/bin"
+      export XDG_DATA_DIRS="$HOME/.nix-profile/share:/usr/local/share:/usr/share"
+
+      # Import environment into systemd and dbus so child processes inherit it
+      if hash systemctl 2>/dev/null; then
+        systemctl --user import-environment PATH XDG_DATA_DIRS
+      fi
+      if hash dbus-update-activation-environment 2>/dev/null; then
+        dbus-update-activation-environment --all
+      fi
+      exec ${niriWrapped}/bin/niri --session
     '')
     (pkgs.runCommand "ghostty-nixgl" { nativeBuildInputs = [ pkgs.makeWrapper ]; } ''
       mkdir -p $out/bin $out/share/applications $out/share/icons $out/share/dbus-1/services
