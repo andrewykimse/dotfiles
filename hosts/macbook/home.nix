@@ -67,7 +67,7 @@
     alt-shift-8 = 'move-node-to-workspace 8'
     alt-shift-9 = 'move-node-to-workspace 9'
 
-    alt-enter = 'exec-and-forget open -na Ghostty'
+    alt-enter = "exec-and-forget osascript -e 'tell application \"Ghostty\" to activate' -e 'delay 0.5' -e 'tell application \"System Events\" to tell process \"Ghostty\" to keystroke \"n\" using command down'"
     alt-q = 'close'
 
     alt-shift-semicolon = 'mode service'
