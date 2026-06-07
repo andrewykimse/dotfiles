@@ -42,7 +42,6 @@
     alt-equal = 'resize smart +50'
 
     alt-slash = 'layout tiles horizontal vertical'
-    alt-comma = 'layout accordion horizontal vertical'
 
     alt-f = 'fullscreen'
     alt-shift-space = 'layout floating tiling'
@@ -67,7 +66,7 @@
     alt-shift-8 = 'move-node-to-workspace 8'
     alt-shift-9 = 'move-node-to-workspace 9'
 
-    alt-enter = "exec-and-forget osascript -e 'tell application \"Ghostty\" to activate' -e 'delay 0.5' -e 'tell application \"System Events\" to tell process \"Ghostty\" to keystroke \"n\" using command down'"
+    alt-enter = "exec-and-forget osascript -e 'tell application \"Ghostty\" to activate' -e 'delay 0.1' -e 'tell application \"System Events\" to tell process \"Ghostty\" to keystroke \"n\" using command down'"
     alt-q = 'close'
 
     alt-shift-semicolon = 'mode service'
