@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, mt7927-driver, ... }:
+{ config, pkgs, ... }:
 
 {
   imports =
@@ -42,30 +42,6 @@
     enable = true;
     nssmdns4 = true;
   };
-
-  systemd.services.load-mt7927 = {                                                                                                        
-      description = "Load patched MediaTek MT7927 modules";
-      wantedBy = [ "multi-user.target" ];                                                                                                   
-      before = [ "NetworkManager.service" "wpa_supplicant.service" ];
-      after = [ "systemd-modules-load.service" ];                                                                                           
-      serviceConfig = { Type = "oneshot"; RemainAfterExit = true; };                                                                        
-      path = [ pkgs.kmod ];                                                                                                                 
-      script = let                                                                                                                          
-        kver = config.boot.kernelPackages.kernel.modDirVersion;
-        M = "${mt7927-driver.packages.x86_64-linux.wifi}/lib/modules/${kver}/extra/mt76";                                                   
-      in ''                                                                                                                                 
-        for m in mt7925e mt7921e mt7925_common mt7921_common mt792x_lib mt76_connac_lib mt76; do                                            
-          rmmod $m 2>/dev/null || true                                                                                                      
-        done      
-        modprobe mac80211                                                                                                                   
-        modprobe cfg80211                                                                                                                   
-        insmod ${M}/mt76.ko
-        insmod ${M}/mt76-connac-lib.ko                                                                                                      
-        insmod ${M}/mt792x-lib.ko
-        insmod ${M}/mt7925/mt7925-common.ko                                                                                                 
-        insmod ${M}/mt7925/mt7925e.ko
-      '';                                                                                                                                   
-    };
 
   # Set your time zone.
   time.timeZone = "America/Los_Angeles";
