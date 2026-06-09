@@ -27,6 +27,10 @@
         home-manager.follows = "home-manager";
       };
     };
+    helium-browser = {
+      url = "github:oxcl/nix-flake-helium-browser";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     noctalia = {
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -37,13 +41,13 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, nixgl, neovim-config, monkeyterm, viaterm, mt7927-driver, btop-src, zen-browser, dracula-wallpaper, nixos-hardware, noctalia, nixos-millennium, ... }:
+  outputs = { nixpkgs, home-manager, nixgl, neovim-config, monkeyterm, viaterm, mt7927-driver, btop-src, zen-browser, helium-browser, dracula-wallpaper, nixos-hardware, noctalia, nixos-millennium, ... }:
     let
       mkHome = system: modules: extraArgs:
         home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
           modules = [ ./modules/common.nix ] ++ modules;
-          extraSpecialArgs = { inherit neovim-config btop-src zen-browser dracula-wallpaper; nvidiaLibDir = null; } // extraArgs;
+          extraSpecialArgs = { inherit neovim-config btop-src zen-browser helium-browser dracula-wallpaper; nvidiaLibDir = null; } // extraArgs;
         };
     in {
       nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {

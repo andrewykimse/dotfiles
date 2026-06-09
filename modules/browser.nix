@@ -1,10 +1,18 @@
-{ pkgs, lib, zen-browser ? null, ... }:
+{ pkgs, lib, zen-browser ? null, helium-browser ? null, ... }:
 {
-  imports = lib.optionals (zen-browser != null) [
-    zen-browser.homeModules.beta
-  ];
+  imports =
+    lib.optionals (zen-browser != null) [
+      zen-browser.homeModules.beta
+    ] ++
+    lib.optionals (helium-browser != null) [
+      helium-browser.homeModules.default
+    ];
 
   home.packages = with pkgs; [ brave ];
+
+  programs.helium = lib.mkIf (pkgs.stdenv.isLinux && helium-browser != null) {
+    enable = true;
+  };
 
   # Allow unfree for nix-shell / nix-env (channel commands)
   xdg.configFile."nixpkgs/config.nix".text = ''
