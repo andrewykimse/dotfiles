@@ -10,7 +10,6 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nixgl = {
       url = "github:nix-community/nixGL";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     neovim-config.url = "github:andrewykimse/neovim-config";
     monkeyterm.url = "github:andrewykimse/monkeyterm";
