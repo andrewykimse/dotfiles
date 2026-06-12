@@ -76,6 +76,13 @@
             "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-aarch64.nix"
             nixos-hardware.nixosModules.raspberry-pi-5
             ./hosts/roundtable/configuration.nix
+            # Workaround: nixos-hardware lists dw-hdmi as an initrd module but it
+            # is built into the RPi kernel, causing makeModulesClosure to fail.
+            { nixpkgs.overlays = [(final: prev: {
+                makeModulesClosure = args:
+                  prev.makeModulesClosure (args // { allowMissing = true; });
+              })];
+            }
           ];
         }).config.system.build.sdImage;
 
