@@ -145,6 +145,8 @@
       pciutils
       lshw
       lm_sensors
+      moonlight-qt
+      sunshine
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
