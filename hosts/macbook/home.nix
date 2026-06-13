@@ -82,6 +82,14 @@
     alt-shift-l = ['join-with right', 'mode main']
   '';
 
+  # Remote Nix builder — delegates aarch64-linux builds to the desktop.
+  # Desktop must have SSH enabled, andrewkim in trusted-users, and this Mac's
+  # SSH key in authorized_keys (see hosts/desktop/configuration.nix).
+  home.file.".config/nix/nix.conf".text = ''
+    builders = ssh://andrewkim@nixos.local x86_64-linux,aarch64-linux - - big-parallel benchmark nixos-test
+    builders-use-substitutes = true
+  '';
+
   programs.zsh = {
     shellAliases = {
       brew86 = "arch -x86_64 /usr/local/Homebrew/bin/brew";
