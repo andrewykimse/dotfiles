@@ -5,6 +5,7 @@
 
   home.packages = with pkgs; [
     aerospace
+    tailscale
   ];
 
   xdg.configFile."aerospace/aerospace.toml".text = ''
