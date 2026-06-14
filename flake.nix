@@ -62,11 +62,10 @@
         ];
       };
 
-      nixosConfigurations.roundtable = nixpkgs.lib.nixosSystem {
-        system = "aarch64-linux";
-        specialArgs = { inherit nixos-raspberrypi; };
+      nixosConfigurations.roundtable = nixos-raspberrypi.lib.nixosSystem {
+        nixpkgs = nixpkgs;
         modules = [
-          nixos-raspberrypi.nixosModules.raspberry-pi-5
+          nixos-raspberrypi.nixosModules.raspberry-pi-5.base
           ./hosts/roundtable/configuration.nix
         ];
       };
@@ -74,12 +73,11 @@
       # Build with: nix build .#packages.aarch64-linux.roundtable-sd-image
       # Requires aarch64 build support — see hosts/desktop/configuration.nix.
       packages.aarch64-linux.roundtable-sd-image =
-        (nixpkgs.lib.nixosSystem {
-          system = "aarch64-linux";
-          specialArgs = { inherit nixos-raspberrypi; };
+        (nixos-raspberrypi.lib.nixosSystem {
+          nixpkgs = nixpkgs;
           modules = [
             nixos-raspberrypi.nixosModules.sd-image
-            nixos-raspberrypi.nixosModules.raspberry-pi-5
+            nixos-raspberrypi.nixosModules.raspberry-pi-5.base
             ./hosts/roundtable/configuration.nix
           ];
         }).config.system.build.sdImage;
