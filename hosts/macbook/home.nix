@@ -87,7 +87,7 @@
   # Desktop must have SSH enabled, andrewkim in trusted-users, and this Mac's
   # SSH key in authorized_keys (see hosts/desktop/configuration.nix).
   home.file.".config/nix/nix.conf".text = ''
-    builders = ssh://andrewkim@192.168.68.64 x86_64-linux,aarch64-linux - - 1 big-parallel,benchmark,nixos-test
+    builders = ssh://andrewkim@192.168.68.55 x86_64-linux,aarch64-linux - - 1 big-parallel,benchmark,nixos-test
     builders-use-substitutes = true
   '';
 

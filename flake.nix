@@ -7,7 +7,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    nixos-raspberrypi = {
+      url = "github:nvmd/nixos-raspberrypi";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixgl = {
       url = "github:nix-community/nixGL";
     };
@@ -40,7 +43,7 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, nixgl, neovim-config, monkeyterm, viaterm, mt7927-driver, btop-src, zen-browser, helium-browser, dracula-wallpaper, nixos-hardware, noctalia, nixos-millennium, ... }:
+  outputs = { nixpkgs, home-manager, nixgl, neovim-config, monkeyterm, viaterm, mt7927-driver, btop-src, zen-browser, helium-browser, dracula-wallpaper, nixos-raspberrypi, noctalia, nixos-millennium, ... }:
     let
       mkHome = system: modules: extraArgs:
         home-manager.lib.homeManagerConfiguration {
@@ -61,8 +64,9 @@
 
       nixosConfigurations.roundtable = nixpkgs.lib.nixosSystem {
         system = "aarch64-linux";
+        specialArgs = { inherit nixos-raspberrypi; };
         modules = [
-          nixos-hardware.nixosModules.raspberry-pi-5
+          nixos-raspberrypi.nixosModules.raspberry-pi-5
           ./hosts/roundtable/configuration.nix
         ];
       };
@@ -72,22 +76,11 @@
       packages.aarch64-linux.roundtable-sd-image =
         (nixpkgs.lib.nixosSystem {
           system = "aarch64-linux";
+          specialArgs = { inherit nixos-raspberrypi; };
           modules = [
-            "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-aarch64.nix"
-            nixos-hardware.nixosModules.raspberry-pi-5
+            nixos-raspberrypi.nixosModules.sd-image
+            nixos-raspberrypi.nixosModules.raspberry-pi-5
             ./hosts/roundtable/configuration.nix
-            ({ pkgs, lib, ... }: {
-              # Workaround: nixos-hardware lists dw-hdmi as an initrd module but it
-              # is built into the RPi kernel, causing makeModulesClosure to fail.
-              nixpkgs.overlays = [(final: prev: {
-                makeModulesClosure = args:
-                  prev.makeModulesClosure (args // { allowMissing = true; });
-              })];
-              # sd-image-aarch64.nix ships Pi 3/4 firmware only; Pi 5 needs its DTB.
-              sdImage.populateFirmwareCommands = lib.mkAfter ''
-                cp ${pkgs.raspberrypifw}/share/raspberrypi/boot/bcm2712-rpi-5-b.dtb firmware/
-              '';
-            })
           ];
         }).config.system.build.sdImage;
 
