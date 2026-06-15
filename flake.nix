@@ -67,6 +67,16 @@
         modules = [
           nixos-raspberrypi.nixosModules.raspberry-pi-5.base
           ./hosts/roundtable/configuration.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = {
+              inherit neovim-config btop-src monkeyterm viaterm;
+              nvidiaLibDir = null;
+            };
+            home-manager.users.andrewkim = import ./hosts/roundtable/home.nix;
+          }
         ];
       };
 
