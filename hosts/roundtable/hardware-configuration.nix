@@ -5,6 +5,12 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
+  # Enable the Pi 5's external PCIe connector so the Radxa SATA HAT is detected.
+  hardware.raspberry-pi.config.all.base-dt-params.pciex1 = {
+    enable = true;
+    value = "on";
+  };
+
   # ZFS requires a unique 8-char hex host identifier per machine.
   # Never share this value across machines that could see the same pool.
   networking.hostId = "28d00896";
@@ -29,8 +35,14 @@
     options = [ "defaults" "noatime" ];
   };
 
-  # The firmware/boot partition (FAT32, labeled FIRMWARE) is handled by the
-  # nixos-hardware raspberry-pi-5 module — no entry needed here.
+  # FAT32 firmware partition — must be mounted so nixos-rebuild switch can
+  # write config.txt, kernel, and DTBs directly to the partition the Pi
+  # bootloader reads at power-on.
+  fileSystems."/boot/firmware" = {
+    device = "/dev/disk/by-label/FIRMWARE";
+    fsType = "vfat";
+    options = [ "defaults" "noatime" "umask=0022" ];
+  };
 
   swapDevices = [ ];
 
