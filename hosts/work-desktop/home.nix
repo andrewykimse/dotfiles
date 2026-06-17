@@ -17,18 +17,18 @@ in
 
   wayland.windowManager.hyprland.package = hyprlandSystem;
 
-  wayland.windowManager.hyprland.settings.env = [
-    "PATH,${config.home.homeDirectory}/.nix-profile/bin:/usr/local/bin:/usr/bin:/bin"
-    "XDG_DATA_DIRS,${config.home.homeDirectory}/.nix-profile/share:/usr/local/share:/usr/share"
-    "GBM_BACKEND,nvidia-drm"
-    "__GLX_VENDOR_LIBRARY_NAME,nvidia"
-    "LIBVA_DRIVER_NAME,nvidia"
-    "XDG_SESSION_TYPE,wayland"
+  wayland.windowManager.hyprland.settings.monitor = pkgs.lib.mkForce [
+    { output = "desc:Dell Inc. DELL U3425WE"; mode = "3440x1440@60"; position = "auto"; scale = 1; }
+    { output = ""; mode = "preferred"; position = "auto"; scale = 1; }
   ];
 
-  wayland.windowManager.hyprland.settings.monitor = pkgs.lib.mkForce [
-    "desc:Dell Inc. DELL U3425WE, 3440x1440@60, auto, 1"
-    ", preferred, auto, 1"
+  wayland.windowManager.hyprland.settings.env = [
+    { _args = [ "PATH" "${config.home.homeDirectory}/.nix-profile/bin:/usr/local/bin:/usr/bin:/bin" ]; }
+    { _args = [ "XDG_DATA_DIRS" "${config.home.homeDirectory}/.nix-profile/share:/usr/local/share:/usr/share" ]; }
+    { _args = [ "GBM_BACKEND" "nvidia-drm" ]; }
+    { _args = [ "__GLX_VENDOR_LIBRARY_NAME" "nvidia" ]; }
+    { _args = [ "LIBVA_DRIVER_NAME" "nvidia" ]; }
+    { _args = [ "XDG_SESSION_TYPE" "wayland" ]; }
   ];
 
 

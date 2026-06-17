@@ -8,21 +8,21 @@
 
   nixpkgs.overlays = [ nixos-millennium.overlays.default ];
 
-  wayland.windowManager.hyprland.settings.env = [
-    "XDG_DATA_DIRS,${config.home.homeDirectory}/.nix-profile/share:/usr/local/share:/usr/share"
-    "LIBVA_DRIVER_NAME,nvidia"
-    "GBM_BACKEND,nvidia-drm"
-    "__GLX_VENDOR_LIBRARY_NAME,nvidia"
-  ];
-
-  wayland.windowManager.hyprland.settings.cursor = {
-    no_hardware_cursors = true;
-  };
-
   wayland.windowManager.hyprland.settings.monitor = pkgs.lib.mkForce [
-    "desc:Apple Computer Inc StudioDisplay, 5120x2880@60, auto, 2"
-    ", preferred, auto, 1"
+    { output = "desc:Apple Computer Inc StudioDisplay"; mode = "5120x2880@60"; position = "auto"; scale = 2; }
+    { output = ""; mode = "preferred"; position = "auto"; scale = 1; }
   ];
+
+  wayland.windowManager.hyprland.settings.env = [
+    { _args = [ "XDG_DATA_DIRS" "${config.home.homeDirectory}/.nix-profile/share:/usr/local/share:/usr/share" ]; }
+    { _args = [ "LIBVA_DRIVER_NAME" "nvidia" ]; }
+    { _args = [ "GBM_BACKEND" "nvidia-drm" ]; }
+    { _args = [ "__GLX_VENDOR_LIBRARY_NAME" "nvidia" ]; }
+  ];
+
+  wayland.windowManager.hyprland.extraConfig = ''
+    hl.config({ cursor = { no_hardware_cursors = true } })
+  '';
 
   home.username = "andrewkim";
   home.homeDirectory = "/home/andrewkim";

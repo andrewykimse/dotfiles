@@ -24,17 +24,22 @@ in
 
   wayland.windowManager.hyprland = {
     enable = true;
+    configType = "lua";
     settings = {
-      "$mod" = "SUPER";
-      "$terminal" = "ghostty";
-      "$lock" = "hyprlock";
+      mod      = { _var = "SUPER"; };
+      terminal = { _var = "ghostty"; };
+      lock     = { _var = "hyprlock"; };
+      monitor  = [
+        { output = "eDP-1"; mode = "preferred"; position = "auto"; scale = 2; }
+        { output = "";      mode = "preferred"; position = "auto"; scale = 1; }
+      ];
     };
-    extraConfig = builtins.readFile "${hyprland-config}/hypr/hyprland.conf";
+    extraConfig = builtins.readFile "${hyprland-config}/hypr/hyprland.lua";
   };
 
   xdg.configFile."hypr/hyprpaper.conf".source = "${hyprland-config}/hypr/hyprpaper.conf";
-  xdg.configFile."hypr/hyprlock.conf".source = "${hyprland-config}/hypr/hyprlock.conf";
-  xdg.configFile."hypr/hypridle.conf".source = "${hyprland-config}/hypr/hypridle.conf";
+  xdg.configFile."hypr/hyprlock.conf".source  = "${hyprland-config}/hypr/hyprlock.conf";
+  xdg.configFile."hypr/hypridle.conf".source  = "${hyprland-config}/hypr/hypridle.conf";
 
   xdg.desktopEntries = {
     shutdown = {
