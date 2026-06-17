@@ -37,6 +37,7 @@ in
     extraConfig = builtins.readFile "${hyprland-config}/hypr/hyprland.lua";
   };
 
+  xdg.configFile."hypr/hyprland.conf" = { text = "# See hyprland.lua"; force = true; };
   xdg.configFile."hypr/hyprpaper.conf".source = "${hyprland-config}/hypr/hyprpaper.conf";
   xdg.configFile."hypr/hyprlock.conf".source  = "${hyprland-config}/hypr/hyprlock.conf";
   xdg.configFile."hypr/hypridle.conf".source  = "${hyprland-config}/hypr/hypridle.conf";
