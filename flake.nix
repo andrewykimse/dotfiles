@@ -34,9 +34,9 @@
       url = "github:oxcl/nix-flake-helium-browser";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    noctalia = {
-      url = "github:noctalia-dev/noctalia-shell";
-      inputs.nixpkgs.follows = "nixpkgs";
+    ricelin = {
+      url = "github:Gakuseei/Ricelin";
+      flake = false;
     };
     nixos-millennium = {
       url = "github:re1n0/nixos-millennium";
@@ -44,7 +44,7 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, nixgl, neovim-config, hyprland-config, monkeyterm, viaterm, mt7927-driver, btop-src, zen-browser, helium-browser, dracula-wallpaper, nixos-raspberrypi, noctalia, nixos-millennium, ... }:
+  outputs = { nixpkgs, home-manager, nixgl, neovim-config, hyprland-config, monkeyterm, viaterm, mt7927-driver, btop-src, zen-browser, helium-browser, dracula-wallpaper, nixos-raspberrypi, ricelin, nixos-millennium, ... }:
     let
       mkHome = system: modules: extraArgs:
         home-manager.lib.homeManagerConfiguration {
@@ -103,15 +103,15 @@
           in mkHome "x86_64-linux" [
             ./hosts/desktop/home.nix
             nixos-millennium.homeManagerModules.default
-          ] { inherit monkeyterm viaterm noctalia nixos-millennium hyprland-config; nvidiaLibDir = "${pkgs.linuxPackages.nvidiaPackages.production}/lib"; };
+          ] { inherit monkeyterm viaterm ricelin nixos-millennium hyprland-config; nvidiaLibDir = "${pkgs.linuxPackages.nvidiaPackages.production}/lib"; };
 
         "akim7@work" = mkHome "x86_64-linux" [
           ./hosts/work/home.nix
-        ] { inherit nixgl monkeyterm viaterm noctalia hyprland-config; nvidiaLibDir = "/usr/lib/x86_64-linux-gnu"; };
+        ] { inherit nixgl monkeyterm viaterm ricelin hyprland-config; nvidiaLibDir = "/usr/lib/x86_64-linux-gnu"; };
 
         "akim7@work-desktop" = mkHome "x86_64-linux" [
           ./hosts/work-desktop/home.nix
-        ] { inherit nixgl monkeyterm viaterm noctalia hyprland-config; nvidiaLibDir = "/usr/lib/x86_64-linux-gnu"; };
+        ] { inherit nixgl monkeyterm viaterm ricelin hyprland-config; nvidiaLibDir = "/usr/lib/x86_64-linux-gnu"; };
       };
     };
 }

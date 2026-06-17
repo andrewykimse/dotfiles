@@ -30,7 +30,7 @@ in
   imports = [
     ../../modules/hyprland.nix
     ../../modules/niri.nix
-    ../../modules/noctalia.nix
+    ../../modules/quickshell.nix
     ../../modules/work.nix
   ];
 

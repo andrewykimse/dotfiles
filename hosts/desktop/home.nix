@@ -2,7 +2,7 @@
 {
   imports = [
     ../../modules/hyprland.nix
-    ../../modules/noctalia.nix
+    ../../modules/quickshell.nix
     ../../modules/mail.nix
   ];
 
@@ -55,9 +55,24 @@
     };
   };
 
+  home.file.".local/bin/steam-qs" = {
+    executable = true;
+    text = ''
+      #!/usr/bin/env bash
+      exec >>/tmp/steam-qs.log 2>&1
+      echo "=== $(date) ==="
+      echo "PATH=$PATH"
+      echo "HOME=$HOME"
+      echo "USER=$USER"
+      echo "DISPLAY=$DISPLAY"
+      echo "WAYLAND_DISPLAY=$WAYLAND_DISPLAY"
+      exec ${config.home.homeDirectory}/.nix-profile/bin/steam --no-cef-sandbox
+    '';
+  };
+
   xdg.desktopEntries.steam = {
     name = "Steam";
-    exec = "steam --no-cef-sandbox %U";
+    exec = "${config.home.homeDirectory}/.local/bin/steam-qs";
     icon = "steam";
     terminal = false;
     type = "Application";

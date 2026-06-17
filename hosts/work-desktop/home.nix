@@ -1,7 +1,6 @@
-{ config, pkgs, nixgl, noctalia, ... }:
+{ config, pkgs, nixgl, ... }:
 let
   nixGLPkg = nixgl.packages.${pkgs.system}.nixGLDefault;
-  noctaliaPkg = noctalia.packages.${pkgs.system}.default;
   hyprlandSystem = (pkgs.runCommand "hyprland-system" {} ''
     mkdir -p $out/bin $out/share
     ln -s /usr/bin/Hyprland $out/bin/Hyprland
@@ -11,7 +10,7 @@ in
 {
   imports = [
     ../../modules/hyprland.nix
-    ../../modules/noctalia.nix
+    ../../modules/quickshell.nix
     ../../modules/work.nix
   ];
 
@@ -49,11 +48,13 @@ in
     '')
   ];
 
-  programs.noctalia-shell.package = pkgs.lib.mkForce (pkgs.runCommand "noctalia-shell-nixgl" { nativeBuildInputs = [ pkgs.makeWrapper ]; } ''
+  services.quickshell-ricelin.package = pkgs.runCommand "quickshell-nixgl" {
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+  } ''
     mkdir -p $out/bin
-    makeWrapper ${nixGLPkg}/bin/nixGL $out/bin/noctalia-shell \
-      --add-flags "${noctaliaPkg}/bin/noctalia-shell"
-  '');
+    makeWrapper ${nixGLPkg}/bin/nixGL $out/bin/quickshell \
+      --add-flags "${pkgs.quickshell}/bin/quickshell"
+  '';
 
   home.username = "akim7";
   home.homeDirectory = "/home/akim7";
