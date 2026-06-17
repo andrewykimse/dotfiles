@@ -15,6 +15,7 @@
       url = "github:nix-community/nixGL";
     };
     neovim-config.url = "github:andrewykimse/neovim-config";
+    hyprland-config.url = "github:andrewykimse/hyprland-config";
     monkeyterm.url = "github:andrewykimse/monkeyterm";
     viaterm.url = "github:andrewykimse/viaterm";
     mt7927-driver.url = "github:cmspam/mt7927-nixos";
@@ -43,7 +44,7 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, nixgl, neovim-config, monkeyterm, viaterm, mt7927-driver, btop-src, zen-browser, helium-browser, dracula-wallpaper, nixos-raspberrypi, noctalia, nixos-millennium, ... }:
+  outputs = { nixpkgs, home-manager, nixgl, neovim-config, hyprland-config, monkeyterm, viaterm, mt7927-driver, btop-src, zen-browser, helium-browser, dracula-wallpaper, nixos-raspberrypi, noctalia, nixos-millennium, ... }:
     let
       mkHome = system: modules: extraArgs:
         home-manager.lib.homeManagerConfiguration {
@@ -102,15 +103,15 @@
           in mkHome "x86_64-linux" [
             ./hosts/desktop/home.nix
             nixos-millennium.homeManagerModules.default
-          ] { inherit monkeyterm viaterm noctalia nixos-millennium; nvidiaLibDir = "${pkgs.linuxPackages.nvidiaPackages.production}/lib"; };
+          ] { inherit monkeyterm viaterm noctalia nixos-millennium hyprland-config; nvidiaLibDir = "${pkgs.linuxPackages.nvidiaPackages.production}/lib"; };
 
         "akim7@work" = mkHome "x86_64-linux" [
           ./hosts/work/home.nix
-        ] { inherit nixgl monkeyterm viaterm noctalia; nvidiaLibDir = "/usr/lib/x86_64-linux-gnu"; };
+        ] { inherit nixgl monkeyterm viaterm noctalia hyprland-config; nvidiaLibDir = "/usr/lib/x86_64-linux-gnu"; };
 
         "akim7@work-desktop" = mkHome "x86_64-linux" [
           ./hosts/work-desktop/home.nix
-        ] { inherit nixgl monkeyterm viaterm noctalia; nvidiaLibDir = "/usr/lib/x86_64-linux-gnu"; };
+        ] { inherit nixgl monkeyterm viaterm noctalia hyprland-config; nvidiaLibDir = "/usr/lib/x86_64-linux-gnu"; };
       };
     };
 }
