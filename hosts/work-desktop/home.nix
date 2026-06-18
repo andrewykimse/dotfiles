@@ -1,6 +1,6 @@
 { config, pkgs, nixgl, ... }:
 let
-  nixGLPkg = nixgl.packages.${pkgs.system}.nixGLDefault;
+  nixGLPkg = nixgl.packages.${pkgs.stdenv.hostPlatform.system}.nixGLDefault;
   hyprlandSystem = (pkgs.runCommand "hyprland-system" {} ''
     mkdir -p $out/bin $out/share
     ln -s /usr/bin/Hyprland $out/bin/Hyprland

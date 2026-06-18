@@ -1,6 +1,6 @@
 { config, pkgs, nixgl, ... }:
 let
-  nixGLPkg = nixgl.packages.${pkgs.system}.nixGLDefault;
+  nixGLPkg = nixgl.packages.${pkgs.stdenv.hostPlatform.system}.nixGLDefault;
   hyprlandWrapped = (pkgs.runCommand "hyprland-nixgl" { nativeBuildInputs = [ pkgs.makeWrapper ]; } ''
     mkdir -p $out/bin $out/share
     cp -rs ${pkgs.hyprland}/share/* $out/share/ 2>/dev/null || true
