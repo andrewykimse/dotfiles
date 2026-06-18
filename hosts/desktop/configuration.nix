@@ -26,35 +26,6 @@
     disableAspm = true;
   };
 
-  # Workaround for cmspam/mt7927-nixos bug: the firmware derivation installs the
-  # BT firmware to mediatek/mt6639/ but the btmtk kernel patch expects it at
-  # mediatek/mt7927/. Copy it to the correct path so firmware loading succeeds.
-  hardware.firmware = [
-    (pkgs.runCommandNoCC "mt7927-bt-firmware-fix" {} ''
-      mkdir -p $out/lib/firmware/mediatek/mt7927
-      cp ${mt7927-driver.packages.x86_64-linux.firmware}/lib/firmware/mediatek/mt6639/BT_RAM_CODE_MT6639_2_1_hdr.bin \
-        $out/lib/firmware/mediatek/mt7927/BT_RAM_CODE_MT6639_2_1_hdr.bin
-    '')
-  ];
-
-  # Workaround for NixOS depmod/symlink bug: when boot.extraModulePackages uses
-  # symlinks into other store paths, depmod skips them. The patched mt7925e (which
-  # has the 14c3:7927 PCI ID for MT7927) is never added to modules.alias.
-  # Fix: add the missing PCI alias and intercept modprobe to load the patched module.
-  boot.extraModprobeConfig =
-    let
-      loadScript = pkgs.writeShellScript "load-mt7925e-patched" ''
-        KVER=$(${pkgs.coreutils}/bin/uname -r)
-        EXTRA="/run/booted-system/kernel-modules/lib/modules/$KVER/extra/mt76"
-        ${pkgs.kmod}/bin/modprobe mt7925-common 2>/dev/null || true
-        ${pkgs.kmod}/bin/insmod "$EXTRA/mt7925/mt7925e.ko" 2>/dev/null || true
-      '';
-    in
-    ''
-      alias pci:v000014C3d00007927sv*sd*bc*sc*i* mt7925e
-      install mt7925e ${loadScript}
-    '';
-
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
