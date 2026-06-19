@@ -1,12 +1,10 @@
-{ config, pkgs, nixos-millennium, ... }:
+{ config, pkgs, ... }:
 {
   imports = [
     ../../modules/hyprland.nix
     ../../modules/quickshell.nix
     ../../modules/mail.nix
   ];
-
-  nixpkgs.overlays = [ nixos-millennium.overlays.default ];
 
   wayland.windowManager.hyprland.settings.monitor = pkgs.lib.mkForce [
     { output = "desc:Apple Computer Inc StudioDisplay"; mode = "5120x2880@60"; position = "auto"; scale = 2; }
@@ -30,30 +28,8 @@
 
   home.packages = with pkgs; [
     hyprlock
-    millennium-steam
+    steam
   ];
-
-  programs.steam = {
-    theme = pkgs.millenniumThemes.space;
-    millenniumConfig.themes.conditions."space-theme-steam" = {
-      "--st-background"   = "40, 42, 54";
-      "--st-accent-1"     = "189, 147, 249";
-      "--st-accent-2"     = "255, 121, 198";
-      "--st-color-1"      = "30, 31, 41";
-      "--st-color-2"      = "40, 42, 54";
-      "--st-color-3"      = "68, 71, 90";
-      "--st-color-4"      = "80, 84, 108";
-      "--st-color-5"      = "98, 114, 164";
-      "--st-blue"         = "139, 233, 253";
-      "--st-blue-hover"   = "169, 241, 255";
-      "--st-green"        = "80, 250, 123";
-      "--st-green-hover"  = "120, 251, 155";
-      "--st-red"          = "255, 85, 85";
-      "--st-red-hover"    = "255, 128, 128";
-      "--st-yellow"       = "241, 250, 140";
-      "--st-yellow-hover" = "245, 251, 176";
-    };
-  };
 
   home.file.".local/bin/steam-qs" = {
     executable = true;
