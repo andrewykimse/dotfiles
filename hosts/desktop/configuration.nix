@@ -70,6 +70,8 @@
     enable32Bit = true;
   };
 
+  hardware.xone.enable = true;
+
   hardware.nvidia = {
     modesetting.enable = true;
     open = true;

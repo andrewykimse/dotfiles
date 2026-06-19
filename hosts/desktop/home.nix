@@ -37,12 +37,17 @@
       #!/usr/bin/env bash
       exec >>/tmp/steam-qs.log 2>&1
       echo "=== $(date) ==="
-      echo "PATH=$PATH"
-      echo "HOME=$HOME"
-      echo "USER=$USER"
-      echo "DISPLAY=$DISPLAY"
+      echo "HYPRLAND_INSTANCE_SIGNATURE=$HYPRLAND_INSTANCE_SIGNATURE"
       echo "WAYLAND_DISPLAY=$WAYLAND_DISPLAY"
-      exec ${config.home.homeDirectory}/.nix-profile/bin/steam --no-cef-sandbox
+      echo "DISPLAY=$DISPLAY"
+      exec ${config.home.homeDirectory}/.nix-profile/bin/steam --no-cef-sandbox &
+      STEAM_PID=$!
+      sleep 5
+      echo "=== hyprctl clients after 5s ==="
+      hyprctl clients 2>&1 | grep -A5 -i steam || echo "no steam window found"
+      echo "=== steam proc ==="
+      pgrep -a steam 2>&1 || echo "no steam procs"
+      wait $STEAM_PID
     '';
   };
 
