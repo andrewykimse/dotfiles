@@ -1,5 +1,6 @@
-{ pkgs, hyprland-config, ... }:
+{ pkgs, hyprland-config, hyprvim, ... }:
 let
+  hyprvimPkg = hyprvim.packages.${pkgs.system}.default;
   screenshot-area = pkgs.writeShellScript "screenshot-area" ''
     grim -g "$(slurp)" - | wl-copy
   '';
@@ -20,7 +21,14 @@ in
     brightnessctl
     playerctl
     pavucontrol
+    hyprvimPkg
   ];
+
+  xdg.configFile."hypr/lua/plugins/hyprvim/init.lua".text = ''
+    local chunk, err = loadfile("${hyprvimPkg}/share/hyprvim/init.lua")
+    if not chunk then error(err) end
+    return chunk()
+  '';
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -34,7 +42,15 @@ in
         { output = "";      mode = "preferred"; position = "auto"; scale = 1; }
       ];
     };
-    extraConfig = builtins.readFile "${hyprland-config}/hypr/hyprland.lua";
+    extraConfig = builtins.readFile "${hyprland-config}/hypr/hyprland.lua" + ''
+
+      -- HyprVim
+      require("lua/plugins/hyprvim").setup({
+        applications = {
+          terminal = "ghostty",
+        },
+      })
+    '';
   };
 
   xdg.configFile."hypr/hyprland.conf" = { text = "# See hyprland.lua"; force = true; };
