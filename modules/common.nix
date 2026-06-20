@@ -10,6 +10,8 @@
 
   # home.username and home.homeDirectory are set per-host
 
+  home.sessionPath = [ "$HOME/.local/bin" ];
+
   home.stateVersion = "24.11";
 
   programs.home-manager.enable = true;
