@@ -21,7 +21,7 @@
   # commands below). NixOS will not create the pool; it only imports it.
   boot.zfs.extraPools = [ "tank" ];
 
-  # Cap ZFS ARC at 2 GiB on the 8 GB Pi 5, leaving headroom for Samba/Garage.
+  # Cap ZFS ARC at 2 GiB on the 8 GB Pi 5, leaving headroom for Samba.
   boot.extraModprobeConfig = ''
     options zfs zfs_arc_max=2147483648
   '';
@@ -70,15 +70,12 @@
   # 3. Create datasets with per-dataset tuning:
   #      zfs create -o mountpoint=/storage/shares tank/shares
   #      zfs create -o mountpoint=/storage/backups -o recordsize=1M -o compression=zstd tank/backups
-  #      zfs create -o mountpoint=/storage/garage -o recordsize=128K tank/garage
   #
-  # 4. Set snapshot flags (Garage manages object integrity itself, skip it there):
+  # 4. Set snapshot flags:
   #      zfs set com.sun:auto-snapshot=true  tank/shares
   #      zfs set com.sun:auto-snapshot=true  tank/backups
-  #      zfs set com.sun:auto-snapshot=false tank/garage
   #
   # 5. Fix ownership so services can write:
   #      chown -R andrewkim:storage /storage/shares /storage/backups
-  #      chown -R garage:garage /storage/garage
   # ---------------------------------------------------------------------------
 }
