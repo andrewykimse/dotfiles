@@ -40,6 +40,11 @@
   # ZFS
   # ---------------------------------------------------------------------------
 
+  fileSystems."/storage/nextcloud" = {
+    device = "tank/nextcloud";
+    fsType = "zfs";
+  };
+
   services.zfs.autoScrub = {
     enable = true;
     interval = "weekly";
