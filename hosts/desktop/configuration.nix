@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, mt7927-driver, ... }:
 
 {
   imports =
@@ -70,6 +70,8 @@
     enable32Bit = true;
   };
 
+  hardware.xone.enable = true;
+
   hardware.nvidia = {
     modesetting.enable = true;
     open = true;
@@ -80,7 +82,7 @@
 
   # Enable the GNOME Desktop Environment.
   services.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  services.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -127,12 +129,17 @@
   };
 
   programs.zsh.enable = true;
+  programs.nix-ld.enable = true;
 
   # Install firefox.
   programs.firefox.enable = true;
 
   # Hyprland (Wayland compositor). GDM exposes it as a session option at login.
   programs.hyprland.enable = true;
+
+  # Creates bwrap SUID wrapper in /run/wrappers/bin/bwrap, required for
+  # Steam's instance IPC (steam-runtime-steam-remote) to work.
+  programs.steam.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;

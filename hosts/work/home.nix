@@ -1,6 +1,6 @@
 { config, pkgs, nixgl, ... }:
 let
-  nixGLPkg = nixgl.packages.${pkgs.system}.nixGLDefault;
+  nixGLPkg = nixgl.packages.${pkgs.stdenv.hostPlatform.system}.nixGLDefault;
   hyprlandWrapped = (pkgs.runCommand "hyprland-nixgl" { nativeBuildInputs = [ pkgs.makeWrapper ]; } ''
     mkdir -p $out/bin $out/share
     cp -rs ${pkgs.hyprland}/share/* $out/share/ 2>/dev/null || true
@@ -30,24 +30,24 @@ in
   imports = [
     ../../modules/hyprland.nix
     ../../modules/niri.nix
-    ../../modules/noctalia.nix
+    ../../modules/quickshell.nix
     ../../modules/work.nix
   ];
 
   wayland.windowManager.hyprland.package = hyprlandWrapped;
 
-  wayland.windowManager.hyprland.settings.env = [
-    "PATH,${config.home.homeDirectory}/.nix-profile/bin:/usr/local/bin:/usr/bin:/bin"
-    "XDG_DATA_DIRS,${config.home.homeDirectory}/.nix-profile/share:/usr/local/share:/usr/share"
-  ];
+  wayland.windowManager.hyprland.settings.lock = pkgs.lib.mkForce { _var = "${pkgs.hyprlock}/bin/hyprlock"; };
 
   wayland.windowManager.hyprland.settings.monitor = pkgs.lib.mkForce [
-    "desc:Apple Computer Inc StudioDisplay, 5120x2880@60, auto, 2"
-    "desc:Dell Inc. DELL U3425WE, 3440x1440@60, auto, 1"
-    ", preferred, auto, 1"
+    { output = "desc:Apple Computer Inc StudioDisplay"; mode = "5120x2880@60"; position = "auto"; scale = 2; }
+    { output = "desc:Dell Inc. DELL U3425WE";           mode = "3440x1440@60"; position = "auto"; scale = 1; }
+    { output = ""; mode = "preferred"; position = "auto"; scale = 1; }
   ];
 
-  wayland.windowManager.hyprland.settings."$lock" = pkgs.lib.mkForce "${pkgs.hyprlock}/bin/hyprlock";
+  wayland.windowManager.hyprland.settings.env = [
+    { _args = [ "PATH" "${config.home.homeDirectory}/.nix-profile/bin:/usr/local/bin:/usr/bin:/bin" ]; }
+    { _args = [ "XDG_DATA_DIRS" "${config.home.homeDirectory}/.nix-profile/share:/usr/local/share:/usr/share" ]; }
+  ];
 
   xdg.configFile."hypr/hypridle.conf" = pkgs.lib.mkForce {
     text = ''

@@ -23,7 +23,7 @@
     miller
     glow
     trash-cli
-    neovim-config.packages.${pkgs.system}.default
+    neovim-config.packages.${pkgs.stdenv.hostPlatform.system}.default
 
     # LSP servers
     clang-tools   # clangd for C/C++
@@ -38,9 +38,9 @@
     usbutils
     ripdrag
   ] ++ pkgs.lib.optionals (monkeyterm != null) [
-    monkeyterm.packages.${pkgs.system}.default
+    monkeyterm.packages.${pkgs.stdenv.hostPlatform.system}.default
   ] ++ pkgs.lib.optionals (viaterm != null) [
-    viaterm.packages.${pkgs.system}.default
+    viaterm.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
 
   xdg.configFile."nvim".source = "${neovim-config}/nvim";

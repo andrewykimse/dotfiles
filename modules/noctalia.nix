@@ -106,7 +106,9 @@
     };
   };
 
-  wayland.windowManager.hyprland.settings.exec-once = [
-    "noctalia-shell"
-  ];
+  wayland.windowManager.hyprland.extraConfig = ''
+    hl.on("hyprland.start", function()
+      hl.exec_cmd("noctalia-shell")
+    end)
+  '';
 }

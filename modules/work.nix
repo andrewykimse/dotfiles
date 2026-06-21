@@ -7,5 +7,5 @@
     command = ${pkgs.zsh}/bin/zsh
   '';
 
-  home.packages = with pkgs; [ awscli2 cachix ];
+  home.packages = with pkgs; [ awscli2 cachix jira-cli-go ];
 }
