@@ -189,6 +189,7 @@
       2049  # NFS
       3900  # Garage S3 API
       # 3901 RPC is cluster-internal; 3903 admin is localhost-only
+      80    # Nextcloud
     ];
     allowedUDPPorts = [
       2049  # NFS
@@ -224,7 +225,49 @@
     "d /storage/garage       0750 garage    garage  -"
     "d /storage/garage/meta  0750 garage    garage  -"
     "d /storage/garage/data  0750 garage    garage  -"
+    "d /storage/nextcloud    0750 nextcloud nextcloud -"
   ];
+
+  # ---------------------------------------------------------------------------
+  # Nextcloud
+  #
+  # Before first deploy, create the admin password file on the machine:
+  #   echo -n 'your-password' | sudo tee /etc/nextcloud-admin-pass
+  #   sudo chmod 600 /etc/nextcloud-admin-pass
+  #
+  # Access at http://roundtable.local after deploying.
+  # ---------------------------------------------------------------------------
+
+  services.postgresql = {
+    enable = true;
+    ensureDatabases = [ "nextcloud" ];
+    ensureUsers = [{
+      name = "nextcloud";
+      ensureDBOwnership = true;
+    }];
+  };
+
+  services.nextcloud = {
+    enable = true;
+    package = pkgs.nextcloud32;
+    hostName = "roundtable.local";
+    https = false;
+    home = "/storage/nextcloud";
+
+    config = {
+      dbtype = "pgsql";
+      dbhost = "/run/postgresql";  # Unix socket — peer auth, no password needed
+      adminpassFile = "/etc/nextcloud-admin-pass";
+    };
+
+    settings = {
+      trusted_domains = [
+        "roundtable.local"
+        "192.168.68.0/24"
+      ];
+      default_phone_region = "US";
+    };
+  };
 
   # ---------------------------------------------------------------------------
   # Packages
