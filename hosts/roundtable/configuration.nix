@@ -21,6 +21,19 @@
       domain = true;
       workstation = true;
     };
+    extraServiceFiles = {
+      smb = ''
+        <?xml version="1.0" standalone='no'?>
+        <!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+        <service-group>
+          <name replace-wildcards="yes">%h</name>
+          <service>
+            <type>_smb._tcp</type>
+            <port>445</port>
+          </service>
+        </service-group>
+      '';
+    };
   };
 
   # ---------------------------------------------------------------------------
@@ -112,55 +125,6 @@
   };
 
   # ---------------------------------------------------------------------------
-  # Garage (S3-compatible object storage — lightweight Rust alternative to MinIO)
-  #
-  # Before starting Garage, create /etc/garage-secrets:
-  #   GARAGE_RPC_SECRET=$(openssl rand -hex 32)
-  # Then: chmod 600 /etc/garage-secrets
-  #
-  # After first start, initialize the cluster layout (single-node):
-  #   garage node id                              # get the node ID
-  #   garage layout assign -z dc1 -c 1T <id>     # assign zone + capacity
-  #   garage layout apply --version 1
-  #   garage bucket create <bucket-name>
-  #   garage key create <key-name>
-  #   garage bucket allow --read --write --owner <bucket> --key <key>
-  # ---------------------------------------------------------------------------
-
-  services.garage = {
-    enable = true;
-    package = pkgs.garage;
-    environmentFile = "/etc/garage-secrets";
-    settings = {
-      metadata_dir    = "/storage/garage/meta";
-      data_dir        = "/storage/garage/data";
-      replication_factor = 1;
-      rpc_bind_addr   = "[::]:3901";
-      s3_api = {
-        s3_region    = "garage";
-        api_bind_addr = "[::]:3900";
-      };
-      admin = {
-        api_bind_addr = "127.0.0.1:3903";
-      };
-    };
-  };
-
-  # DynamicUser (the module default) can't write to a custom ZFS path;
-  # use a dedicated static user with ReadWritePaths set by the module.
-  users.users.garage = {
-    isSystemUser = true;
-    group = "garage";
-  };
-  users.groups.garage = { };
-
-  systemd.services.garage.serviceConfig = {
-    DynamicUser = lib.mkForce false;
-    User        = lib.mkForce "garage";
-    Group       = lib.mkForce "garage";
-  };
-
-  # ---------------------------------------------------------------------------
   # Tailscale (secure remote access)
   # After boot: tailscale up --advertise-exit-node (or just tailscale up)
   # ---------------------------------------------------------------------------
@@ -187,8 +151,6 @@
     allowedTCPPorts = [
       22    # SSH
       2049  # NFS
-      3900  # Garage S3 API
-      # 3901 RPC is cluster-internal; 3903 admin is localhost-only
       80    # Nextcloud
     ];
     allowedUDPPorts = [
@@ -222,9 +184,6 @@
   systemd.tmpfiles.rules = [
     "d /storage/shares       0775 andrewkim storage -"
     "d /storage/backups      0775 andrewkim storage -"
-    "d /storage/garage       0750 garage    garage  -"
-    "d /storage/garage/meta  0750 garage    garage  -"
-    "d /storage/garage/data  0750 garage    garage  -"
     "d /storage/nextcloud    0750 nextcloud nextcloud -"
   ];
 
