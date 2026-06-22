@@ -118,6 +118,7 @@ DesktopNames=niri
 
   home.packages = [
     pkgs.hyprlock
+    pkgs.pulsemixer
     niriWrapped
     (pkgs.writeShellScriptBin "niri-session" ''
       export PATH="$HOME/.nix-profile/bin:/usr/local/bin:/usr/bin:/bin"

@@ -32,6 +32,7 @@ in
 
 
   home.packages = [
+    pkgs.pulsemixer
     (pkgs.runCommand "ghostty-nixgl" { nativeBuildInputs = [ pkgs.makeWrapper ]; } ''
       mkdir -p $out/bin $out/share/applications $out/share/icons $out/share/dbus-1/services
       cp -rs ${pkgs.ghostty}/share/ghostty $out/share/ 2>/dev/null || true
