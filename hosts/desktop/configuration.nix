@@ -167,8 +167,13 @@
       lshw
       lm_sensors
       moonlight-qt
-      sunshine
   ];
+
+  services.sunshine = {
+    enable = true;
+    openFirewall = true;
+    capSysAdmin = true; # required for DRM/KMS capture on Wayland
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
