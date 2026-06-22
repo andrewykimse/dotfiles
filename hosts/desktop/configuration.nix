@@ -14,9 +14,23 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # Use latest kernel.
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.kernelParams = ["pcie_aspm=off"];
+  # Kernel: testing LTS vs linuxPackages_latest (was 7.0.10) to see if a different
+  # PCI allocator can carve the Studio Display's nested Thunderbolt PCIe windows
+  # (see the kernelParams below for the resource saga).
+  boot.kernelPackages = pkgs.linuxPackages;
+  # Thunderbolt PCIe tunneling for the daisy-chained Apple Studio Display, whose
+  # USB (camera/speakers/mic) tunnels in behind the CalDigit's deep nested PCIe
+  # switch. hpiosize=0: the xHCIs are MMIO-only, so drop the phantom hot-plug I/O
+  # window reservations that overflow x86's 64K I/O space and abort bridge config.
+  # pcie_port_pm=off: with resources sorted the controller now binds and reads its
+  # registers, but drops off mid-init when the TB ports runtime-suspend to D3cold;
+  # disabling PCIe port power management keeps them awake through initialization.
+  boot.kernelParams = [
+    "pcie_aspm=off"
+    "pci=realloc"
+    "pci=hpiosize=0"
+    "pcie_port_pm=off"
+  ];
   boot.kernelModules = [ "snd_usb_audio" "k10temp" ];
 
   hardware.mediatek-mt7927 = {
