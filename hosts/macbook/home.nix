@@ -1,5 +1,9 @@
 { pkgs, ... }:
 {
+  imports = [
+    ../../modules/browser.nix
+  ];
+
   home.username = "andrewkim";
   home.homeDirectory = "/Users/andrewkim";
 

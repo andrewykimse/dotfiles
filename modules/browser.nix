@@ -14,14 +14,6 @@
     enable = true;
   };
 
-  # Allow unfree for nix-shell / nix-env (channel commands)
-  xdg.configFile."nixpkgs/config.nix".text = ''
-    { allowUnfree = true; }
-  '';
-
-  # Allow unfree for flake commands (nix run/shell) — still needs --impure
-  home.sessionVariables.NIXPKGS_ALLOW_UNFREE = "1";
-
   programs.zen-browser = lib.mkIf (pkgs.stdenv.isLinux && zen-browser != null) {
     enable = true;
     policies.ExtensionSettings = let

@@ -4,6 +4,7 @@
     ../../modules/hyprland.nix
     ../../modules/quickshell.nix
     ../../modules/mail.nix
+    ../../modules/browser.nix
   ];
 
   wayland.windowManager.hyprland.settings.monitor = pkgs.lib.mkForce [
