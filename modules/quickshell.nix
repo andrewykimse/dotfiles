@@ -8,7 +8,7 @@ let
 
   # Patch the Ricelin quickshell config:
   #   1. Replace all Theme.qml files with the Dracula-adapted version
-  #   2. Remap hardcoded ~/Ricelin/wallpapers → ~/wallpapers
+  #   2. Remap hardcoded ~/Ricelin/wallpapers → ~/sources/dotfiles/wallpapers
   #   3. Remove nvibrant calls (binary not in nixpkgs)
   #   4. Fix logout dispatch: Ricelin uses Lua syntax "hl.dsp.exit()" but
   #      quickshell's Hyprland.dispatch() speaks hyprctl IPC — needs just "exit"
@@ -18,7 +18,7 @@ let
     cp -r ${ricelin}/configs/quickshell $out
     chmod -R u+w $out
     find $out -name "Theme.qml" -exec cp ${draculaTheme} {} \;
-    sed -i 's|/Ricelin/wallpapers|/wallpapers|g' $out/pill/Singletons/Walls.qml
+    sed -i 's|/Ricelin/wallpapers|/sources/dotfiles/wallpapers|g' $out/pill/Singletons/Walls.qml
     sed -i '/nvibrant/d' $out/pill/Singletons/Devices.qml
     sed -i 's|dispatch: "hl\.dsp\.exit()"|dispatch: "exit"|' $out/pill/Power.qml
   '';
@@ -70,7 +70,7 @@ in
             _apply "$WALL_PATH"
             ;;
           random)
-            img=$(find "$HOME/wallpapers" -maxdepth 1 -type f \( -iname "*.jpg" -o -iname "*.png" \) 2>/dev/null | ${pkgs.coreutils}/bin/shuf -n 1)
+            img=$(find "$HOME/sources/dotfiles/wallpapers" -maxdepth 1 -type f \( -iname "*.jpg" -o -iname "*.png" \) 2>/dev/null | ${pkgs.coreutils}/bin/shuf -n 1)
             [ -n "$img" ] && _apply "$img"
             ;;
           *) echo "Unknown command: $CMD" >&2; exit 1 ;;
@@ -121,7 +121,7 @@ in
       text = ''
         #!/usr/bin/env bash
         set -euo pipefail
-        WP_DIR="$HOME/wallpapers"
+        WP_DIR="$HOME/sources/dotfiles/wallpapers"
         THUMB_DIR="''${XDG_CACHE_HOME:-$HOME/.cache}/ricelin-wp-thumbs"
         mkdir -p "$THUMB_DIR"
         for thumb in "$THUMB_DIR"/*.png; do
