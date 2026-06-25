@@ -140,6 +140,45 @@
     extraUpFlags = [ "--ssh" ];
   };
 
+  # Provision and renew the TLS cert for the Tailscale hostname.
+  # On first deploy, run: systemctl start tailscale-cert
+  systemd.services.tailscale-cert = {
+    description = "Provision/renew Tailscale TLS certificate";
+    after    = [ "tailscaled.service" "network-online.target" ];
+    wants    = [ "network-online.target" ];
+    requires = [ "tailscaled.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = false;
+      ExecStart = pkgs.writeShellScript "tailscale-cert" ''
+        mkdir -p /var/lib/tailscale-cert
+        ${pkgs.tailscale}/bin/tailscale cert \
+          --cert-file /var/lib/tailscale-cert/cert.pem \
+          --key-file  /var/lib/tailscale-cert/key.pem \
+          roundtable.tail321e5e.ts.net
+        chown -R nginx:nginx /var/lib/tailscale-cert
+        chmod 640 /var/lib/tailscale-cert/key.pem
+      '';
+      ExecStartPost = "${pkgs.systemd}/bin/systemctl reload nginx.service";
+    };
+  };
+
+  systemd.timers.tailscale-cert = {
+    description = "Renew Tailscale TLS certificate weekly";
+    wantedBy    = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar        = "weekly";
+      RandomizedDelaySec = "1h";
+      Persistent        = true;
+    };
+  };
+
+  # nginx must wait for the cert to exist before it can serve HTTPS
+  systemd.services.nginx = {
+    after    = [ "tailscale-cert.service" ];
+    requires = [ "tailscale-cert.service" ];
+  };
+
   # ---------------------------------------------------------------------------
   # Monitoring
   # ---------------------------------------------------------------------------
@@ -160,7 +199,8 @@
     allowedTCPPorts = [
       22    # SSH
       2049  # NFS
-      80    # Nextcloud
+      80    # Nextcloud HTTP (redirects to HTTPS)
+      443   # Nextcloud HTTPS (Tailscale)
     ];
     allowedUDPPorts = [
       2049  # NFS
@@ -218,8 +258,8 @@
   services.nextcloud = {
     enable = true;
     package = pkgs.nextcloud32;
-    hostName = "roundtable.local";
-    https = false;
+    hostName = "roundtable.tail321e5e.ts.net";
+    https = true;
     home = "/storage/nextcloud";
 
     config = {
@@ -230,11 +270,19 @@
 
     settings = {
       trusted_domains = [
+        "roundtable.tail321e5e.ts.net"
         "roundtable.local"
         "192.168.68.0/24"
       ];
       default_phone_region = "US";
     };
+  };
+
+  # Wire the Tailscale cert into the nginx vhost the Nextcloud module creates
+  services.nginx.virtualHosts."roundtable.tail321e5e.ts.net" = {
+    forceSSL        = true;
+    sslCertificate  = "/var/lib/tailscale-cert/cert.pem";
+    sslCertificateKey = "/var/lib/tailscale-cert/key.pem";
   };
 
   # ---------------------------------------------------------------------------
