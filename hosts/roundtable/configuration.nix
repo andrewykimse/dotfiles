@@ -135,7 +135,10 @@
   # After boot: tailscale up --advertise-exit-node (or just tailscale up)
   # ---------------------------------------------------------------------------
 
-  services.tailscale.enable = true;
+  services.tailscale = {
+    enable = true;
+    extraUpFlags = [ "--ssh" ];
+  };
 
   # ---------------------------------------------------------------------------
   # Monitoring
