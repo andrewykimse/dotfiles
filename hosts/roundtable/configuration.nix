@@ -173,10 +173,11 @@
     };
   };
 
-  # nginx must wait for the cert to exist before it can serve HTTPS
+  # nginx waits for tailscale-cert but uses Wants (not Requires) so it can
+  # start with existing on-disk certs even if cert renewal fails at boot.
   systemd.services.nginx = {
-    after    = [ "tailscale-cert.service" ];
-    requires = [ "tailscale-cert.service" ];
+    after = [ "tailscale-cert.service" ];
+    wants = [ "tailscale-cert.service" ];
   };
 
   # ---------------------------------------------------------------------------
