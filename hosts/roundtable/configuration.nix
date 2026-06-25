@@ -159,7 +159,7 @@
         chown -R nginx:nginx /var/lib/tailscale-cert
         chmod 640 /var/lib/tailscale-cert/key.pem
       '';
-      ExecStartPost = "${pkgs.systemd}/bin/systemctl reload nginx.service";
+      ExecStartPost = "${pkgs.systemd}/bin/systemctl --no-block reload-or-restart nginx.service";
     };
   };
 
