@@ -12,8 +12,17 @@
     tailscale
   ];
 
+  launchd.agents.aerospace = {
+    enable = true;
+    config = {
+      ProgramArguments = [ "${pkgs.aerospace}/Applications/AeroSpace.app/Contents/MacOS/AeroSpace" ];
+      RunAtLoad = true;
+      KeepAlive = true;
+    };
+  };
+
   xdg.configFile."aerospace/aerospace.toml".text = ''
-    start-at-login = true
+    start-at-login = false
 
     enable-normalization-flatten-containers = true
     enable-normalization-opposite-orientation-for-nested-containers = true
