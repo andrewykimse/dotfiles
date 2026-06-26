@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
   imports = [
     ./shell.nix
@@ -6,6 +6,8 @@
     ./terminal.nix
     ./dev.nix
   ];
+
+  home.packages = [ pkgs.nh ];
 
   # home.username and home.homeDirectory are set per-host
 
