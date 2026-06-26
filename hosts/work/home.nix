@@ -36,6 +36,10 @@ in
 
   wayland.windowManager.hyprland.package = hyprlandWrapped;
 
+  wayland.windowManager.hyprland.extraConfig = pkgs.lib.mkAfter ''
+    hl.config({ input = { kb_options = "caps:escape" } })
+  '';
+
   wayland.windowManager.hyprland.settings.lock = pkgs.lib.mkForce { _var = "${pkgs.hyprlock}/bin/hyprlock"; };
 
   wayland.windowManager.hyprland.settings.monitor = pkgs.lib.mkForce [
