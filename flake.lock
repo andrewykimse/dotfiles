@@ -180,11 +180,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1781842232,
-        "narHash": "sha256-zYo/hWC910PHuxYTCHXMd/9RiG8UdUMDV3y5WxgXmmE=",
+        "lastModified": 1782436239,
+        "narHash": "sha256-XKqDcZnVecix0YbroCxIRgCB6xyUGxxkRBzR4JLLYWU=",
         "owner": "andrewykimse",
         "repo": "hyprland-config",
-        "rev": "9b7c4ddd25bc6667f384d61c71cc08d91dfb8c08",
+        "rev": "8fc328dc07b950b9ea41121ad1ab9042cf03e028",
         "type": "github"
       },
       "original": {
