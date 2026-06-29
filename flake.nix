@@ -49,11 +49,11 @@
           extraSpecialArgs = { inherit neovim-config btop-src zen-browser helium-browser dracula-wallpaper; nvidiaLibDir = null; } // extraArgs;
         };
     in {
-      nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.firelink = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = { inherit mt7927-driver; };
         modules = [
-          ./hosts/desktop/configuration.nix
+          ./hosts/firelink/configuration.nix
           mt7927-driver.nixosModules.default
         ];
       };
