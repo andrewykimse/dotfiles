@@ -26,6 +26,8 @@
     };
 
     initContent = ''
+      [[ ":$PATH:" != *":$HOME/.nix-profile/bin:"* ]] && export PATH="$HOME/.nix-profile/bin:$PATH"
+
       set -o vi
 
       autoload -Uz compinit && compinit
