@@ -93,7 +93,7 @@
           ./hosts/macbook/home.nix
         ] { inherit monkeyterm viaterm; };
 
-        "andrewkim@desktop" =
+        "andrewkim@firelink" =
           let pkgs = import nixpkgs { system = "x86_64-linux"; config.allowUnfree = true; };
           in mkHome "x86_64-linux" [
             ./hosts/desktop/home.nix
