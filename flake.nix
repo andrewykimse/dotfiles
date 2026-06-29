@@ -99,7 +99,7 @@
             ./hosts/firelink/home.nix
           ] { inherit monkeyterm viaterm ricelin hyprland-config; nvidiaLibDir = "${pkgs.linuxPackages.nvidiaPackages.production}/lib"; };
 
-        "akim7@work" = mkHome "x86_64-linux" [
+        "akim7@akim7-work-laptop" = mkHome "x86_64-linux" [
           ./hosts/work/home.nix
         ] { inherit nixgl monkeyterm viaterm ricelin hyprland-config; nvidiaLibDir = "/usr/lib/x86_64-linux-gnu"; };
 
