@@ -103,7 +103,7 @@
           ./hosts/work/home.nix
         ] { inherit nixgl monkeyterm viaterm ricelin hyprland-config; nvidiaLibDir = "/usr/lib/x86_64-linux-gnu"; };
 
-        "akim7@work-desktop" = mkHome "x86_64-linux" [
+        "akim7@akim7-work-desktop" = mkHome "x86_64-linux" [
           ./hosts/work-desktop/home.nix
         ] { inherit nixgl monkeyterm viaterm ricelin hyprland-config; nvidiaLibDir = "/usr/lib/x86_64-linux-gnu"; };
       };
