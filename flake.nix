@@ -96,7 +96,7 @@
         "andrewkim@firelink" =
           let pkgs = import nixpkgs { system = "x86_64-linux"; config.allowUnfree = true; };
           in mkHome "x86_64-linux" [
-            ./hosts/desktop/home.nix
+            ./hosts/firelink/home.nix
           ] { inherit monkeyterm viaterm ricelin hyprland-config; nvidiaLibDir = "${pkgs.linuxPackages.nvidiaPackages.production}/lib"; };
 
         "akim7@work" = mkHome "x86_64-linux" [
