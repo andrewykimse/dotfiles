@@ -106,6 +106,10 @@
         "akim7@akim7-work-desktop" = mkHome "x86_64-linux" [
           ./hosts/work-desktop/home.nix
         ] { inherit nixgl monkeyterm viaterm ricelin hyprland-config; nvidiaLibDir = "/usr/lib/x86_64-linux-gnu"; };
+
+        "deck@deckard" = mkHome "x86_64-linux" [
+          ./hosts/deckard/home.nix
+        ] { inherit monkeyterm viaterm; };
       };
     };
 }
