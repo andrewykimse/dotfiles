@@ -109,7 +109,7 @@
 
         "deck@deckard" = mkHome "x86_64-linux" [
           ./hosts/deckard/home.nix
-        ] { inherit monkeyterm viaterm; };
+        ] { inherit nixgl monkeyterm viaterm; };
       };
     };
 }
