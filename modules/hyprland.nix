@@ -26,9 +26,10 @@ in
     enable = true;
     configType = "lua";
     settings = {
-      mod      = { _var = "SUPER"; };
-      terminal = { _var = "ghostty"; };
-      lock     = { _var = "hyprlock"; };
+      mod          = { _var = "SUPER"; };
+      terminal     = { _var = "ghostty"; };
+      lock         = { _var = "hyprlock"; };
+      claude_here  = { _var = "${hyprland-config}/scripts/claude-here.sh"; };
       monitor  = [
         { output = "eDP-1"; mode = "preferred"; position = "auto"; scale = 2; }
         { output = "";      mode = "preferred"; position = "auto"; scale = 1; }
