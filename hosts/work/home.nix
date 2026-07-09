@@ -11,25 +11,10 @@ let
       --add-flags "${pkgs.hyprland}/bin/hyprctl" \
       --prefix LD_LIBRARY_PATH : "${pkgs.wayland}/lib"
   '').overrideAttrs (_: { passthru.override = _: hyprlandWrapped; });
-  niriWrapped = pkgs.runCommand "niri-nixgl" { nativeBuildInputs = [ pkgs.makeWrapper ]; } ''
-    mkdir -p $out/bin $out/share
-    cp -rs ${pkgs.niri}/share/* $out/share/ 2>/dev/null || true
-    makeWrapper ${nixGLPkg}/bin/nixGL $out/bin/niri \
-      --add-flags "${pkgs.niri}/bin/niri" \
-      --prefix LD_LIBRARY_PATH : "${pkgs.lib.makeLibraryPath [
-        pkgs.wayland
-        pkgs.libxcursor
-        pkgs.libxi
-        pkgs.libxrandr
-        pkgs.libx11
-        pkgs.libxext
-      ]}"
-  '';
 in
 {
   imports = [
     ../../modules/hyprland.nix
-    ../../modules/niri.nix
     ../../modules/quickshell.nix
     ../../modules/work.nix
   ];
@@ -107,36 +92,10 @@ DesktopNames=Hyprland
     /usr/bin/sudo -n ln -sf ${desktopFile} /usr/share/wayland-sessions/hyprland.desktop 2>/dev/null || echo "NOTE: run 'sudo ln -sf ${desktopFile} /usr/share/wayland-sessions/hyprland.desktop' to update the Hyprland session entry"
   '';
 
-  home.activation.niriSession = let
-    desktopFile = pkgs.writeText "niri.desktop" ''
-[Desktop Entry]
-Name=Niri
-Comment=A scrollable-tiling Wayland compositor
-Exec=${config.home.homeDirectory}/.nix-profile/bin/niri-session
-Type=Application
-DesktopNames=niri
-'';
-  in config.lib.dag.entryAfter [ "writeBoundary" ] ''
-    /usr/bin/sudo -n ln -sf ${desktopFile} /usr/share/wayland-sessions/niri.desktop 2>/dev/null || echo "NOTE: run 'sudo ln -sf ${desktopFile} /usr/share/wayland-sessions/niri.desktop' to update the Niri session entry"
-  '';
 
   home.packages = [
     pkgs.hyprlock
     pkgs.pulsemixer
-    niriWrapped
-    (pkgs.writeShellScriptBin "niri-session" ''
-      export PATH="$HOME/.nix-profile/bin:/usr/local/bin:/usr/bin:/bin"
-      export XDG_DATA_DIRS="$HOME/.nix-profile/share:/usr/local/share:/usr/share"
-
-      # Import environment into systemd and dbus so child processes inherit it
-      if hash systemctl 2>/dev/null; then
-        systemctl --user import-environment PATH XDG_DATA_DIRS
-      fi
-      if hash dbus-update-activation-environment 2>/dev/null; then
-        dbus-update-activation-environment --all
-      fi
-      exec ${niriWrapped}/bin/niri --session
-    '')
     (pkgs.runCommand "ghostty-nixgl" { nativeBuildInputs = [ pkgs.makeWrapper ]; } ''
       mkdir -p $out/bin $out/share/applications $out/share/icons $out/share/dbus-1/services
       cp -rs ${pkgs.ghostty}/share/ghostty $out/share/ 2>/dev/null || true
