@@ -181,7 +181,7 @@ in
       hl.bind("SUPER + Space",  hl.dsp.exec_cmd(scripts .. "/launcher.sh"))
       hl.bind("SUPER + V",      hl.dsp.exec_cmd(scripts .. "/clipboard.sh"))
       hl.bind("SUPER + B",      hl.dsp.exec_cmd(scripts .. "/wallpaper.sh"))
-      hl.bind("SUPER + C",      hl.dsp.exec_cmd(scripts .. "/wallpaper-picker.sh"))
+      hl.bind("SUPER + W",      hl.dsp.exec_cmd(scripts .. "/wallpaper-picker.sh"))
     '';
   };
 }
