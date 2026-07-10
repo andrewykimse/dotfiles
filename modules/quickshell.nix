@@ -187,7 +187,7 @@ in
         hl.exec_cmd("${qs}/bin/quickshell -p ${config.xdg.configHome}/quickshell/pill")
         hl.exec_cmd("${qs}/bin/quickshell -p ${config.xdg.configHome}/quickshell/launcher")
         hl.exec_cmd("${qs}/bin/quickshell -p ${config.xdg.configHome}/quickshell/rishot")
-        hl.exec_cmd("QML2_IMPORT_PATH=${qt5compatQmlPath} ${qs}/bin/quickshell -c hyprsphere")
+        hl.exec_cmd("sh -c 'QML2_IMPORT_PATH=${qt5compatQmlPath} ${qs}/bin/quickshell -c hyprsphere'")
       end)
 
       local scripts = os.getenv("HOME") .. "/.config/hypr/scripts"
