@@ -180,16 +180,32 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1783632831,
-        "narHash": "sha256-7tSQGzfEddVSGEPbCU8jw6egorNNi9x75JBwTV6wJWk=",
+        "lastModified": 1783633089,
+        "narHash": "sha256-n7namkKEMxm33Q+orJiqlh1U66eV7JBJRsC1s5RZDdM=",
         "owner": "andrewykimse",
         "repo": "hyprland-config",
-        "rev": "ac00d79ea949e8b1bd56f0ee2b0d725ece39d6d5",
+        "rev": "7ba17bd51b4c34585b70a2c6e6c07c2e331c72b1",
         "type": "github"
       },
       "original": {
         "owner": "andrewykimse",
         "repo": "hyprland-config",
+        "type": "github"
+      }
+    },
+    "hyprsphere": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1783548449,
+        "narHash": "sha256-+Ch2/qP4uEOjTlA85U4n4ekRaem0qNbhMPgXBhJX5/A=",
+        "owner": "66-firebat",
+        "repo": "hyprsphere",
+        "rev": "22967b08e93e36d8532016a17a9ab0dae70a3914",
+        "type": "github"
+      },
+      "original": {
+        "owner": "66-firebat",
+        "repo": "hyprsphere",
         "type": "github"
       }
     },
@@ -468,6 +484,7 @@
         "helium-browser": "helium-browser",
         "home-manager": "home-manager",
         "hyprland-config": "hyprland-config",
+        "hyprsphere": "hyprsphere",
         "monkeyterm": "monkeyterm",
         "mt7927-driver": "mt7927-driver",
         "neovim-config": "neovim-config",

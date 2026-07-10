@@ -1,4 +1,4 @@
-{ pkgs, ricelin, config, lib, ... }:
+{ pkgs, ricelin, hyprsphere, config, lib, ... }:
 let
   cfg = config.services.quickshell-ricelin;
   qs = cfg.package;
@@ -21,7 +21,18 @@ let
     sed -i 's|/Ricelin/wallpapers|/sources/dotfiles/wallpapers|g' $out/pill/Singletons/Walls.qml
     sed -i '/nvibrant/d' $out/pill/Singletons/Devices.qml
     sed -i 's|dispatch: "hl\.dsp\.exit()"|dispatch: "exit"|' $out/pill/Power.qml
+    mkdir -p $out/hyprsphere
+    cp ${hyprsphere}/shell.qml $out/hyprsphere/shell.qml
+    chmod u+w $out/hyprsphere/shell.qml
+    sed -i 's|"\$HOME/.local/share/applications/\*.desktop|"\$HOME/.nix-profile/share/applications/*.desktop \$HOME/.local/share/applications/*.desktop|' $out/hyprsphere/shell.qml
+    # hyprctl dispatch with Lua dispatcher syntax needs hyprctl eval + hl.dispatch() wrapper
+    sed -i 's|"hyprctl", "dispatch",|"hyprctl", "eval",|g' $out/hyprsphere/shell.qml
+    sed -i "s|'hl\.dsp\.\(.*\)']);|'hl.dispatch(hl.dsp.\1)']);|g" $out/hyprsphere/shell.qml
+    cp -r ${hyprsphere}/lib $out/hyprsphere/lib
+    cp ${../config/quickshell/hyprsphere.json} $out/hyprsphere/hyprsphere.json
   '';
+
+  qt5compatQmlPath = "${pkgs.qt6Packages.qt5compat}/lib/qt-6/qml";
 in
 {
   options.services.quickshell-ricelin.package = lib.mkOption {
@@ -41,6 +52,7 @@ in
       jq
       inter
       noto-fonts-cjk-sans
+      qt6Packages.qt5compat
     ];
 
     fonts.fontconfig.enable = true;
@@ -175,6 +187,7 @@ in
         hl.exec_cmd("${qs}/bin/quickshell -p ${config.xdg.configHome}/quickshell/pill")
         hl.exec_cmd("${qs}/bin/quickshell -p ${config.xdg.configHome}/quickshell/launcher")
         hl.exec_cmd("${qs}/bin/quickshell -p ${config.xdg.configHome}/quickshell/rishot")
+        hl.exec_cmd("QML2_IMPORT_PATH=${qt5compatQmlPath} ${qs}/bin/quickshell -c hyprsphere")
       end)
 
       local scripts = os.getenv("HOME") .. "/.config/hypr/scripts"
@@ -182,6 +195,27 @@ in
       hl.bind("SUPER + V",      hl.dsp.exec_cmd(scripts .. "/clipboard.sh"))
       hl.bind("SUPER + B",      hl.dsp.exec_cmd(scripts .. "/wallpaper.sh"))
       hl.bind("SUPER + W",      hl.dsp.exec_cmd(scripts .. "/wallpaper-picker.sh"))
+
+      hl.bind("SUPER + Tab", function()
+        hl.dispatch(hl.dsp.submap("hyprsphere"))
+        hl.dispatch(hl.dsp.exec_cmd("${qs}/bin/qs -c hyprsphere ipc call hyprsphere toggle"))
+      end)
+
+      hl.define_submap("hyprsphere", function()
+        hl.bind("SUPER + Super_L", function()
+          hl.dispatch(hl.dsp.exec_cmd("${qs}/bin/qs -c hyprsphere ipc call hyprsphere commit"))
+          hl.dispatch(hl.dsp.submap("reset"))
+        end, { release = true })
+        hl.bind("SUPER + Super_R", function()
+          hl.dispatch(hl.dsp.exec_cmd("${qs}/bin/qs -c hyprsphere ipc call hyprsphere commit"))
+          hl.dispatch(hl.dsp.submap("reset"))
+        end, { release = true })
+
+        hl.bind("Escape", function()
+          hl.dispatch(hl.dsp.exec_cmd("${qs}/bin/qs -c hyprsphere ipc call hyprsphere cancel"))
+          hl.dispatch(hl.dsp.submap("reset"))
+        end)
+      end)
     '';
   };
 }

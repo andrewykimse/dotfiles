@@ -38,9 +38,13 @@
       url = "github:Gakuseei/Ricelin";
       flake = false;
     };
+    hyprsphere = {
+      url = "github:66-firebat/hyprsphere";
+      flake = false;
+    };
   };
 
-  outputs = { nixpkgs, home-manager, nixgl, neovim-config, hyprland-config, monkeyterm, viaterm, mt7927-driver, btop-src, zen-browser, helium-browser, dracula-wallpaper, nixos-raspberrypi, ricelin, ... }:
+  outputs = { nixpkgs, home-manager, nixgl, neovim-config, hyprland-config, monkeyterm, viaterm, mt7927-driver, btop-src, zen-browser, helium-browser, dracula-wallpaper, nixos-raspberrypi, ricelin, hyprsphere, ... }:
     let
       mkHome = system: modules: extraArgs:
         home-manager.lib.homeManagerConfiguration {
@@ -97,15 +101,15 @@
           let pkgs = import nixpkgs { system = "x86_64-linux"; config.allowUnfree = true; };
           in mkHome "x86_64-linux" [
             ./hosts/firelink/home.nix
-          ] { inherit monkeyterm viaterm ricelin hyprland-config; nvidiaLibDir = "${pkgs.linuxPackages.nvidiaPackages.production}/lib"; };
+          ] { inherit monkeyterm viaterm ricelin hyprsphere hyprland-config; nvidiaLibDir = "${pkgs.linuxPackages.nvidiaPackages.production}/lib"; };
 
         "akim7@akim7-work-laptop" = mkHome "x86_64-linux" [
           ./hosts/work/home.nix
-        ] { inherit nixgl monkeyterm viaterm ricelin hyprland-config; nvidiaLibDir = "/usr/lib/x86_64-linux-gnu"; };
+        ] { inherit nixgl monkeyterm viaterm ricelin hyprsphere hyprland-config; nvidiaLibDir = "/usr/lib/x86_64-linux-gnu"; };
 
         "akim7@akim7-work-desktop" = mkHome "x86_64-linux" [
           ./hosts/work-desktop/home.nix
-        ] { inherit nixgl monkeyterm viaterm ricelin hyprland-config; nvidiaLibDir = "/usr/lib/x86_64-linux-gnu"; };
+        ] { inherit nixgl monkeyterm viaterm ricelin hyprsphere hyprland-config; nvidiaLibDir = "/usr/lib/x86_64-linux-gnu"; };
 
         "deck@deckard" = mkHome "x86_64-linux" [
           ./hosts/deckard/home.nix
