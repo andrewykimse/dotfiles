@@ -13,7 +13,7 @@ let
   #   4. Fix logout dispatch: Ricelin uses Lua syntax "hl.dsp.exit()" but
   #      quickshell's Hyprland.dispatch() speaks hyprctl IPC — needs just "exit"
   quickshellConfig = pkgs.runCommand "quickshell-ricelin-config" {
-    nativeBuildInputs = [ pkgs.gnused ];
+    nativeBuildInputs = [ pkgs.gnused pkgs.python3 ];
   } ''
     cp -r ${ricelin}/configs/quickshell $out
     chmod -R u+w $out
@@ -28,6 +28,43 @@ let
     # hyprctl dispatch with Lua dispatcher syntax needs hyprctl eval + hl.dispatch() wrapper
     sed -i 's|"hyprctl", "dispatch",|"hyprctl", "eval",|g' $out/hyprsphere/shell.qml
     sed -i "s|'hl\.dsp\.\(.*\)']);|'hl.dispatch(hl.dsp.\1)']);|g" $out/hyprsphere/shell.qml
+    # Resolve named icons (e.g. "steam") to their highest-res file path so QML
+    # uses file:// and scales smoothly, instead of image://icon/ which doesn't
+    # do size fallback in quickshell's provider.
+    cat > $out/hyprsphere/resolve-icon.sh << 'RESOLVE_EOF'
+#!/usr/bin/env bash
+ic="$1"
+[ -z "$ic" ] && exit 1
+case "$ic" in /*) [ -f "$ic" ] && echo "$ic" && exit 0 ;; esac
+for sz in 512x512 256x256 128x128 scalable 64x64 48x48 32x32; do
+  for base in "$HOME/.nix-profile/share/icons" /run/current-system/sw/share/icons; do
+    for ext in png svg; do
+      p="$base/hicolor/$sz/apps/$ic.$ext"
+      [ -f "$p" ] && echo "$p" && exit 0
+    done
+  done
+done
+echo "$ic"
+RESOLVE_EOF
+    chmod +x $out/hyprsphere/resolve-icon.sh
+    python3 - $out/hyprsphere/shell.qml << 'PYEOF'
+import sys
+path = sys.argv[1]
+with open(path, 'r') as f:
+    content = f.read()
+old = '"grep -E \'^(Name=|Icon=|StartupWMClass=|Exec=)\' \\"$f\\" 2>/dev/null; " +'
+new = (
+    '"grep -E \'^(Name=|StartupWMClass=|Exec=)\' \\"$f\\" 2>/dev/null; " +\n'
+    '            "ic=$(grep -m1 \'^Icon=\' \\"$f\\" 2>/dev/null | cut -d= -f2-); '
+    'if [ -n \\"$ic\\" ]; then '
+    'r=$($HOME/.config/quickshell/hyprsphere/resolve-icon.sh \\"$ic\\"); '
+    'echo \\"Icon=$r\\"; fi; " +'
+)
+assert old in content, "Pattern not found in shell.qml!"
+content = content.replace(old, new, 1)
+with open(path, 'w') as f:
+    f.write(content)
+PYEOF
     cp -r ${hyprsphere}/lib $out/hyprsphere/lib
     cp ${../config/quickshell/hyprsphere.json} $out/hyprsphere/hyprsphere.json
   '';

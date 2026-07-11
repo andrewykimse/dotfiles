@@ -23,6 +23,7 @@
       save = 10000;
       ignoreDups = true;
       share = true;
+      append = true;
     };
 
     initContent = ''
