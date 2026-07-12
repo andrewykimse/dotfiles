@@ -33,6 +33,10 @@ let
     else pkgs.btop;
 in
 {
+  # Inline terminal image viewer (kitty graphics protocol works in ghostty):
+  # timg -pk image.png
+  home.packages = [ pkgs.timg ];
+
   programs.btop = {
     enable = true;
     package = btopPkg;

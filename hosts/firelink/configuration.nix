@@ -145,6 +145,14 @@
   programs.zsh.enable = true;
   programs.nix-ld.enable = true;
 
+  # Apptainer for containerized HPC workloads (OpenFOAM — not packageable in
+  # nixpkgs due to its wmake build system; OpenCFD ships official images).
+  # Runs unprivileged via user namespaces, binds $HOME by default.
+  programs.singularity = {
+    enable = true;
+    package = pkgs.apptainer;
+  };
+
   # Install firefox.
   programs.firefox.enable = true;
 
