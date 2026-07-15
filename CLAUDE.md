@@ -9,3 +9,9 @@
 4. **Flag uncertainty explicitly.** If you're unsure about something, see point 1 above. If it makes sense to do so, conduct a small, localised and low-risk experiment and bring the hypothesis and results to me to discuss. Confidence without certainty causes more damage than admitting a gap.
 
 5. **I'm always open to ideas on better ways to do things.** Please don't hesitate to suggest a better way, or one that has long lasting impact over a tactical change.
+
+6. **Never include `Co-Authored-By` lines in commit messages.** Do not add yourself as a co-author or attribute commits to Claude in any way.
+
+7. **Only include a concise summary when creating PRs, nothing else.** Do not add a test plan or anything else, just include a description of changes.
+
+8. **Avoid commenting obvious code** Do not create any unnecessary comments when the code itself is self-documenting.
