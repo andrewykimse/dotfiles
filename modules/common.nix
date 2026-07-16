@@ -7,7 +7,7 @@
     ./dev.nix
   ];
 
-  home.packages = [ pkgs.nh ];
+  home.packages = [ pkgs.nh pkgs.iperf3 ];
 
   # home.username and home.homeDirectory are set per-host
 
