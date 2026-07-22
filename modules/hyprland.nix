@@ -6,6 +6,12 @@ let
   screenshot-full = pkgs.writeShellScript "screenshot-full" ''
     grim - | wl-copy
   '';
+  new-browser-window = pkgs.writeShellScript "new-browser-window" ''
+    desktop=$(${pkgs.xdg-utils}/bin/xdg-settings get default-web-browser)
+    desktop_file=$(find /run/current-system/sw/share/applications $HOME/.local/share/applications $HOME/.nix-profile/share/applications /usr/share/applications -name "$desktop" 2>/dev/null | head -1)
+    binary=$(${pkgs.gnugrep}/bin/grep -m1 '^Exec=' "$desktop_file" | ${pkgs.gnused}/bin/sed 's/^Exec=//;s/ %.//g')
+    exec ''${binary:-xdg-open} --new-window
+  '';
 in
 {
   home.packages = with pkgs; [
@@ -30,6 +36,7 @@ in
       terminal     = { _var = "ghostty"; };
       lock         = { _var = "hyprlock"; };
       claude_here  = { _var = "${hyprland-config}/scripts/claude-here.sh"; };
+      browser      = { _var = "${new-browser-window}"; };
       monitor  = [
         { output = "eDP-1"; mode = "preferred"; position = "auto"; scale = 2; }
         { output = "";      mode = "preferred"; position = "auto"; scale = 1; }
