@@ -7,7 +7,7 @@
     ./dev.nix
   ];
 
-  home.packages = [ pkgs.nh pkgs.iperf3 ];
+  home.packages = [ pkgs.nh pkgs.iperf3 pkgs.spotify-player ];
 
   # home.username and home.homeDirectory are set per-host
 
