@@ -29,6 +29,10 @@
     initContent = ''
       [[ ":$PATH:" != *":$HOME/.nix-profile/bin:"* ]] && export PATH="$HOME/.nix-profile/bin:$PATH"
 
+      # Volta (Node version manager)
+      export VOLTA_HOME="$HOME/.volta"
+      [[ ":$PATH:" != *":$VOLTA_HOME/bin:"* ]] && export PATH="$VOLTA_HOME/bin:$PATH"
+
       set -o vi
 
       autoload -Uz compinit && compinit
