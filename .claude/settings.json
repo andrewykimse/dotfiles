@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(nix develop *)",
+      "Bash(nix --extra-experimental-features *)",
+      "Bash(nix eval *)",
+      "Bash(nix flake *)",
+      "Bash(home-manager switch *)",
+      "Bash(gh search code *)",
+      "Bash(gh pr view *)",
+      "Bash(gh pr checks *)",
+      "Bash(gh pr diff *)",
+      "Bash(gh pr list *)",
+      "Bash(gh run list *)",
+      "Bash(gh run view *)",
+      "Bash(gh api repos/*/contents *)",
+      "Bash(gh api repos/*/commits *)",
+      "Bash(gh api repos/*/check-runs *)",
+      "Bash(gh api repos/*/statuses *)",
+      "Bash(clang-tidy *)",
+      "Bash(run-clang-tidy *)",
+      "Bash(hyprctl *)"
+    ]
+  }
+}

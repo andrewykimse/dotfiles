@@ -1,10 +1,26 @@
-{ pkgs, hyprland-config, ... }:
+{ config, pkgs, hyprland-config, ... }:
 let
   screenshot-area = pkgs.writeShellScript "screenshot-area" ''
     grim -g "$(slurp)" - | wl-copy
   '';
   screenshot-full = pkgs.writeShellScript "screenshot-full" ''
     grim - | wl-copy
+  '';
+  record-area = pkgs.writeShellScript "record-area" ''
+    mkdir -p "$HOME/Videos"
+    exec ${pkgs.wf-recorder}/bin/wf-recorder -g "$(slurp)" \
+      -f "$HOME/Videos/$(date +%Y-%m-%d-%H%M%S).mp4"
+  '';
+  # wf-recorder prompts interactively when several outputs exist, which hangs
+  # when launched from a menu, so pick the focused one explicitly.
+  record-full = pkgs.writeShellScript "record-full" ''
+    mkdir -p "$HOME/Videos"
+    output=$(hyprctl -j activeworkspace | ${pkgs.jq}/bin/jq -r .monitor)
+    exec ${pkgs.wf-recorder}/bin/wf-recorder -o "$output" \
+      -f "$HOME/Videos/$(date +%Y-%m-%d-%H%M%S).mp4"
+  '';
+  record-stop = pkgs.writeShellScript "record-stop" ''
+    pkill -INT -x wf-recorder
   '';
   new-browser-window = pkgs.writeShellScript "new-browser-window" ''
     desktop=$(${pkgs.xdg-utils}/bin/xdg-settings get default-web-browser)
@@ -18,15 +34,30 @@ in
     hyprpaper
     hypridle
     hyprpolkitagent
-    xdg-desktop-portal-gtk
     grim
     slurp
+    wf-recorder
     wl-clipboard
     cliphist
     brightnessctl
     playerctl
     pavucontrol
   ];
+
+  # Registers hyprland.portal in the profile's portal dir and points the frontend
+  # at it, so ScreenCast (screen recording and sharing) has a backend.
+  xdg.portal = {
+    enable = true;
+    extraPortals = [
+      config.wayland.windowManager.hyprland.finalPortalPackage
+      pkgs.xdg-desktop-portal-gtk
+    ];
+    config.common = {
+      default = [ "hyprland" "gtk" ];
+      "org.freedesktop.impl.portal.ScreenCast" = [ "hyprland" ];
+      "org.freedesktop.impl.portal.Screenshot" = [ "hyprland" ];
+    };
+  };
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -103,6 +134,24 @@ in
       name = "Screenshot (Full)";
       exec = "${screenshot-full}";
       icon = "accessories-screenshot";
+      categories = [ "Utility" ];
+    };
+    record-area = {
+      name = "Record (Area)";
+      exec = "${record-area}";
+      icon = "media-record";
+      categories = [ "Utility" ];
+    };
+    record-full = {
+      name = "Record (Full)";
+      exec = "${record-full}";
+      icon = "media-record";
+      categories = [ "Utility" ];
+    };
+    record-stop = {
+      name = "Record (Stop)";
+      exec = "${record-stop}";
+      icon = "media-playback-stop";
       categories = [ "Utility" ];
     };
   };

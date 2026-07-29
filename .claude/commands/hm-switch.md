@@ -9,11 +9,13 @@ Run the appropriate home-manager switch command for the current machine.
 
 ## Instructions
 
-1. Detect which host configuration to use based on the current hostname and user:
-   - `akim7@work` → `home-manager switch --flake ~/sources/dotfiles#akim7@work --impure`
-   - `andrewkim@desktop` → `home-manager switch --flake ~/sources/dotfiles#andrewkim@desktop`
-   - `andrewkim@macbook` → `home-manager switch --flake ~/sources/dotfiles#andrewkim@macbook`
+1. Run `nh home switch --impure --no-nom ~/sources/dotfiles`.
 
-2. The `--impure` flag is required on the work machine because of nixGL dependencies.
+   `nh` auto-detects the `homeConfigurations` attribute as `<username>@<hostname>`, which matches this flake's naming for every host, so no `--configuration` flag is needed. Pass `-c <user>@<host>` only if auto-detection fails. The flake outputs are:
+   - `akim7@akim7-work-laptop`, `akim7@akim7-work-desktop`
+   - `andrewkim@firelink`, `andrewkim@macbook`
+   - `deck@deckard`
 
-3. Run the command and report the result. If it fails, show the relevant error output.
+2. `--impure` is required on the work and deckard machines because of nixGL, and is harmless elsewhere. `--no-nom` keeps the build output readable outside a TTY — drop it if a human is watching.
+
+3. Report the result, including the package diff `nh` prints. If it fails, show the relevant error output.
