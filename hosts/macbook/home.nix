@@ -83,17 +83,6 @@
     alt-enter = "exec-and-forget osascript -e 'tell application \"Ghostty\" to activate' -e 'delay 0.1' -e 'tell application \"System Events\" to tell process \"Ghostty\" to keystroke \"n\" using command down'"
     alt-q = 'close'
 
-    alt-shift-semicolon = 'mode service'
-
-    [mode.service.binding]
-    esc = ['reload-config', 'mode main']
-    r = ['flatten-workspace-tree', 'mode main']
-    f = ['layout floating tiling', 'mode main']
-    backspace = ['close-all-windows-but-current', 'mode main']
-    alt-shift-h = ['join-with left', 'mode main']
-    alt-shift-j = ['join-with down', 'mode main']
-    alt-shift-k = ['join-with up', 'mode main']
-    alt-shift-l = ['join-with right', 'mode main']
   '';
 
   # Remote Nix builder — delegates aarch64-linux builds to the desktop.
