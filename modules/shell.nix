@@ -11,11 +11,11 @@
       ff = "fastfetch";
       ga = "git add";
       gcm = "git commit -m";
+      gch = "git checkout";
       gg = "git status";
       gs = "git stash";
       gp = "git pull";
       gP = "git push";
-      mail = "aerc";
     };
 
     history = {
