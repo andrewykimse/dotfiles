@@ -10,6 +10,7 @@
       nshell = "nix --impure shell";
       ff = "fastfetch";
       ga = "git add";
+      gb = "git branch";
       gcm = "git commit -m";
       gch = "git checkout";
       gg = "git status";
