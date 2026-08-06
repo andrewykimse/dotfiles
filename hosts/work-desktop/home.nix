@@ -9,6 +9,7 @@ let
 in
 {
   imports = [
+    ../../modules/common.nix
     ../../modules/hyprland.nix
     ../../modules/quickshell.nix
     ../../modules/work.nix
