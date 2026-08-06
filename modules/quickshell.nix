@@ -9,11 +9,19 @@ let
   pillOverride = pkgs.writeText "Pill.qml"
     (builtins.readFile "${hyprland-config}/quickshell/pill/Pill.qml");
 
+  glyphIconOverride = pkgs.writeText "GlyphIcon.qml"
+    (builtins.readFile "${hyprland-config}/quickshell/pill/GlyphIcon.qml");
+
+  batterySurface = pkgs.writeText "Battery.qml"
+    (builtins.readFile "${hyprland-config}/quickshell/pill/Battery.qml");
+
   # Patch the Ricelin quickshell config:
   #   1. Replace all Theme.qml files with the Dracula-adapted version
   #   2. Remap hardcoded ~/Ricelin/wallpapers → ~/sources/dotfiles/wallpapers
   #   3. Remove nvibrant calls (binary not in nixpkgs)
-  #   4. Replace pill/Pill.qml with our battery-percentage-augmented version
+  #   4. Replace pill/Pill.qml and pill/GlyphIcon.qml with our
+  #      battery-percentage/power-profile-augmented versions, and add the new
+  #      pill/Battery.qml surface
   quickshellConfig = pkgs.runCommand "quickshell-ricelin-config" {
     nativeBuildInputs = [ pkgs.gnused pkgs.python3 ];
   } ''
@@ -23,6 +31,8 @@ let
     sed -i 's|/Ricelin/wallpapers|/sources/dotfiles/wallpapers|g' $out/pill/Singletons/Walls.qml
     sed -i '/nvibrant/d' $out/pill/Singletons/Devices.qml
     cp ${pillOverride} $out/pill/Pill.qml
+    cp ${glyphIconOverride} $out/pill/GlyphIcon.qml
+    cp ${batterySurface} $out/pill/Battery.qml
     mkdir -p $out/hyprsphere
     cp ${hyprsphere}/shell.qml $out/hyprsphere/shell.qml
     chmod u+w $out/hyprsphere/shell.qml
