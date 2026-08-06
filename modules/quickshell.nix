@@ -6,10 +6,14 @@ let
   draculaTheme = pkgs.writeText "Theme.qml"
     (builtins.readFile "${hyprland-config}/quickshell/Theme.qml");
 
+  pillOverride = pkgs.writeText "Pill.qml"
+    (builtins.readFile "${hyprland-config}/quickshell/pill/Pill.qml");
+
   # Patch the Ricelin quickshell config:
   #   1. Replace all Theme.qml files with the Dracula-adapted version
   #   2. Remap hardcoded ~/Ricelin/wallpapers → ~/sources/dotfiles/wallpapers
   #   3. Remove nvibrant calls (binary not in nixpkgs)
+  #   4. Replace pill/Pill.qml with our battery-percentage-augmented version
   quickshellConfig = pkgs.runCommand "quickshell-ricelin-config" {
     nativeBuildInputs = [ pkgs.gnused pkgs.python3 ];
   } ''
@@ -18,6 +22,7 @@ let
     find $out -name "Theme.qml" -exec cp ${draculaTheme} {} \;
     sed -i 's|/Ricelin/wallpapers|/sources/dotfiles/wallpapers|g' $out/pill/Singletons/Walls.qml
     sed -i '/nvibrant/d' $out/pill/Singletons/Devices.qml
+    cp ${pillOverride} $out/pill/Pill.qml
     mkdir -p $out/hyprsphere
     cp ${hyprsphere}/shell.qml $out/hyprsphere/shell.qml
     chmod u+w $out/hyprsphere/shell.qml
