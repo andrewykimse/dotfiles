@@ -42,9 +42,17 @@
       url = "github:66-firebat/hyprsphere";
       flake = false;
     };
+    nvibrant-src = {
+      url = "github:Tremeschin/nvibrant/v1.2.1";
+      flake = false;
+    };
+    nvidia-open-gpu-595-84 = {
+      url = "github:NVIDIA/open-gpu-kernel-modules/595.84";
+      flake = false;
+    };
   };
 
-  outputs = { nixpkgs, home-manager, nixgl, neovim-config, hyprland-config, monkeyterm, viaterm, mt7927-driver, btop-src, zen-browser, helium-browser, dracula-wallpaper, nixos-raspberrypi, ricelin, hyprsphere, ... }:
+  outputs = { nixpkgs, home-manager, nixgl, neovim-config, hyprland-config, monkeyterm, viaterm, mt7927-driver, btop-src, zen-browser, helium-browser, dracula-wallpaper, nixos-raspberrypi, ricelin, hyprsphere, nvibrant-src, nvidia-open-gpu-595-84, ... }:
     let
       mkHome = system: modules: extraArgs:
         home-manager.lib.homeManagerConfiguration {
@@ -105,7 +113,7 @@
 
         "akim7@akim7-work-laptop" = mkHome "x86_64-linux" [
           ./hosts/work/home.nix
-        ] { inherit nixgl monkeyterm viaterm ricelin hyprsphere hyprland-config; nvidiaLibDir = "/usr/lib/x86_64-linux-gnu"; };
+        ] { inherit nixgl monkeyterm viaterm ricelin hyprsphere hyprland-config nvibrant-src nvidia-open-gpu-595-84; nvidiaLibDir = "/usr/lib/x86_64-linux-gnu"; };
 
         "akim7@akim7-work-desktop" = mkHome "x86_64-linux" [
           ./hosts/work-desktop/home.nix

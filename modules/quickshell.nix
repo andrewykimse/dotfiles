@@ -1,7 +1,30 @@
-{ pkgs, ricelin, hyprsphere, hyprland-config, config, lib, ... }:
+{ pkgs, ricelin, hyprsphere, hyprland-config, config, lib, nvibrant-src ? null, nvidia-open-gpu-595-84 ? null, ... }:
 let
   cfg = config.services.quickshell-ricelin;
   qs = cfg.package;
+
+  # Digital vibrance on Wayland via /dev/nvidia-modeset ioctls; the ioctl ABI
+  # is pinned to a specific driver release, so this is built against the
+  # exact open-gpu-kernel-modules tag matching this host's driver (595.84)
+  # rather than nvibrant's own multi-version PyPI build.
+  nvibrant = if nvibrant-src != null && nvidia-open-gpu-595-84 != null
+    then pkgs.stdenv.mkDerivation {
+      pname = "nvibrant";
+      version = "595.84";
+      src = nvibrant-src;
+      nativeBuildInputs = [ pkgs.meson pkgs.ninja ];
+      postPatch = ''
+        rm -rf open-gpu
+        cp -r ${nvidia-open-gpu-595-84} open-gpu
+        chmod -R u+w open-gpu
+      '';
+      mesonBuildType = "release";
+      installPhase = ''
+        mkdir -p $out/bin
+        cp nvibrant $out/bin/nvibrant
+      '';
+    }
+    else null;
 
   draculaTheme = pkgs.writeText "Theme.qml"
     (builtins.readFile "${hyprland-config}/quickshell/Theme.qml");
@@ -27,8 +50,8 @@ let
   #   3. Replace pill/Pill.qml, pill/GlyphIcon.qml and pill/Mixer.qml with our
   #      battery-percentage/power-profile/internal-backlight-augmented
   #      versions, pill/Singletons/Devices.qml with a version that adds
-  #      brightnessctl-backed backlight control (and drops the nvibrant calls,
-  #      binary not in nixpkgs), and add the new pill/Battery.qml surface
+  #      brightnessctl-backed backlight control, and add the new
+  #      pill/Battery.qml surface
   quickshellConfig = pkgs.runCommand "quickshell-ricelin-config" {
     nativeBuildInputs = [ pkgs.gnused pkgs.python3 ];
   } ''
@@ -108,7 +131,7 @@ in
       inter
       noto-fonts-cjk-sans
       qt6Packages.qt5compat
-    ];
+    ] ++ lib.optional (nvibrant != null) nvibrant;
 
     fonts.fontconfig.enable = true;
 
