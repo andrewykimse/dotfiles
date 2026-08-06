@@ -1,10 +1,10 @@
-{ pkgs, ricelin, hyprsphere, config, lib, ... }:
+{ pkgs, ricelin, hyprsphere, hyprland-config, config, lib, ... }:
 let
   cfg = config.services.quickshell-ricelin;
   qs = cfg.package;
 
   draculaTheme = pkgs.writeText "Theme.qml"
-    (builtins.readFile ../config/quickshell/Theme.qml);
+    (builtins.readFile "${hyprland-config}/quickshell/Theme.qml");
 
   # Patch the Ricelin quickshell config:
   #   1. Replace all Theme.qml files with the Dracula-adapted version
@@ -63,7 +63,7 @@ with open(path, 'w') as f:
     f.write(content)
 PYEOF
     cp -r ${hyprsphere}/lib $out/hyprsphere/lib
-    cp ${../config/quickshell/hyprsphere.json} $out/hyprsphere/hyprsphere.json
+    cp ${hyprland-config}/quickshell/hyprsphere.json $out/hyprsphere/hyprsphere.json
   '';
 
   qt5compatQmlPath = "${pkgs.qt6Packages.qt5compat}/lib/qt-6/qml";
