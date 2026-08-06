@@ -10,8 +10,6 @@ let
   #   1. Replace all Theme.qml files with the Dracula-adapted version
   #   2. Remap hardcoded ~/Ricelin/wallpapers → ~/sources/dotfiles/wallpapers
   #   3. Remove nvibrant calls (binary not in nixpkgs)
-  #   4. Fix logout dispatch: Ricelin uses Lua syntax "hl.dsp.exit()" but
-  #      quickshell's Hyprland.dispatch() speaks hyprctl IPC — needs just "exit"
   quickshellConfig = pkgs.runCommand "quickshell-ricelin-config" {
     nativeBuildInputs = [ pkgs.gnused pkgs.python3 ];
   } ''
@@ -20,7 +18,6 @@ let
     find $out -name "Theme.qml" -exec cp ${draculaTheme} {} \;
     sed -i 's|/Ricelin/wallpapers|/sources/dotfiles/wallpapers|g' $out/pill/Singletons/Walls.qml
     sed -i '/nvibrant/d' $out/pill/Singletons/Devices.qml
-    sed -i 's|dispatch: "hl\.dsp\.exit()"|dispatch: "exit"|' $out/pill/Power.qml
     mkdir -p $out/hyprsphere
     cp ${hyprsphere}/shell.qml $out/hyprsphere/shell.qml
     chmod u+w $out/hyprsphere/shell.qml
@@ -152,6 +149,14 @@ in
         #!/bin/sh
         mon=$(${pkgs.hyprland}/bin/hyprctl activeworkspace -j | ${pkgs.jq}/bin/jq -r '.monitor')
         ${pkgs.quickshell}/bin/qs -c sidebar ipc call sidebar toggle "$mon"
+      '';
+    };
+
+    xdg.configFile."hypr/scripts/lock.sh" = {
+      executable = true;
+      text = ''
+        #!/bin/sh
+        hyprlock
       '';
     };
 
