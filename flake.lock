@@ -212,11 +212,11 @@
     "mediatek-mt7927-dkms": {
       "flake": false,
       "locked": {
-        "lastModified": 1779566214,
-        "narHash": "sha256-uJiAJSAgPHSR7/ixepQn43VWnARipfUxrDiARr4PrCs=",
+        "lastModified": 1783265495,
+        "narHash": "sha256-GXbwhZbvfWE+w9TgMReAsAFL/WkbCokzEiIChmX2d00=",
         "owner": "jetm",
         "repo": "mediatek-mt7927-dkms",
-        "rev": "9dfa7d168b1ba94b9d83d4b09e2f4a878cff7a47",
+        "rev": "ad1f3e4d19fe540aaa1f449ddba86c65db9bfc82",
         "type": "github"
       },
       "original": {
@@ -247,14 +247,16 @@
     "mt7927-driver": {
       "inputs": {
         "mediatek-mt7927-dkms": "mediatek-mt7927-dkms",
-        "nixpkgs": "nixpkgs_3"
+        "nixpkgs": [
+          "nixpkgs"
+        ]
       },
       "locked": {
-        "lastModified": 1779728988,
-        "narHash": "sha256-sWtx+ztMelgLOxDDaW42myUVqVJLcfNRZAcmD8zGjDo=",
+        "lastModified": 1786005648,
+        "narHash": "sha256-8/RLXXQyCoO5RN6+Tyu9EMc7UGJaLJITJHSKR/Gr9LA=",
         "owner": "cmspam",
         "repo": "mt7927-nixos",
-        "rev": "c132a13c1ca2d33a3d969dcd83a369318e0ddaa8",
+        "rev": "844d2a5b30ba811b7db7f30d44dcdeec9bd677c9",
         "type": "github"
       },
       "original": {
@@ -266,7 +268,7 @@
     "neovim-config": {
       "inputs": {
         "flake-utils": "flake-utils_2",
-        "nixpkgs": "nixpkgs_4"
+        "nixpkgs": "nixpkgs_3"
       },
       "locked": {
         "lastModified": 1783025442,
@@ -285,7 +287,7 @@
     "nixgl": {
       "inputs": {
         "flake-utils": "flake-utils_3",
-        "nixpkgs": "nixpkgs_5"
+        "nixpkgs": "nixpkgs_4"
       },
       "locked": {
         "lastModified": 1762090880,
@@ -384,22 +386,6 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1779560665,
-        "narHash": "sha256-tpyBcxPpcQb8ukyNF7DoCwfSY3VPsxHoYwj00Cayv5o=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "64c08a7ca051951c8eae34e3e3cb1e202fe36786",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_4": {
-      "locked": {
         "lastModified": 1777578337,
         "narHash": "sha256-Ad49moKWeXtKBJNy2ebiTQUEgdLyvGmTeykAQ9xM+Z4=",
         "owner": "NixOS",
@@ -414,7 +400,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_5": {
+    "nixpkgs_4": {
       "locked": {
         "lastModified": 1746378225,
         "narHash": "sha256-OeRSuL8PUjIfL3Q0fTbNJD/fmv1R+K2JAOqWJd3Oceg=",
@@ -429,7 +415,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_6": {
+    "nixpkgs_5": {
       "locked": {
         "lastModified": 1781577229,
         "narHash": "sha256-lrp67w8AulE9Ks53n27I45ADSzbOCn4H+CNW1Ck8B+8=",
@@ -445,7 +431,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_7": {
+    "nixpkgs_6": {
       "locked": {
         "lastModified": 1777425547,
         "narHash": "sha256-d57AbflkNfZNoFaZDzssEq1RfPoM9dLtOGI2O+N/68Q=",
@@ -524,7 +510,7 @@
         "neovim-config": "neovim-config",
         "nixgl": "nixgl",
         "nixos-raspberrypi": "nixos-raspberrypi",
-        "nixpkgs": "nixpkgs_6",
+        "nixpkgs": "nixpkgs_5",
         "nvibrant-src": "nvibrant-src",
         "nvidia-open-gpu-595-84": "nvidia-open-gpu-595-84",
         "ricelin": "ricelin",
@@ -595,7 +581,7 @@
     "viaterm": {
       "inputs": {
         "flake-utils": "flake-utils_4",
-        "nixpkgs": "nixpkgs_7"
+        "nixpkgs": "nixpkgs_6"
       },
       "locked": {
         "lastModified": 1777660257,

@@ -14,19 +14,23 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # Kernel: testing LTS vs linuxPackages_latest (was 7.0.10) to see if a different
-  # PCI allocator can carve the Studio Display's nested Thunderbolt PCIe windows
-  # (see the kernelParams below for the resource saga).
+  # Kernel: LTS rather than linuxPackages_latest (was 7.0.10) because its PCI
+  # allocator does carve the Studio Display's nested Thunderbolt PCIe windows;
+  # the display's xHCI gets a valid non-prefetchable BAR here.
   boot.kernelPackages = pkgs.linuxPackages;
   # Thunderbolt PCIe tunneling for the daisy-chained Apple Studio Display, whose
   # USB (camera/speakers/mic) tunnels in behind the CalDigit's deep nested PCIe
   # switch. hpiosize=0: the xHCIs are MMIO-only, so drop the phantom hot-plug I/O
   # window reservations that overflow x86's 64K I/O space and abort bridge config.
-  # pcie_port_pm=off: with resources sorted the controller now binds and reads its
-  # registers, but drops off mid-init when the TB ports runtime-suspend to D3cold;
-  # disabling PCIe port power management keeps them awake through initialization.
+  # pcie_port_pm=off: keeps the TB ports from runtime-suspending to D3cold mid-init.
+  # pcie_aspm.policy=performance rather than pcie_aspm=off: "off" clears
+  # aspm_support_enabled, so the kernel skips the PCIe _OSC handshake entirely
+  # ("not requesting OS control; OS requires [ExtendedConfig ASPM ClockPM MSI]")
+  # and never gains native hotplug. /sys/bus/pci/slots stays empty, so nothing
+  # re-enumerates the display's xHCI after the thunderbolt driver takes the tunnels
+  # over from firmware. The policy form pins links in L0 without that side effect.
   boot.kernelParams = [
-    "pcie_aspm=off"
+    "pcie_aspm.policy=performance"
     "pci=realloc"
     "pci=hpiosize=0"
     "pcie_port_pm=off"
@@ -39,6 +43,38 @@
     enableBluetooth = true;
     disableAspm = true;
   };
+
+  # mt7927-nixos installs its modules under lib/modules/<ver>/extra/, but kmod's
+  # built-in depmod search string is "updates built-in" and NixOS ships no
+  # depmod.d config, so extra/ is never indexed. modprobe therefore keeps
+  # resolving the stock in-tree mt7925e, which carries no 7927 PCI ID and never
+  # binds. Re-expose the same modules under updates/ so depmod sees them.
+  boot.extraModulePackages =
+    let
+      relocate = pkg: pkgs.runCommand "${pkg.name}-updates" { } ''
+        for v in ${pkg}/lib/modules/*; do
+          ver=$(basename "$v")
+          mkdir -p "$out/lib/modules/$ver/updates"
+          cp -r "$v"/extra/* "$out/lib/modules/$ver/updates/"
+        done
+      '';
+    in
+    map relocate [
+      mt7927-driver.packages.${pkgs.system}.wifi
+      mt7927-driver.packages.${pkgs.system}.bluetooth
+    ];
+
+  # Same flake, mismatched halves: its firmware package installs the BT blob at
+  # mediatek/mt6639/, but its patched btmtk requests mediatek/mt7927/ (the path
+  # used by the pending linux-firmware MR), so hci0 fails setup with -2 and
+  # retries forever. Alias the blob into the path the driver actually asks for.
+  hardware.firmware = [
+    (pkgs.runCommand "mt7927-bt-firmware-mt7927-path" { } ''
+      mkdir -p "$out/lib/firmware/mediatek/mt7927"
+      cp ${mt7927-driver.packages.${pkgs.system}.firmware}/lib/firmware/mediatek/mt6639/BT_RAM_CODE_MT6639_2_1_hdr.bin \
+        "$out/lib/firmware/mediatek/mt7927/BT_RAM_CODE_MT6639_2_1_hdr.bin"
+    '')
+  ];
 
   networking.hostName = "firelink"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.

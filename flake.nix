@@ -18,7 +18,10 @@
     hyprland-config.url = "git+ssh://git@github.com/andrewykimse/hyprland-config";
     monkeyterm.url = "github:andrewykimse/monkeyterm";
     viaterm.url = "github:andrewykimse/viaterm";
-    mt7927-driver.url = "github:cmspam/mt7927-nixos";
+    mt7927-driver = {
+      url = "github:cmspam/mt7927-nixos";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     btop-src.url = "github:andrewykimse/btop";
     btop-src.flake = false;
     dracula-wallpaper.url = "github:dracula/wallpaper";
