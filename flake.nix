@@ -58,7 +58,7 @@
         home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
           modules = [ ./modules/common.nix ] ++ modules;
-          extraSpecialArgs = { inherit neovim-config btop-src zen-browser helium-browser dracula-wallpaper; nvidiaLibDir = null; } // extraArgs;
+          extraSpecialArgs = { inherit neovim-config btop-src zen-browser helium-browser dracula-wallpaper; nvidiaLibDir = null; nvibrant-src = null; nvidia-open-gpu-595-84 = null; } // extraArgs;
         };
     in {
       nixosConfigurations.firelink = nixpkgs.lib.nixosSystem {
