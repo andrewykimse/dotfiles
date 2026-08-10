@@ -1,11 +1,18 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, pyroclear-src, ... }:
 {
+  home.packages = [
+    ((pkgs.callPackage "${pyroclear-src}/package.nix" { }).overrideAttrs (old: {
+      meta = old.meta // { platforms = lib.platforms.unix; };
+    }))
+  ];
+
   programs.zsh = {
     enable = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
 
     shellAliases = {
+      clear = "pyroclear";
       nrun = "nix --impure run";
       nshell = "nix --impure shell";
       ff = "fastfetch";

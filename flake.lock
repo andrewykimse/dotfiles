@@ -481,6 +481,22 @@
         "type": "github"
       }
     },
+    "pyroclear-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1786300295,
+        "narHash": "sha256-y6e9AAsWWRGlZFMn9XzskqknX5B5TEHtb3fkZait7I0=",
+        "owner": "shreyanth-sureshkrishnaa",
+        "repo": "pyroclear",
+        "rev": "56fd3d942ef14ce0cc53ece3e962645dd4598df5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "shreyanth-sureshkrishnaa",
+        "repo": "pyroclear",
+        "type": "github"
+      }
+    },
     "ricelin": {
       "flake": false,
       "locked": {
@@ -513,6 +529,7 @@
         "nixpkgs": "nixpkgs_5",
         "nvibrant-src": "nvibrant-src",
         "nvidia-open-gpu-595-84": "nvidia-open-gpu-595-84",
+        "pyroclear-src": "pyroclear-src",
         "ricelin": "ricelin",
         "viaterm": "viaterm",
         "zen-browser": "zen-browser"

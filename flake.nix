@@ -53,15 +53,19 @@
       url = "github:NVIDIA/open-gpu-kernel-modules/595.84";
       flake = false;
     };
+    pyroclear-src = {
+      url = "github:shreyanth-sureshkrishnaa/pyroclear";
+      flake = false;
+    };
   };
 
-  outputs = { nixpkgs, home-manager, nixgl, neovim-config, hyprland-config, monkeyterm, viaterm, mt7927-driver, btop-src, zen-browser, helium-browser, dracula-wallpaper, nixos-raspberrypi, ricelin, hyprsphere, nvibrant-src, nvidia-open-gpu-595-84, ... }:
+  outputs = { nixpkgs, home-manager, nixgl, neovim-config, hyprland-config, monkeyterm, viaterm, mt7927-driver, btop-src, zen-browser, helium-browser, dracula-wallpaper, nixos-raspberrypi, ricelin, hyprsphere, nvibrant-src, nvidia-open-gpu-595-84, pyroclear-src, ... }:
     let
       mkHome = system: modules: extraArgs:
         home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
           modules = [ ./modules/common.nix ] ++ modules;
-          extraSpecialArgs = { inherit neovim-config btop-src zen-browser helium-browser dracula-wallpaper; nvidiaLibDir = null; nvibrant-src = null; nvidia-open-gpu-595-84 = null; } // extraArgs;
+          extraSpecialArgs = { inherit neovim-config btop-src zen-browser helium-browser dracula-wallpaper pyroclear-src; nvidiaLibDir = null; nvibrant-src = null; nvidia-open-gpu-595-84 = null; } // extraArgs;
         };
     in {
       nixosConfigurations.firelink = nixpkgs.lib.nixosSystem {
@@ -83,7 +87,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = {
-              inherit neovim-config btop-src monkeyterm viaterm;
+              inherit neovim-config btop-src monkeyterm viaterm pyroclear-src;
               nvidiaLibDir = null;
             };
             home-manager.users.andrewkim = import ./hosts/roundtable/home.nix;
