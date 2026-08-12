@@ -47,6 +47,9 @@ let
   workspacesOverride = pkgs.writeText "Workspaces.qml"
     (builtins.readFile "${hyprland-config}/quickshell/pill/Workspaces.qml");
 
+  shellOverride = pkgs.writeText "shell.qml"
+    (builtins.readFile "${hyprland-config}/quickshell/pill/shell.qml");
+
   # Patch the Ricelin quickshell config:
   #   1. Replace all Theme.qml files with the Dracula-adapted version
   #   2. Remap hardcoded ~/Ricelin/wallpapers → ~/sources/dotfiles/wallpapers
@@ -54,8 +57,9 @@ let
   #      battery-percentage/power-profile/internal-backlight-augmented
   #      versions, pill/Singletons/Devices.qml with a version that adds
   #      brightnessctl-backed backlight control, pill/Workspaces.qml with a
-  #      version that recognizes the eDP-1 internal panel, and add the new
-  #      pill/Battery.qml surface
+  #      version that recognizes the eDP-1 internal panel, pill/shell.qml with
+  #      a version where peek/pin can pull the pill back into view even while
+  #      a window is fullscreen, and add the new pill/Battery.qml surface
   quickshellConfig = pkgs.runCommand "quickshell-ricelin-config" {
     nativeBuildInputs = [ pkgs.gnused pkgs.python3 ];
   } ''
@@ -69,6 +73,7 @@ let
     cp ${devicesOverride} $out/pill/Singletons/Devices.qml
     cp ${mixerOverride} $out/pill/Mixer.qml
     cp ${workspacesOverride} $out/pill/Workspaces.qml
+    cp ${shellOverride} $out/pill/shell.qml
     mkdir -p $out/hyprsphere
     cp ${hyprsphere}/shell.qml $out/hyprsphere/shell.qml
     chmod u+w $out/hyprsphere/shell.qml
