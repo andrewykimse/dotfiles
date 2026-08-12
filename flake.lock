@@ -180,11 +180,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1786496425,
-        "narHash": "sha256-ANzgzLLjdHnNbtiHOOjJACKeFrEuwCQywzWVgSUw0q0=",
+        "lastModified": 1786500969,
+        "narHash": "sha256-GXgrtc0pe5Z74dKfST65iC4Ar7qeJc2g9G1PIMxOMTU=",
         "ref": "refs/heads/main",
-        "rev": "0f66adb7003ec412356cff1d0008f32ae84b6bcd",
-        "revCount": 39,
+        "rev": "d36cb707915879cf33162689c7db60d92b4cf85b",
+        "revCount": 40,
         "type": "git",
         "url": "ssh://git@github.com/andrewykimse/hyprland-config"
       },
