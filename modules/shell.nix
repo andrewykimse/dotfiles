@@ -35,6 +35,21 @@
     };
 
     initContent = ''
+      # Tag this shell (and everything it spawns) with the workspace it was
+      # opened on. Ghostty is single-instance, so every tab/window shares
+      # one pid to Hyprland -- hyprland.lua can't tell tabs apart by pid
+      # alone, and "last focused" drifts to whatever tab you're currently
+      # typing in. This is set once per shell (the +x check leaves it alone,
+      # even if empty, for every subshell/tmux pane so it can't drift to
+      # wherever a later command happens to run) and is read directly out of
+      # a spawned process's environment, sidestepping the pid ambiguity.
+      if [[ -z "''${HYPR_SPAWN_WORKSPACE+x}" ]]; then
+        export HYPR_SPAWN_WORKSPACE=""
+        if command -v hyprctl >/dev/null 2>&1 && command -v jq >/dev/null 2>&1; then
+          HYPR_SPAWN_WORKSPACE=$(hyprctl activeworkspace -j 2>/dev/null | jq -r '.id // empty')
+        fi
+      fi
+
       [[ ":$PATH:" != *":$HOME/.nix-profile/bin:"* ]] && export PATH="$HOME/.nix-profile/bin:$PATH"
 
       # Volta (Node version manager)
