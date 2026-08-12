@@ -35,6 +35,7 @@ in
     hyprpaper
     hypridle
     hyprpolkitagent
+    hyprmoncfg
     grim
     slurp
     wf-recorder
