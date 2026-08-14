@@ -15,7 +15,7 @@
       url = "github:nix-community/nixGL";
     };
     neovim-config.url = "github:andrewykimse/neovim-config";
-    hyprland-config.url = "git+ssh://git@github.com/andrewykimse/hyprland-config?ref=decouple-hyprland-config";
+    hyprland-config.url = "git+ssh://git@github.com/andrewykimse/hyprland-config";
     monkeyterm.url = "github:andrewykimse/monkeyterm";
     viaterm.url = "github:andrewykimse/viaterm";
     mt7927-driver = {
