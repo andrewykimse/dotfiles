@@ -62,6 +62,9 @@
       zstyle ':completion:*' menu select
       zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
+      bindkey '  ' autosuggest-accept
+      bindkey '^ ' autosuggest-execute
+
       # Cargo
       [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
