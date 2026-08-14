@@ -15,6 +15,7 @@
     wget
     nix-search-cli
     claude-code
+    nodejs
     bottom
     nix-tree
     comma
