@@ -56,12 +56,18 @@ in
     '')
   ];
 
+  # Upstream pkgs.quickshell ships both `quickshell` and the shorter `qs`, and
+  # the Ricelin configs plus our own scripts invoke `qs`. Wrap both, or every
+  # `qs -c ... ipc call` fails with "No such file or directory" -- silently,
+  # since hl.dsp.exec_cmd discards the error.
   services.quickshell-ricelin.package = pkgs.runCommand "quickshell-nixgl" {
     nativeBuildInputs = [ pkgs.makeWrapper ];
   } ''
     mkdir -p $out/bin
     makeWrapper ${nixGLPkg}/bin/nixGL $out/bin/quickshell \
       --add-flags "${pkgs.quickshell}/bin/quickshell"
+    makeWrapper ${nixGLPkg}/bin/nixGL $out/bin/qs \
+      --add-flags "${pkgs.quickshell}/bin/qs"
   '';
 
   home.username = "akim7";
