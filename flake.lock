@@ -180,15 +180,16 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1786657704,
-        "narHash": "sha256-fLRsFp93C8GQsu/wCd0PkCbceoisPY7NTKwE7QTVq8c=",
-        "ref": "refs/heads/main",
-        "rev": "be2cdae5d91de34cbf5bad9549a461fe2fdac58a",
-        "revCount": 43,
+        "lastModified": 1786744401,
+        "narHash": "sha256-PN+a8v5fEDzQqt6/BgI4S1mLZQS9Xlhy30mtG5LiIUM=",
+        "ref": "decouple-hyprland-config",
+        "rev": "8d170cd2c77f649f7f584c3d10221fa08962d65a",
+        "revCount": 56,
         "type": "git",
         "url": "ssh://git@github.com/andrewykimse/hyprland-config"
       },
       "original": {
+        "ref": "decouple-hyprland-config",
         "type": "git",
         "url": "ssh://git@github.com/andrewykimse/hyprland-config"
       }

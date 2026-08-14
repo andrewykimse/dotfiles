@@ -1,28 +1,27 @@
-{ config, pkgs, ... }:
+{ config, pkgs, hyprland-config, ... }:
 {
   imports = [
-    ../../modules/hyprland.nix
+    hyprland-config.homeManagerModules.default
     ../../modules/quickshell.nix
     ../../modules/mail.nix
     ../../modules/browser.nix
     ../../modules/common.nix
   ];
 
-  wayland.windowManager.hyprland.settings.monitor = pkgs.lib.mkForce [
-    { output = "desc:Apple Computer Inc StudioDisplay"; mode = "5120x2880@60"; position = "auto"; scale = 2; }
-    { output = ""; mode = "preferred"; position = "auto"; scale = 1; }
-  ];
-
-  wayland.windowManager.hyprland.settings.env = [
-    { _args = [ "XDG_DATA_DIRS" "${config.home.homeDirectory}/.nix-profile/share:/usr/local/share:/usr/share" ]; }
-    { _args = [ "LIBVA_DRIVER_NAME" "nvidia" ]; }
-    { _args = [ "GBM_BACKEND" "nvidia-drm" ]; }
-    { _args = [ "__GLX_VENDOR_LIBRARY_NAME" "nvidia" ]; }
-  ];
-
-  wayland.windowManager.hyprland.extraConfig = ''
-    hl.config({ cursor = { no_hardware_cursors = true } })
-  '';
+  hyprland-config = {
+    enable = true;
+    monitors = [
+      { output = "desc:Apple Computer Inc StudioDisplay"; mode = "5120x2880@60"; position = "auto"; scale = 2; }
+      { output = ""; mode = "preferred"; position = "auto"; scale = 1; }
+    ];
+    extraLua = ''hl.config({ cursor = { no_hardware_cursors = true } })'';
+    extraEnv = [
+      { _args = [ "XDG_DATA_DIRS" "${config.home.homeDirectory}/.nix-profile/share:/usr/local/share:/usr/share" ]; }
+      { _args = [ "LIBVA_DRIVER_NAME" "nvidia" ]; }
+      { _args = [ "GBM_BACKEND" "nvidia-drm" ]; }
+      { _args = [ "__GLX_VENDOR_LIBRARY_NAME" "nvidia" ]; }
+    ];
+  };
 
   home.username = "andrewkim";
   home.homeDirectory = "/home/andrewkim";

@@ -145,6 +145,16 @@ in
 
     fonts.fontconfig.enable = true;
 
+    # Launch the hyprsphere overlay at Hyprland startup. This lives here rather
+    # than in hyprland-config because it needs qs (this module's quickshell
+    # package) and qt5compat's QML path -- facts this module owns and the
+    # hyprland-config repo has no knowledge of.
+    hyprland-config.extraLua = ''
+      hl.on("hyprland.start", function()
+        hl.exec_cmd("sh -c 'QML2_IMPORT_PATH=${pkgs.qt6Packages.qt5compat}/lib/qt-6/qml ${qs}/bin/quickshell -c hyprsphere'")
+      end)
+    '';
+
     xdg.configFile."quickshell".source = quickshellConfig;
   };
 }
