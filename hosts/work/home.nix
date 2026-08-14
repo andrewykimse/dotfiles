@@ -1,4 +1,4 @@
-{ config, pkgs, nixgl, ... }:
+{ config, pkgs, nixgl, hyprland-config, ... }:
 let
   nixGLPkg = nixgl.packages.${pkgs.stdenv.hostPlatform.system}.nixGLDefault;
   hyprlandWrapped = (pkgs.runCommand "hyprland-nixgl" { nativeBuildInputs = [ pkgs.makeWrapper ]; } ''
@@ -15,48 +15,25 @@ in
 {
   imports = [
     ../../modules/common.nix
-    ../../modules/hyprland.nix
+    hyprland-config.homeManagerModules.default
     ../../modules/quickshell.nix
     ../../modules/work.nix
   ];
 
-  wayland.windowManager.hyprland.package = hyprlandWrapped;
-
-  wayland.windowManager.hyprland.extraConfig = pkgs.lib.mkAfter ''
-    hl.config({ input = { kb_options = "caps:escape" } })
-  '';
-
-  wayland.windowManager.hyprland.settings.lock = pkgs.lib.mkForce { _var = "${pkgs.hyprlock}/bin/hyprlock"; };
-
-  wayland.windowManager.hyprland.settings.monitor = pkgs.lib.mkForce [
-    { output = "desc:Apple Computer Inc StudioDisplay"; mode = "5120x2880@60"; position = "auto"; scale = 2; }
-    { output = "desc:Dell Inc. DELL U3425WE";           mode = "3440x1440@60"; position = "auto"; scale = 1; }
-    { output = ""; mode = "preferred"; position = "auto"; scale = 1; }
-  ];
-
-  wayland.windowManager.hyprland.settings.env = [
-    { _args = [ "PATH" "${config.home.homeDirectory}/.nix-profile/bin:/usr/local/bin:/usr/bin:/bin" ]; }
-    { _args = [ "XDG_DATA_DIRS" "${config.home.homeDirectory}/.nix-profile/share:/usr/local/share:/usr/share" ]; }
-  ];
-
-  xdg.configFile."hypr/hypridle.conf" = pkgs.lib.mkForce {
-    text = ''
-      general {
-        lock_cmd = ${pkgs.hyprlock}/bin/hyprlock
-        before_sleep_cmd = loginctl lock-session
-      }
-
-      listener {
-        timeout = 300
-        on-timeout = ${pkgs.hyprlock}/bin/hyprlock
-      }
-
-      listener {
-        timeout = 600
-        on-timeout = hyprctl dispatch dpms off
-        on-resume = hyprctl dispatch dpms on
-      }
-    '';
+  hyprland-config = {
+    enable      = true;
+    package     = hyprlandWrapped;
+    lockCommand = "${pkgs.hyprlock}/bin/hyprlock";
+    extraLua    = ''hl.config({ input = { kb_options = "caps:escape" } })'';
+    monitors = [
+      { output = "desc:Apple Computer Inc StudioDisplay"; mode = "5120x2880@60"; position = "auto"; scale = 2; }
+      { output = "desc:Dell Inc. DELL U3425WE";           mode = "3440x1440@60"; position = "auto"; scale = 1; }
+      { output = ""; mode = "preferred"; position = "auto"; scale = 1; }
+    ];
+    extraEnv = [
+      { _args = [ "PATH" "${config.home.homeDirectory}/.nix-profile/bin:/usr/local/bin:/usr/bin:/bin" ]; }
+      { _args = [ "XDG_DATA_DIRS" "${config.home.homeDirectory}/.nix-profile/share:/usr/local/share:/usr/share" ]; }
+    ];
   };
 
   home.username = "akim7";

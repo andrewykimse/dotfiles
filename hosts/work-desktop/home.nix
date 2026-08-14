@@ -1,4 +1,4 @@
-{ config, pkgs, nixgl, ... }:
+{ config, pkgs, nixgl, hyprland-config, ... }:
 let
   nixGLPkg = nixgl.packages.${pkgs.stdenv.hostPlatform.system}.nixGLDefault;
   hyprlandSystem = (pkgs.runCommand "hyprland-system" {} ''
@@ -10,26 +10,27 @@ in
 {
   imports = [
     ../../modules/common.nix
-    ../../modules/hyprland.nix
+    hyprland-config.homeManagerModules.default
     ../../modules/quickshell.nix
     ../../modules/work.nix
   ];
 
-  wayland.windowManager.hyprland.package = hyprlandSystem;
-
-  wayland.windowManager.hyprland.settings.monitor = pkgs.lib.mkForce [
-    { output = "desc:Dell Inc. DELL U3425WE"; mode = "3440x1440@60"; position = "auto"; scale = 1; }
-    { output = ""; mode = "preferred"; position = "auto"; scale = 1; }
-  ];
-
-  wayland.windowManager.hyprland.settings.env = [
-    { _args = [ "PATH" "${config.home.homeDirectory}/.nix-profile/bin:/usr/local/bin:/usr/bin:/bin" ]; }
-    { _args = [ "XDG_DATA_DIRS" "${config.home.homeDirectory}/.nix-profile/share:/usr/local/share:/usr/share" ]; }
-    { _args = [ "GBM_BACKEND" "nvidia-drm" ]; }
-    { _args = [ "__GLX_VENDOR_LIBRARY_NAME" "nvidia" ]; }
-    { _args = [ "LIBVA_DRIVER_NAME" "nvidia" ]; }
-    { _args = [ "XDG_SESSION_TYPE" "wayland" ]; }
-  ];
+  hyprland-config = {
+    enable  = true;
+    package = hyprlandSystem;
+    monitors = [
+      { output = "desc:Dell Inc. DELL U3425WE"; mode = "3440x1440@60"; position = "auto"; scale = 1; }
+      { output = ""; mode = "preferred"; position = "auto"; scale = 1; }
+    ];
+    extraEnv = [
+      { _args = [ "PATH" "${config.home.homeDirectory}/.nix-profile/bin:/usr/local/bin:/usr/bin:/bin" ]; }
+      { _args = [ "XDG_DATA_DIRS" "${config.home.homeDirectory}/.nix-profile/share:/usr/local/share:/usr/share" ]; }
+      { _args = [ "GBM_BACKEND" "nvidia-drm" ]; }
+      { _args = [ "__GLX_VENDOR_LIBRARY_NAME" "nvidia" ]; }
+      { _args = [ "LIBVA_DRIVER_NAME" "nvidia" ]; }
+      { _args = [ "XDG_SESSION_TYPE" "wayland" ]; }
+    ];
+  };
 
 
   home.packages = [
