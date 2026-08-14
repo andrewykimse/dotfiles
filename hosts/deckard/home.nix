@@ -21,13 +21,18 @@ in
       cp -rs ${pkgs.ghostty}/share/icons/* $out/share/icons/ 2>/dev/null || true
       makeWrapper ${nixGLPkg}/bin/nixGL $out/bin/ghostty \
         --add-flags "${pkgs.ghostty}/bin/ghostty"
-      substitute ${pkgs.ghostty}/share/applications/com.mitchellh.ghostty.desktop \
-        $out/share/applications/com.mitchellh.ghostty.desktop \
-        --replace-fail "${pkgs.ghostty}/bin/ghostty" "$out/bin/ghostty" \
-        --replace-fail "DBusActivatable=true" "DBusActivatable=false"
-      substitute ${pkgs.ghostty}/share/dbus-1/services/com.mitchellh.ghostty.service \
-        $out/share/dbus-1/services/com.mitchellh.ghostty.service \
-        --replace-fail "${pkgs.ghostty}/bin/ghostty" "$out/bin/ghostty"
+      # ghostty's .desktop/.service Exec/TryExec lines point at either a bare
+      # "ghostty" command or an absolute store path ending in bin/ghostty
+      # depending on nixpkgs version, so match up to the last "ghostty" rather
+      # than the exact package path.
+      sed -e "s#^Exec=.*ghostty#Exec=$out/bin/ghostty#" \
+          -e "s#^TryExec=.*ghostty#TryExec=$out/bin/ghostty#" \
+          -e "s/DBusActivatable=true/DBusActivatable=false/" \
+          ${pkgs.ghostty}/share/applications/com.mitchellh.ghostty.desktop \
+          > $out/share/applications/com.mitchellh.ghostty.desktop
+      sed -e "s#^Exec=.*ghostty#Exec=$out/bin/ghostty#" \
+          ${pkgs.ghostty}/share/dbus-1/services/com.mitchellh.ghostty.service \
+          > $out/share/dbus-1/services/com.mitchellh.ghostty.service
     '')
   ];
 
