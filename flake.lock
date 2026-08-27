@@ -206,6 +206,7 @@
       "original": {
         "owner": "66-firebat",
         "repo": "hyprsphere",
+        "rev": "8b7875001fd57647cbf1c18e0c78aba59caff39a",
         "type": "github"
       }
     },
@@ -500,16 +501,17 @@
     "ricelin": {
       "flake": false,
       "locked": {
-        "lastModified": 1785320024,
-        "narHash": "sha256-o4p8Xxf3bn2R7CbOfvtCyjVwhEeFbgZ1m4VEmQdxekw=",
+        "lastModified": 1781650625,
+        "narHash": "sha256-j6l2UdSikJ2Vo78FJ8b6UoeDvmvHbxdZ6pIqsGMu0ag=",
         "owner": "Gakuseei",
         "repo": "Ricelin",
-        "rev": "c46882f4125b992cd3b25d5cfe7d16bbcaec1c94",
+        "rev": "79773e59b01543af2b858a3290837016727c2a45",
         "type": "github"
       },
       "original": {
         "owner": "Gakuseei",
         "repo": "Ricelin",
+        "rev": "79773e59b01543af2b858a3290837016727c2a45",
         "type": "github"
       }
     },

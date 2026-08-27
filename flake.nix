@@ -37,12 +37,16 @@
       url = "github:oxcl/nix-flake-helium-browser";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Pinned to an exact rev: modules/quickshell.nix replaces whole QML files
+    # from these trees, so an upstream refactor doesn't fail the build -- it
+    # loads a broken shell at runtime. Moving these pins is a deliberate step
+    # that means re-checking every override in modules/quickshell.nix.
     ricelin = {
-      url = "github:Gakuseei/Ricelin";
+      url = "github:Gakuseei/Ricelin/79773e59b01543af2b858a3290837016727c2a45";
       flake = false;
     };
     hyprsphere = {
-      url = "github:66-firebat/hyprsphere";
+      url = "github:66-firebat/hyprsphere/8b7875001fd57647cbf1c18e0c78aba59caff39a";
       flake = false;
     };
     nvibrant-src = {
