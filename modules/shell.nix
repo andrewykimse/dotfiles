@@ -24,6 +24,7 @@
       gs = "git stash";
       gp = "git pull";
       gP = "git push";
+      pi = "dx ai pi";
     };
 
     history = {
