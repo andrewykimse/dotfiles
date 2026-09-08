@@ -25,6 +25,7 @@
       gp = "git pull";
       gP = "git push";
       pi = "dx ai pi";
+      codex = "dx ai codex";
     };
 
     history = {
