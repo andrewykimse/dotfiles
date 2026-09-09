@@ -8,6 +8,7 @@
     fastfetch
     gnumake
     gcc
+    git-spice
     jq
     htop
     mpv
