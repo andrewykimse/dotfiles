@@ -21,7 +21,6 @@
       gcm = "git commit -m";
       gch = "git checkout";
       gg = "git status";
-      gs = "git stash";
       gp = "git pull";
       gP = "git push";
       pi = "dx ai pi";

@@ -128,6 +128,7 @@
     nvidiaSettings = true;
     package = config.boot.kernelPackages.nvidiaPackages.production;
     powerManagement.enable = false;
+    nvidiaPersistenced = true;
   };
 
   # Enable the GNOME Desktop Environment.
