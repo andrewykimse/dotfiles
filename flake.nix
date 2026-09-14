@@ -7,6 +7,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-darwin = {
+      url = "github:nix-darwin/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixos-raspberrypi = {
       url = "github:nvmd/nixos-raspberrypi";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -63,7 +67,7 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, nixgl, neovim-config, hyprland-config, monkeyterm, viaterm, mt7927-driver, btop-src, zen-browser, helium-browser, dracula-wallpaper, nixos-raspberrypi, ricelin, hyprsphere, nvibrant-src, nvidia-open-gpu-595-84, pyroclear-src, ... }:
+  outputs = { nixpkgs, home-manager, nix-darwin, nixgl, neovim-config, hyprland-config, monkeyterm, viaterm, mt7927-driver, btop-src, zen-browser, helium-browser, dracula-wallpaper, nixos-raspberrypi, ricelin, hyprsphere, nvibrant-src, nvidia-open-gpu-595-84, pyroclear-src, ... }:
     let
       mkHome = system: modules: extraArgs:
         home-manager.lib.homeManagerConfiguration {
@@ -111,11 +115,29 @@
           ];
         }).config.system.build.sdImage;
 
-      homeConfigurations = {
-        "andrewkim@macbook" = mkHome "aarch64-darwin" [
-          ./hosts/macbook/home.nix
-        ] { inherit monkeyterm viaterm; };
+      darwinConfigurations.macbook = nix-darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
+        modules = [
+          ./hosts/macbook/configuration.nix
+          home-manager.darwinModules.home-manager
+          {
+            nixpkgs.config.allowUnfree = true;
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = {
+              inherit neovim-config btop-src zen-browser helium-browser dracula-wallpaper pyroclear-src monkeyterm viaterm;
+              nvidiaLibDir = null;
+              nvibrant-src = null;
+              nvidia-open-gpu-595-84 = null;
+            };
+            home-manager.users.andrewkim = {
+              imports = [ ./modules/common.nix ./hosts/macbook/home.nix ];
+            };
+          }
+        ];
+      };
 
+      homeConfigurations = {
         "andrewkim@firelink" =
           let pkgs = import nixpkgs { system = "x86_64-linux"; config.allowUnfree = true; };
           in mkHome "x86_64-linux" [
