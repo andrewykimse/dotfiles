@@ -65,9 +65,17 @@
       url = "github:shreyanth-sureshkrishnaa/pyroclear";
       flake = false;
     };
+    # Tracks upstream master rather than the last tagged release: moonlight-qt
+    # 6.1.0 (nixpkgs' pinned version) doesn't build against current ffmpeg,
+    # and upstream has fixed that on master without cutting a new tag in 2
+    # years. Bump with `nix flake lock --update-input moonlight-qt-src`.
+    moonlight-qt-src = {
+      url = "git+https://github.com/moonlight-stream/moonlight-qt?ref=master&submodules=1";
+      flake = false;
+    };
   };
 
-  outputs = { nixpkgs, home-manager, nix-darwin, nixgl, neovim-config, hyprland-config, monkeyterm, viaterm, mt7927-driver, btop-src, zen-browser, helium-browser, dracula-wallpaper, nixos-raspberrypi, ricelin, hyprsphere, nvibrant-src, nvidia-open-gpu-595-84, pyroclear-src, ... }:
+  outputs = { nixpkgs, home-manager, nix-darwin, nixgl, neovim-config, hyprland-config, monkeyterm, viaterm, mt7927-driver, btop-src, zen-browser, helium-browser, dracula-wallpaper, nixos-raspberrypi, ricelin, hyprsphere, nvibrant-src, nvidia-open-gpu-595-84, pyroclear-src, moonlight-qt-src, ... }:
     let
       mkHome = system: modules: extraArgs:
         home-manager.lib.homeManagerConfiguration {
@@ -78,7 +86,7 @@
     in {
       nixosConfigurations.firelink = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { inherit mt7927-driver; };
+        specialArgs = { inherit mt7927-driver moonlight-qt-src; };
         modules = [
           ./hosts/firelink/configuration.nix
           mt7927-driver.nixosModules.default
@@ -142,7 +150,7 @@
           let pkgs = import nixpkgs { system = "x86_64-linux"; config.allowUnfree = true; };
           in mkHome "x86_64-linux" [
             ./hosts/firelink/home.nix
-          ] { inherit monkeyterm viaterm ricelin hyprsphere hyprland-config; nvidiaLibDir = "${pkgs.linuxPackages.nvidiaPackages.production}/lib"; };
+          ] { inherit monkeyterm viaterm ricelin hyprsphere hyprland-config moonlight-qt-src; nvidiaLibDir = "${pkgs.linuxPackages.nvidiaPackages.production}/lib"; };
 
         "akim7@akim7-work-laptop" = mkHome "x86_64-linux" [
           ./hosts/work/home.nix

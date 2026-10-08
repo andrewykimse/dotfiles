@@ -2,8 +2,15 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, mt7927-driver, ... }:
+{ config, pkgs, mt7927-driver, moonlight-qt-src, ... }:
 
+let
+  moonlight-qt-latest = pkgs.moonlight-qt.overrideAttrs (old: {
+    version = "unstable-${builtins.substring 0 7 (moonlight-qt-src.rev or "unknown")}";
+    src = moonlight-qt-src;
+    patches = [ ]; # upstream merged the one patch we carried
+  });
+in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -211,7 +218,7 @@
       pciutils
       lshw
       lm_sensors
-      moonlight-qt
+      moonlight-qt-latest
   ];
 
   services.sunshine = {

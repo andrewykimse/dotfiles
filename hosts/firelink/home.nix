@@ -1,4 +1,11 @@
-{ config, pkgs, hyprland-config, ... }:
+{ config, pkgs, hyprland-config, moonlight-qt-src, ... }:
+let
+  moonlight-qt-latest = pkgs.moonlight-qt.overrideAttrs (old: {
+    version = "unstable-${builtins.substring 0 7 (moonlight-qt-src.rev or "unknown")}";
+    src = moonlight-qt-src;
+    patches = [ ]; # upstream merged the one patch we carried
+  });
+in
 {
   imports = [
     hyprland-config.homeManagerModules.default
@@ -29,7 +36,7 @@
 
   home.packages = with pkgs; [
     hyprlock
-    moonlight-qt
+    moonlight-qt-latest
     pulsemixer
     steam
   ];

@@ -245,6 +245,25 @@
         "type": "github"
       }
     },
+    "moonlight-qt-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791422346,
+        "narHash": "sha256-UIT5QhEvQ/fzUu5kTgciTEXbACyeUtx1HKNflOmpA8c=",
+        "ref": "master",
+        "rev": "a57e947d7185fd01384f6973df4df59ae2968d01",
+        "revCount": 3388,
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/moonlight-stream/moonlight-qt"
+      },
+      "original": {
+        "ref": "master",
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/moonlight-stream/moonlight-qt"
+      }
+    },
     "mt7927-driver": {
       "inputs": {
         "mediatek-mt7927-dkms": "mediatek-mt7927-dkms",
@@ -544,6 +563,7 @@
         "hyprland-config": "hyprland-config",
         "hyprsphere": "hyprsphere",
         "monkeyterm": "monkeyterm",
+        "moonlight-qt-src": "moonlight-qt-src",
         "mt7927-driver": "mt7927-driver",
         "neovim-config": "neovim-config",
         "nix-darwin": "nix-darwin",
