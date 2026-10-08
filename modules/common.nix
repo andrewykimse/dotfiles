@@ -1,4 +1,16 @@
-{ pkgs, ... }:
+{ pkgs, lib, nixgl, nvidiaLibDir, ... }:
+let
+  # Ubuntu's AppArmor blocks unprivileged userns, and the SUID sandbox can't live in /nix/store
+  chromium = pkgs.chromium.override { commandLineArgs = "--no-sandbox"; };
+  # nixgl is only passed to non-NixOS hosts; .desktop Exec lines call bare `chromium`, so PATH picks up the wrapper
+  chromiumNixGL = pkgs.runCommand "chromium-nixgl" { nativeBuildInputs = [ pkgs.makeWrapper ]; } ''
+    mkdir -p $out/bin
+    ln -s ${chromium}/share $out/share
+    makeWrapper ${nixgl.packages.${pkgs.stdenv.hostPlatform.system}.nixGLDefault}/bin/nixGL $out/bin/chromium \
+      --add-flags "${chromium}/bin/chromium" \
+      ${lib.optionalString (nvidiaLibDir != null) "--set GBM_BACKENDS_PATH ${nvidiaLibDir}/gbm"}
+  '';
+in
 {
   imports = [
     ./shell.nix
@@ -12,6 +24,8 @@
     pkgs.iperf3 
     pkgs.spotify-player 
     pkgs.signal-desktop
+  ] ++ lib.optionals pkgs.stdenv.isLinux [
+    (if nixgl != null then chromiumNixGL else chromium)
   ];
 
   # home.username and home.homeDirectory are set per-host
