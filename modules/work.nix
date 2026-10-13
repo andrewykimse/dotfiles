@@ -1,15 +1,15 @@
 { config, pkgs, lib, ... }:
 {
-  programs.ghostty.enable = pkgs.lib.mkForce false;
+  # ghostty itself is installed per-host via a nixGL wrapper
+  programs.ghostty = {
+    package = null;
+    systemd.enable = false;
+    settings.command = "${pkgs.zsh}/bin/zsh";
+  };
 
   # Prefer the locally installed claude over the nix-managed one
   programs.zsh.initContent = lib.mkAfter ''
     export PATH="$HOME/.local/bin:$PATH"
-  '';
-
-  xdg.configFile."ghostty/config".text = ''
-    theme = Dracula
-    command = ${pkgs.zsh}/bin/zsh
   '';
 
   # Ubuntu's /usr/libexec/xdg-desktop-portal wins over the nix one via

@@ -73,20 +73,18 @@ in
     };
   };
 
-  programs.ghostty = lib.mkIf pkgs.stdenv.isLinux {
+  programs.ghostty = {
     enable = true;
+    package = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin null;
     installBatSyntax = false;
     settings = {
       theme = "Dracula";
       copy-on-select = "clipboard";
+      keybind = [
+        "ctrl+shift+j=scroll_page_lines:1"
+        "ctrl+shift+k=scroll_page_lines:-1"
+      ];
     };
-  };
-
-  xdg.configFile."ghostty/config" = lib.mkIf pkgs.stdenv.isDarwin {
-    text = ''
-      theme = Dracula
-      copy-on-select = clipboard
-    '';
   };
 
   programs.tmux = {

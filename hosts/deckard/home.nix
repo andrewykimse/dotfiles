@@ -6,13 +6,11 @@ in
   # SteamOS is not NixOS, so the Nix-built ghostty binary can't find the
   # system's real Mesa/OpenGL driver stack on its own. Disable the plain
   # install and wrap it with nixGL instead (same pattern as work/work-desktop).
-  programs.ghostty.enable = lib.mkForce false;
-
-  xdg.configFile."ghostty/config".text = ''
-    theme = Dracula
-    copy-on-select = clipboard
-    command = ${pkgs.zsh}/bin/zsh
-  '';
+  programs.ghostty = {
+    package = null;
+    systemd.enable = false;
+    settings.command = "${pkgs.zsh}/bin/zsh";
+  };
 
   home.packages = [
     (pkgs.runCommand "ghostty-nixgl" { nativeBuildInputs = [ pkgs.makeWrapper ]; } ''
