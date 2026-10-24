@@ -27,6 +27,10 @@
     trash-cli
     neovim-config.packages.${pkgs.stdenv.hostPlatform.system}.default
 
+    # image.nvim: provides the MagickWand lib lazy.nvim's hererocks builds
+    # the `magick` luarock against, for viewing images in markdown
+    imagemagick
+
     # LSP servers
     clang-tools   # clangd for C/C++
     rust-analyzer
@@ -39,6 +43,9 @@
   ] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
     usbutils
     ripdrag
+    wl-clipboard  # img-clip.nvim: paste clipboard images under Wayland
+  ] ++ pkgs.lib.optionals pkgs.stdenv.isDarwin [
+    pngpaste      # img-clip.nvim: paste clipboard images on macOS
   ] ++ pkgs.lib.optionals (monkeyterm != null) [
     monkeyterm.packages.${pkgs.stdenv.hostPlatform.system}.default
   ] ++ pkgs.lib.optionals (viaterm != null) [
