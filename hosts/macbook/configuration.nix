@@ -16,4 +16,11 @@
 
   # Preserve the existing manually-configured Touch ID sudo auth.
   security.pam.services.sudo_local.touchIdAuth = true;
+
+  # Qobuz isn't in nixpkgs; manage it as a Homebrew cask instead. Requires
+  # Homebrew to already be installed on the Mac.
+  homebrew = {
+    enable = true;
+    casks = [ "qobuz" ];
+  };
 }
