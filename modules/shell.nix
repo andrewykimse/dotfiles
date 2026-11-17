@@ -26,6 +26,7 @@
       pi = "dx ai pi";
       codex = "dx ai codex";
       opencode = "dx ai opencode2 --auto";
+      oc = "dx ai opencode2 --auto";
     };
 
     history = {
