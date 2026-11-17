@@ -40,6 +40,10 @@ in
   # Allow unfree for flake commands (nix run/shell) — still needs --impure
   home.sessionVariables.NIXPKGS_ALLOW_UNFREE = "1";
 
+  # Default external editor (git commit, crontab -e, opencode's "open in editor", etc.)
+  home.sessionVariables.EDITOR = "nvim";
+  home.sessionVariables.VISUAL = "nvim";
+
   home.stateVersion = "24.11";
 
   programs.home-manager.enable = true;
