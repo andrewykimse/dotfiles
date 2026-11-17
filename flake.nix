@@ -148,10 +148,9 @@
 
       homeConfigurations = {
         "andrewkim@firelink" =
-          let pkgs = import nixpkgs { system = "x86_64-linux"; config.allowUnfree = true; };
-          in mkHome "x86_64-linux" [
+          mkHome "x86_64-linux" [
             ./hosts/firelink/home.nix
-          ] { inherit monkeyterm viaterm ricelin hyprsphere hyprland-config moonlight-qt-src; nvidiaLibDir = "${pkgs.linuxPackages.nvidiaPackages.production}/lib"; };
+          ] { inherit monkeyterm viaterm ricelin hyprsphere hyprland-config moonlight-qt-src; nvidiaLibDir = "/run/opengl-driver/lib"; };
 
         "akim7@akim7-work-laptop" = mkHome "x86_64-linux" [
           ./hosts/work/home.nix
