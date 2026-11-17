@@ -53,4 +53,29 @@
   ];
 
   xdg.configFile."nvim".source = "${neovim-config}/nvim";
+
+  # Shared OpenCode 2 preferences; gateway configuration remains machine-local.
+  # Change these here rather than in the TUI once Home Manager owns cli.json.
+  xdg.configFile."opencode/cli.json".text = builtins.toJSON {
+    "$schema" = "https://opencode.ai/v2/cli.json";
+    theme.name = "dracula";
+    keybinds = {
+      leader = "ctrl+space";
+      "session.list" = "<leader>s";
+      "opencode.status" = "none";
+      "help.show" = "<leader>/";
+      "prompt.skills" = "<leader>k";
+      "session.fork" = "<leader>f";
+      "diff.open" = "<leader>d";
+    };
+    plugins = [
+      {
+        package = "opencode-vim@latest";
+        options.vim.keymaps.normal = {
+          gg = "command:dialog.select.home";
+          G = "command:dialog.select.end";
+        };
+      }
+    ];
+  };
 }
