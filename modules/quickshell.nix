@@ -1,7 +1,20 @@
 { pkgs, ricelin, hyprsphere, hyprland-config, config, lib, nvibrant-src ? null, nvidia-open-gpu-595-84 ? null, ... }:
 let
   cfg = config.services.quickshell-ricelin;
-  qs = cfg.package;
+  qtmm = pkgs.qt6Packages.qtmultimedia;
+
+  # The pill camera surface imports QtMultimedia, which quickshell does not
+  # bundle; expose its QML module and ffmpeg backend plugin to every launch.
+  qs = pkgs.runCommand "quickshell-multimedia" {
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+  } ''
+    mkdir -p $out/bin
+    for b in quickshell qs; do
+      makeWrapper ${cfg.package}/bin/$b $out/bin/$b \
+        --prefix QML2_IMPORT_PATH : ${qtmm}/lib/qt-6/qml \
+        --prefix QT_PLUGIN_PATH : ${qtmm}/lib/qt-6/plugins
+    done
+  '';
 
   # Digital vibrance on Wayland via /dev/nvidia-modeset ioctls; the ioctl ABI
   # is pinned to a specific driver release, so this is built against the
@@ -35,6 +48,9 @@ let
   glyphIconOverride = pkgs.writeText "GlyphIcon.qml"
     (builtins.readFile "${hyprland-config}/quickshell/pill/GlyphIcon.qml");
 
+  cameraSurface = pkgs.writeText "Camera.qml"
+    (builtins.readFile "${hyprland-config}/quickshell/pill/Camera.qml");
+
   batterySurface = pkgs.writeText "Battery.qml"
     (builtins.readFile "${hyprland-config}/quickshell/pill/Battery.qml");
 
@@ -59,7 +75,7 @@ let
   #      brightnessctl-backed backlight control, pill/Workspaces.qml with a
   #      version that recognizes the eDP-1 internal panel, pill/shell.qml with
   #      a version where peek/pin can pull the pill back into view even while
-  #      a window is fullscreen, and add the new pill/Battery.qml surface
+  #      a window is fullscreen, and add the new pill/Battery.qml and pill/Camera.qml surfaces
   quickshellConfig = pkgs.runCommand "quickshell-ricelin-config" {
     nativeBuildInputs = [ pkgs.gnused pkgs.python3 ];
   } ''
@@ -70,6 +86,7 @@ let
     cp ${pillOverride} $out/pill/Pill.qml
     cp ${glyphIconOverride} $out/pill/GlyphIcon.qml
     cp ${batterySurface} $out/pill/Battery.qml
+    cp ${cameraSurface} $out/pill/Camera.qml
     cp ${devicesOverride} $out/pill/Singletons/Devices.qml
     cp ${mixerOverride} $out/pill/Mixer.qml
     cp ${workspacesOverride} $out/pill/Workspaces.qml
