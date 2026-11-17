@@ -81,6 +81,8 @@ in
       theme = "Dracula";
       copy-on-select = "clipboard";
       keybind = [
+        "ctrl+tab=unbind"
+        "ctrl+shift+tab=unbind"
         "ctrl+shift+j=scroll_page_lines:1"
         "ctrl+shift+k=scroll_page_lines:-1"
       ];

@@ -62,6 +62,8 @@
     keybinds = {
       leader = "ctrl+space";
       "session.list" = "<leader>s";
+      "session.tab.next" = "ctrl+tab,alt+down";
+      "session.tab.previous" = "ctrl+shift+tab,alt+up";
       "opencode.status" = "none";
       "help.show" = "<leader>/";
       "prompt.skills" = "<leader>k";
