@@ -70,7 +70,7 @@
     };
     plugins = [
       {
-        package = "opencode-vim@latest";
+        package = "${import ../packages/opencode-vim { inherit pkgs; }}";
         options.vim.keymaps.normal = {
           gg = "command:dialog.select.home";
           G = "command:dialog.select.end";
