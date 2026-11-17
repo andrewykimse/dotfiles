@@ -25,7 +25,7 @@
       gP = "git push";
       pi = "dx ai pi";
       codex = "dx ai codex";
-      opencode = "dx ai opencode";
+      opencode = "dx ai opencode2 --auto";
     };
 
     history = {
