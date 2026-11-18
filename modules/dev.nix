@@ -77,7 +77,10 @@
       }
       {
         package = "${import ../packages/opencode-vim { inherit pkgs; }}";
+        options.vim.defaultMode = "normal";
         options.vim.keymaps.normal = {
+          J = "command:session.tab.previous";
+          K = "command:session.tab.next";
           gg = "command:dialog.select.home";
           G = "command:dialog.select.end";
         };
