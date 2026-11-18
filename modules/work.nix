@@ -7,6 +7,11 @@
     settings.command = "${pkgs.zsh}/bin/zsh";
   };
 
+  programs.zsh.shellAliases = {
+    opencode = lib.mkForce "dx ai opencode2 --auto";
+    oc = lib.mkForce "dx ai opencode2 --auto";
+  };
+
   # Prefer the locally installed claude over the nix-managed one
   programs.zsh.initContent = lib.mkAfter ''
     export PATH="$HOME/.local/bin:$PATH"
