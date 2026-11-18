@@ -72,6 +72,10 @@
     };
     plugins = [
       {
+        package = "${import ../packages/opencode-neovim { inherit pkgs; }}";
+        options.bind = "<leader>v";
+      }
+      {
         package = "${import ../packages/opencode-vim { inherit pkgs; }}";
         options.vim.keymaps.normal = {
           gg = "command:dialog.select.home";
