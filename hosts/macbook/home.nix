@@ -8,6 +8,7 @@
   home.homeDirectory = "/Users/andrewkim";
 
   home.packages = with pkgs; [
+    (import ../../packages/opencode2 { inherit pkgs; })
     aerospace
     tailscale
   ];
