@@ -54,6 +54,34 @@ test("other selector keys are untouched", () => {
 // Exercise the actual patched upstream branch, including its mode/context
 // guards, without starting a terminal or loading a second OpenTUI renderer.
 const bundlePath = process.env.OPENCODE_VIM_BUNDLE;
+test("selectors open in normal mode regardless of the prompt mode", {
+  skip: !bundlePath,
+}, () => {
+  const source = readFileSync(bundlePath, "utf8");
+  const start = source.indexOf('    if (kind === "dialog" && dialogInput !== input)');
+  const end = source.indexOf('    const mode = state.mode();', start);
+  assert.ok(start >= 0 && end > start);
+  const initialize = new Function("kind", "dialogInput", "input", "dialogVimee", "dialogState", "promptVim", "props", source.slice(start, end));
+
+  for (const promptMode of ["normal", "insert", "visual", "visual-line"]) {
+    for (const selector of [false, true]) {
+      const input = {};
+      const { context } = fixture([selector ? "dialog.select.submit" : "dialog.prompt.submit"]);
+      for (const kind of ["dialog", "prompt"]) {
+        for (const previousInput of [null, input, {}]) {
+          const calls = [];
+          initialize(kind, previousInput, input,
+            { suspend: () => calls.push("suspend") },
+            { setMode: (mode) => calls.push(mode) },
+            { state: { mode: () => promptMode } }, { context });
+          const changedDialog = kind === "dialog" && previousInput !== input;
+          assert.deepEqual(calls, changedDialog ? ["suspend", selector ? "normal" : promptMode] : []);
+        }
+      }
+    }
+  }
+});
+
 test("upstream gate limits navigation to idle normal-mode selectors", {
   skip: !bundlePath,
 }, () => {

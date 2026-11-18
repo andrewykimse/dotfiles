@@ -19,5 +19,21 @@ replacement = '''    if (kind === "dialog" && !vimee.isPending() && !mapped && s
         return;
       if (key === "<Tab>"'''
 source = source.replace(anchor, replacement)
+
+mode_anchor = '''    if (kind === "dialog" && dialogInput !== input) {
+      dialogInput = input;
+      dialogVimee.suspend();
+      dialogState.setMode(promptVim.state.mode());
+    }'''
+if source.count(mode_anchor) != 1:
+    raise SystemExit("opencode-vim dialog initialization changed; review the selector patch")
+
+mode_replacement = '''    if (kind === "dialog" && dialogInput !== input) {
+      dialogInput = input;
+      dialogVimee.suspend();
+      const selector = props.context.keymap.commands().some((item) => item.id === "dialog.select.submit");
+      dialogState.setMode(selector ? "normal" : promptVim.state.mode());
+    }'''
+source = source.replace(mode_anchor, mode_replacement)
 source += "\n" + helper.replace("export function", "function", 1)
 bundle.write_text(source)
