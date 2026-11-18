@@ -59,6 +59,7 @@
   xdg.configFile."opencode/cli.json".text = builtins.toJSON {
     "$schema" = "https://opencode.ai/v2/cli.json";
     theme.name = "dracula";
+    session.sidebar = "hide";
     keybinds = {
       leader = "ctrl+space";
       "session.list" = "<leader>s";
@@ -71,6 +72,9 @@
       "diff.open" = "<leader>d";
     };
     plugins = [
+      {
+        package = "oh-my-opencode-slim@3.0.7";
+      }
       {
         package = "${import ../packages/opencode-neovim { inherit pkgs; }}";
         options.bind = "<leader>v";
